@@ -68,3 +68,15 @@ export type formType={
     email:string;
     password:string;
 }
+
+export type CommentType = {
+  id: number;
+  body: string;
+  postId: number;
+  likes: number;
+  user: {
+    id: number;
+    username: string;
+    fullName: string;
+  };
+};

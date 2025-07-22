@@ -8,6 +8,9 @@ import Home from "./pages/Home/Home.tsx";
 import WebLayout from "./pages/WebLayout/WebLayout.tsx";
 import { Provider } from "react-redux";
 import { store } from "./redux/Store/store.ts";
+import Search from "./pages/Search/Search.tsx";
+import SearchPosts from "./components/SearchPosts/SearchPosts.tsx";
+import SearchUsers from "./components/SearchUsers/SearchUsers.tsx";
 
 const router = createBrowserRouter([
     {
@@ -22,7 +25,16 @@ const router = createBrowserRouter([
         path:"/",
         element:<WebLayout />,
         children:[
-            {index:true, element:<Home />}
+            {index:true, element:<Home />},
+            {
+                path:"search", 
+                element:<Search />,
+                children:[
+                    {path:"posts", element:<SearchPosts />},
+                    {path:"users", element:<SearchUsers />}
+                ]
+            },
+            
         ]
     }
 ])

@@ -1,13 +1,20 @@
 // redux/Store/store.ts
-import { createStore, combineReducers } from "redux";
+import { createStore, combineReducers, compose, applyMiddleware } from "redux";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage
 import { userReducer } from "../Reducers/userReducer";
+import { postReducer } from "../Reducers/postsReducers";
+import { thunk } from "redux-thunk";
+
+const middleWare=[thunk]
+const enhancer=compose(applyMiddleware(...middleWare))
 
 // Combine all reducers
 const rootReducer = combineReducers({
   user: userReducer,
+  posts:postReducer
 });
+
 
 // Persist config WITHOUT explicit types
 const persistConfig = {
@@ -20,7 +27,7 @@ const persistConfig = {
 const persistedReducer = persistReducer(persistConfig, rootReducer as any);
 
 // Create the store
-export const store = createStore(persistedReducer);
+export const store = createStore(persistedReducer, undefined, enhancer);
 
 // Create the persistor
 export const persistor = persistStore(store);
