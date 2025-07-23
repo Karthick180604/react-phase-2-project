@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -8,10 +8,11 @@ import {
   IconButton,
   Box,
   Avatar,
+  CardMedia,
 } from "@mui/material";
 import ThumbUpAltOutlinedIcon from "@mui/icons-material/ThumbUpAltOutlined";
 import ThumbDownAltOutlinedIcon from "@mui/icons-material/ThumbDownAltOutlined";
-import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
+import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
 import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
@@ -19,107 +20,160 @@ import type { Post } from "../../redux/Actions/postsActions";
 
 type PostCardProps = {
   post: Post;
-  onLikeHandler: (postId: number, like:boolean) => void;
-  onDislikeHandler:(postId: number, like:boolean)=>void
+  onLikeHandler: (postId: number, like: boolean) => void;
+  onDislikeHandler: (postId: number, dislike: boolean) => void;
   setSelectedPost: React.Dispatch<React.SetStateAction<Post | null>>;
   like: boolean;
-  dislike:boolean;
+  dislike: boolean;
 };
 
 const PostCard: React.FC<PostCardProps> = ({
   post,
   onLikeHandler,
+  onDislikeHandler,
   setSelectedPost,
   like,
   dislike,
-  onDislikeHandler
 }) => {
+  const [imageUrl, setImageUrl] = useState<string>("");
+
+  useEffect(() => {
+    const randomImage = `https://picsum.photos/seed/${post.id}/300/200`;
+    setImageUrl(randomImage);
+  }, [post.id]);
+
   return (
     <Card
       sx={{
         mb: 3,
-        p: 3,
         display: "flex",
-        flexDirection: { xs: "column", md: "row" },
-        gap: 3,
+        flexDirection: { xs: "column", sm: "row" },
         boxShadow: 4,
         borderRadius: 3,
+        overflow: "hidden",
       }}
     >
-      {/* Left Section */}
+      {/* Left: Image + Actions */}
+      <Box
+        sx={{
+          width: { xs: "100%", sm: 300 },
+          position: "relative",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          bgcolor: "grey.100",
+        }}
+      >
+        <CardMedia
+          component="img"
+          image={imageUrl}
+          alt="Post Image"
+          sx={{ height: 210, objectFit: "cover" }}
+        />
+
+        <Stack
+          direction="row"
+          justifyContent="space-around"
+          alignItems="center"
+          sx={{
+            py: 1.5,
+            px: 1,
+            bgcolor: "background.paper",
+            borderTop: "1px solid #eee",
+          }}
+        >
+          <Box textAlign="center">
+            <IconButton onClick={() => onLikeHandler(post.id, like)}>
+              {like ? <ThumbUpAltIcon /> : <ThumbUpAltOutlinedIcon />}
+            </IconButton>
+            <Typography variant="caption">
+              {post.reactions.likes + (like ? 1 : 0)}
+            </Typography>
+          </Box>
+
+          <Box textAlign="center">
+            <IconButton onClick={() => onDislikeHandler(post.id, dislike)}>
+              {dislike ? <ThumbDownAltIcon /> : <ThumbDownAltOutlinedIcon />}
+            </IconButton>
+            <Typography variant="caption">
+              {post.reactions.dislikes + (dislike ? 1 : 0)}
+            </Typography>
+          </Box>
+
+          <Box textAlign="center">
+            <IconButton onClick={() => setSelectedPost(post)}>
+              <CommentOutlinedIcon />
+            </IconButton>
+            <Typography variant="caption">Comments</Typography>
+          </Box>
+
+          <Box textAlign="center" display="flex" alignItems="center" gap={0.5}>
+            <VisibilityOutlinedIcon fontSize="small" />
+            <Typography variant="caption">{post.views}</Typography>
+          </Box>
+        </Stack>
+      </Box>
+
+      {/* Right: Content */}
       <Box flex={1}>
         <CardContent>
-          {/* Avatar + Name */}
-          <Stack direction="row" alignItems="center" spacing={2}>
+          {/* User Info */}
+          <Stack direction="row" alignItems="center" spacing={2} mb={1}>
             <Avatar
-              src={post.userImage}
-              alt={post.userName}
-              sx={{ width: 48, height: 48 }}
+              src={post.image}
+              alt={post.username}
+              sx={{ width: 40, height: 40 }}
             />
-            <Typography variant="subtitle1" color="text.secondary">
-              {post.userName}
+            <Typography variant="subtitle2" color="text.secondary">
+              {post.username}
             </Typography>
           </Stack>
 
-          <Typography variant="h5" sx={{ mt: 2 }}>
+          {/* Title & Body */}
+          <Typography variant="h6" gutterBottom>
             {post.title}
           </Typography>
-          <Typography variant="body1" color="text.secondary" sx={{ mt: 1 }}>
-            {post.body}
-          </Typography>
+          <Box
+              sx={{
+                display: '-webkit-box',
+                WebkitLineClamp: 4,
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                color: 'text.secondary',
+                typography: 'body2',
+                mb: 1,
+              }}
+            >
+              {post.body}
+            </Box>
 
-          <Stack direction="row" spacing={1} sx={{ mt: 2, flexWrap: "wrap" }}>
-            {post.tags.map((tag: string, idx: number) => (
+            <Typography
+              variant="body2"
+              sx={{
+                color: 'primary.main',
+                cursor: 'pointer',
+                fontWeight: 500,
+                display: 'inline-block',
+              }}
+              onClick={() => setSelectedPost(post)}
+            >
+              Read more
+            </Typography>
+
+
+          {/* Tags */}
+          <Stack direction="row" spacing={1} mt={2} flexWrap="wrap">
+            {post.tags.map((tag, index) => (
               <Chip
-                key={idx}
+                key={index}
                 label={`#${tag}`}
-                size="medium"
+                size="small"
                 variant="outlined"
-                sx={{ fontSize: "0.85rem" }}
               />
             ))}
           </Stack>
         </CardContent>
-      </Box>
-
-      {/* Right Section */}
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="space-around"
-        sx={{ minWidth: "120px", textAlign: "center", p: 2 }}
-      >
-        <IconButton onClick={() => onLikeHandler(post.id, like)} size="large">
-          {like ? (
-            <ThumbUpAltIcon fontSize="medium" />
-          ) : (
-            <ThumbUpAltOutlinedIcon fontSize="medium" />
-          )}
-        </IconButton>
-        <Typography variant="body1">
-          {post.reactions.likes+(like ? 1 : 0)}
-        </Typography>
-
-        <IconButton size="large" onClick={() => onDislikeHandler(post.id, dislike)}>
-          {dislike ? (
-            <ThumbDownAltIcon fontSize="medium" />
-          ) : (
-            <ThumbDownAltOutlinedIcon fontSize="medium" />
-          )}
-        </IconButton>
-
-        <Typography variant="body1">{post.reactions.dislikes+(dislike ? 1 : 0)}</Typography>
-
-        <IconButton onClick={() => setSelectedPost(post)} size="large">
-          <CommentOutlinedIcon fontSize="medium" />
-        </IconButton>
-        <Typography variant="body1">Comments</Typography>
-
-        <Box mt={2} display="flex" alignItems="center" gap={1}>
-          <VisibilityOutlinedIcon fontSize="medium" />
-          <Typography variant="body1">{post.views}</Typography>
-        </Box>
       </Box>
     </Card>
   );

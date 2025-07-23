@@ -7,8 +7,6 @@ export const findUser=async(formData:formType):Promise<UserType | unknown>=>{
       const findUser=response.data.users.find((user:UserType)=>{
         return user.email===formData.email
       })
-      const isExist=!!findUser
-      console.log(findUser)
       return findUser
     } catch (error) {
       return error

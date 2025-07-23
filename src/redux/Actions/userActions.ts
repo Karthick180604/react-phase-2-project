@@ -1,5 +1,5 @@
-import { COMMENT_POST, DISLIKE_POST, LIKE_POST, LOGOUT_USER, REMOVE_DISLIKE_POST, REMOVE_LIKE_POST, SET_USER, SET_USER_PROFILE_DETAILS } from "../ActionTypes/userActionTypes";
-import type { CompanyType } from "../Reducers/userReducer";
+import { ADD_UPLOADED_POST, COMMENT_POST, DISLIKE_POST, LIKE_POST, LOGOUT_USER, REMOVE_DISLIKE_POST, REMOVE_LIKE_POST, SET_USER, SET_USER_PROFILE_DETAILS } from "../ActionTypes/userActionTypes";
+import type { CompanyType, UploadPostType } from "../Reducers/userReducer";
 
 interface SetUserAction {
   type: typeof SET_USER;
@@ -56,6 +56,12 @@ interface SetUserProfileDetailsAction {
   };
 }
 
+interface AddUploadedPostAction {
+  type: typeof ADD_UPLOADED_POST;
+  payload: UploadPostType;
+}
+
+
 
 
 export const setUser = (userId:number, userName: string, userEmail: string, userPassword: string) => ({
@@ -105,6 +111,14 @@ export const setUserProfileDetails = (payload: {
 });
 
 
+export const addUploadedPostAction = (post: UploadPostType) => {
+  return {
+    type: ADD_UPLOADED_POST,
+    payload: post,
+  };
+};
+
+
 export type UserActionType =
   | SetUserAction
   | LogoutUserAction
@@ -114,3 +128,4 @@ export type UserActionType =
   | DislikePostAction
   | RemoveDislikePostAction
   | SetUserProfileDetailsAction
+  | AddUploadedPostAction

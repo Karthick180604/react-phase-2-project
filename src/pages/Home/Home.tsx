@@ -86,6 +86,19 @@ const handleScrollToTop = () => {
   window.scrollTo({ top: 0, behavior: "smooth" });
 };
 
+const userUploadedPost=userDetails.uploadedPosts.map((uploadPost)=>{
+  return {
+    ...uploadPost,
+    image:userDetails.image,
+    username:userDetails.username
+  }
+})
+
+  const postToRender=[
+    ...userUploadedPost
+    ,
+    ...postsState.posts
+  ]
 
   return (
     <Container maxWidth="md" sx={{ mt: 4 }}>
@@ -93,7 +106,7 @@ const handleScrollToTop = () => {
         Latest Posts
       </Typography>
 
-      {postsState.posts.map((post: Post, index: number) => {
+      {postToRender.map((post: Post, index: number) => {
         const isLast = postsState.posts.length === index + 1;
         return (
           <div
@@ -122,6 +135,10 @@ const handleScrollToTop = () => {
         open={!!selectedPost}
         onClose={() => setSelectedPost(null)}
         post={selectedPost}
+        onLikeHandler={onLikeHandler}
+        onDislikeHandler={onDislikeHandler}
+        like={selectedPost ? userDetails.likedPostId.includes(selectedPost.id) : false}
+        dislike={selectedPost ? userDetails.dislikePostId.includes(selectedPost.id) : false}
       />
       <Zoom in={showScrollTop}>
         <Fab

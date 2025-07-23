@@ -9,6 +9,7 @@ import {
   TextField,
   Button,
   Stack,
+  Icon,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import type { Post } from "../../redux/Actions/postsActions";
@@ -17,15 +18,30 @@ import type { CommentType } from "../../types/types";
 import { useDispatch, useSelector } from "react-redux";
 import { commentPost } from "../../redux/Actions/userActions";
 import type { RootState } from "../../redux/Store/store";
+import ThumbUpOffAltOutlinedIcon from "@mui/icons-material/ThumbUpOffAltOutlined";
+import ThumbDownOffAltOutlinedIcon from "@mui/icons-material/ThumbDownOffAltOutlined";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
+import ThumbDownAltOutlinedIcon from "@mui/icons-material/ThumbDownAltOutlined";
+import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
+import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
+import ThumbUpAltOutlinedIcon from "@mui/icons-material/ThumbUpAltOutlined";
+
+
+
 
 type PostDialogProps = {
   open: boolean;
   onClose: () => void;
   post: Post | null;
+  onLikeHandler: (postId: number, like: boolean) => void;
+  onDislikeHandler: (postId: number, dislike: boolean) => void;
+  like: boolean;
+  dislike: boolean;
 };
 
 
-const PostDialog: React.FC<PostDialogProps> = ({ open, onClose, post }) => {
+const PostDialog: React.FC<PostDialogProps> = ({ open, onClose, post, onLikeHandler,
+  onDislikeHandler, like, dislike }) => {
     if (!post) return null;
     
     const dispatch=useDispatch()
@@ -72,21 +88,59 @@ const PostDialog: React.FC<PostDialogProps> = ({ open, onClose, post }) => {
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
       <DialogContent sx={{ display: "flex", flexDirection: { xs: "column", md: "row" }, p: 0 }}>
         {/* Left side - Post */}
-        <Box flex={1} p={3}>
-          <Stack direction="row" justifyContent="space-between" alignItems="center">
-            <Typography variant="h6">Post by {post.userName}</Typography>
-            <IconButton onClick={onClose}>
-              <CloseIcon />
+        <Box flex={1} p={3} display="flex" flexDirection="column">
+  <Stack direction="row" justifyContent="space-between" alignItems="center">
+    <Typography variant="h6">Post by {post.username}</Typography>
+    <IconButton onClick={onClose}>
+      <CloseIcon />
+    </IconButton>
+  </Stack>
+
+  <Typography variant="h5" sx={{ mt: 2 }}>{post.title}</Typography>
+  <Typography variant="body1" sx={{ mt: 2 }}>{post.body}</Typography>
+
+  <Stack direction="row" spacing={1} sx={{ mt: 2, flexWrap: "wrap" }}>
+    {post.tags.map((tag, i) => (
+      <Typography key={i} variant="caption" color="text.secondary">
+        #{tag}
+      </Typography>
+    ))}
+  </Stack>
+
+  {/* Fixed Bottom Icons */}
+  <Box
+    mt="auto"
+    pt={2}
+    borderTop="1px solid #e0e0e0"
+    display="flex"
+    justifyContent="space-around"
+    alignItems="center"
+  >
+    <Stack direction="row" spacing={0.5} alignItems="center">
+      <IconButton onClick={() => onLikeHandler(post.id, like)}>
+              {like ? <ThumbUpAltIcon /> : <ThumbUpAltOutlinedIcon />}
             </IconButton>
-          </Stack>
-          <Typography variant="h5" sx={{ mt: 2 }}>{post.title}</Typography>
-          <Typography variant="body1" sx={{ mt: 2 }}>{post.body}</Typography>
-          <Stack direction="row" spacing={1} sx={{ mt: 2, flexWrap: "wrap" }}>
-            {post.tags.map((tag, i) => (
-              <Typography key={i} variant="caption" color="text.secondary">#{tag}</Typography>
-            ))}
-          </Stack>
-        </Box>
+            <Typography variant="caption">
+              {post.reactions.likes + (like ? 1 : 0)}
+            </Typography>
+    </Stack>
+    <Stack direction="row" spacing={0.5} alignItems="center">
+      <IconButton onClick={() => onDislikeHandler(post.id, dislike)}>
+              {dislike ? <ThumbDownAltIcon /> : <ThumbDownAltOutlinedIcon />}
+            </IconButton>
+            <Typography variant="caption">
+              {post.reactions.dislikes + (dislike ? 1 : 0)}
+            </Typography>
+    </Stack>
+    <Stack direction="row" spacing={0.5} alignItems="center">
+      <IconButton>
+        <VisibilityOutlinedIcon fontSize="small" />
+      </IconButton>
+      <Typography variant="body2">{post.views ?? 0}</Typography>
+    </Stack>
+  </Box>
+</Box>
+
 
         <Divider orientation="vertical" flexItem sx={{ display: { xs: "none", md: "block" } }} />
 

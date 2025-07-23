@@ -20,11 +20,15 @@ import type { ThunkDispatch } from 'redux-thunk';
 import type { AnyAction } from 'redux';
 import { fetchPosts } from '../../redux/Actions/postsActions';
 import { getAllPostTags, getSearchedPosts } from '../../services/apiCalls';
+import PostDialog from '../../components/PostDialog/PostDialog';
+import { dislikePost, likePost, removeDislikePost, removeLikePost } from '../../redux/Actions/userActions';
 
 const SearchPosts = () => {
   const dispatch: ThunkDispatch<RootState, unknown, AnyAction> = useDispatch();
   const { posts, loading } = useSelector((state: RootState) => state.posts);
 
+  const [selectedPost, setSelectedPost] = useState<any | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const [postList, setPostList] = useState<any[]>([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
@@ -34,6 +38,35 @@ const SearchPosts = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [tags, setTags] = useState<{ slug: string; name: string; url: string }[]>([]);
   const [selectedTag, setSelectedTag] = useState('');
+
+  const userDetails=useSelector((state:RootState)=>state.user)
+
+  const handleOpenDialog = (post: any) => {
+  setSelectedPost(post);
+  setDialogOpen(true);
+};
+
+const handleCloseDialog = () => {
+  setDialogOpen(false);
+  setSelectedPost(null);
+};
+
+const onLikeHandler = (postId: number, like: boolean) => {
+    if (!like) {
+      dispatch(likePost(postId));
+    } else {
+      dispatch(removeLikePost(postId));
+    }
+  };
+
+  const onDislikeHandler = (postId: number, dislike: boolean) => {
+    if (!dislike) {
+      dispatch(dislikePost(postId));
+    } else {
+      dispatch(removeDislikePost(postId));
+    }
+  };
+
 
   useEffect(() => {
     dispatch(fetchPosts(page, limit)).then((res: any) => {
@@ -164,11 +197,27 @@ const SearchPosts = () => {
               md={4}
               ref={isLast ? lastPostRef : null}
             >
-              <PostCardSmall title={post.title} body={post.body} />
+              <PostCardSmall
+                title={post.title}
+                body={post.body}
+                id={post.id}
+                onReadMore={() => handleOpenDialog(post)} // <-- pass handler
+              />
+
             </Grid>
           );
         })}
       </Grid>
+      <PostDialog
+        open={dialogOpen}
+        onClose={handleCloseDialog}
+        post={selectedPost}
+        onLikeHandler={onLikeHandler}
+        onDislikeHandler={onDislikeHandler}
+        like={selectedPost ? userDetails.likedPostId.includes(selectedPost.id) : false}
+        dislike={selectedPost ? userDetails.dislikePostId.includes(selectedPost.id) : false}
+      />
+
     </Container>
   );
 };

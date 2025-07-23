@@ -12,10 +12,14 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import FormInput from "../../components/MuiComponents/FormInput";
 import { findUser } from "../../services/apiOperations";
 import { useNavigate } from "react-router-dom";
-import { getAllUsers } from "../../services/apiCalls";
+import { getAllUsers, getSingleUserPosts } from "../../services/apiCalls";
 import type { UserType } from "../../types/types";
+import { useDispatch } from "react-redux";
+import { addUploadedPostAction, setUser, setUserProfileDetails } from "../../redux/Actions/userActions";
+import type { UploadPostType } from "../../redux/Reducers/userReducer";
 
 const Login = () => {
+  const dispatch = useDispatch();
   const navigate=useNavigate()
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -32,11 +36,11 @@ const Login = () => {
           const findUser=response.data.users.find((user:UserType)=>{
             return user.email===formData.email && user.password===formData.password
           })
-          const isExist=!!findUser
+          // const isExist=!!findUser
           console.log(findUser)
-          return isExist
+          return findUser
         } catch (error) {
-          return false
+          return error
         }
   }
 
@@ -45,6 +49,26 @@ const Login = () => {
     const isExist=!!userExist
     if(isExist)
     {
+      dispatch(setUser(userExist.id, userExist.username, userExist.email, userExist.password));
+      const userData={
+        firstName:userExist.firstName,
+        lastName:userExist.lastName,
+        image:userExist.image,
+        phone:userExist.phone,
+        gender:userExist.gender,
+        company:userExist.company,
+      }
+      dispatch(setUserProfileDetails(userData))
+      try {
+        const response=await getSingleUserPosts(userExist.id)
+        const addThePosts=response.data.posts.map((post:UploadPostType)=>{
+          dispatch(addUploadedPostAction(post))
+        })
+        console.log(response.data.posts)
+      } catch (error) {
+        console.log(error)
+      }
+      console.log(userExist)
       navigate("/")
     }
     else

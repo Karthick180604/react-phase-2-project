@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Container, Typography, Grid, Button, Box, Stack } from '@mui/material';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../redux/Store/store';
-import { getSingleUserPosts } from '../../services/apiCalls';
+import { getAllPostTags, getSingleUserPosts } from '../../services/apiCalls';
 import UserProfileCard from '../../components/UserProfileCard/UserProfileCard';
 import UserPostSection from '../../components/UserPostSection/UserPostSection';
 import EditProfileDialog from '../../components/EditProfileDialog/EditProfileDialog';
+import AddPostDialog from '../../components/AddPostDialog/AddPostDialog';
+import type { Post } from '../../redux/Actions/postsActions';
 
 interface User {
   id: number;
@@ -21,17 +23,20 @@ interface User {
   };
 }
 
-interface Post {
-  id: number;
-  title: string;
-  body: string;
-  tags: string[];
-}
+// interface Post {
+//   id: number;
+//   title: string;
+//   body: string;
+//   tags: string[];
+// }
 
 const MyProfile = () => {
   const [user, setUser] = useState<User | null>(null);
   const [userPosts, setUserPosts] = useState<Post[]>([]);
   const [editOpen, setEditOpen] = useState(false);
+
+  const [addOpen, setAddOpen] = useState(false);
+
 
   const userDetails = useSelector((state: RootState) => state.user);
 
@@ -54,6 +59,17 @@ const MyProfile = () => {
       updateUser();
     }
   }, [userDetails]);
+
+  useEffect(()=>{
+    updatePost()
+  },[userDetails])
+
+  const updatePost=()=>{
+    const postData=userDetails.uploadedPosts.map((post:Post)=>{
+      return post
+    })
+    setUserPosts(postData)
+  }
 
   if (!user) return <Typography>Loading...</Typography>;
 
@@ -83,7 +99,7 @@ const MyProfile = () => {
         <Grid item xs={12} md={8}>
           {/* Add Post Button */}
           <Stack direction="row" justifyContent="flex-end" mb={2}>
-            <Button variant="contained" color="primary" onClick={() => console.log("Add Post clicked")}>
+            <Button variant="contained" color="primary" onClick={() => setAddOpen(true)}>
               Add Post
             </Button>
           </Stack>
@@ -109,6 +125,16 @@ const MyProfile = () => {
           company: { name: '', title: '' }
         }}
       />
+      <AddPostDialog
+        open={addOpen}
+        onClose={() => setAddOpen(false)}
+        onSave={(data) => {
+          console.log('New Post:', data);
+          // you will handle Redux update, etc.
+          setAddOpen(false);
+        }}
+      />
+
     </Container>
   );
 };

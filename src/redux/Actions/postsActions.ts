@@ -20,8 +20,8 @@ export type Post = {
   };
   views: number;
   userId: number;
-  userName?: string;
-  userImage?: string;
+  username?: string;
+  image?: string;
 };
 
 // Action Types
@@ -63,8 +63,8 @@ export const fetchPosts = (page = 1, limit = 10) => async (
         const user: UserType = userRes.data;
         return {
           ...post,
-          userName: user.firstName,
-          userImage: user.image,
+          username: user.firstName,
+          image: user.image,
         };
       })
     );

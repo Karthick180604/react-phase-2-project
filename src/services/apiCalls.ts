@@ -32,3 +32,7 @@ export const getSearchedUsers=(searchText:string)=>{
 export const getSingleUserPosts=(userId:number)=>{
     return axios.get(`https://dummyjson.com/posts/user/${userId}`);
 }
+
+export const getAllPostTagsArray=()=>{
+    return axios.get('https://dummyjson.com/posts/tag-list')
+}

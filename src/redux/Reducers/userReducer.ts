@@ -1,5 +1,18 @@
 import type { UserActionType } from "../Actions/userActions";
-import { COMMENT_POST, DISLIKE_POST, LIKE_POST, LOGOUT_USER, REMOVE_DISLIKE_POST, REMOVE_LIKE_POST, SET_USER, SET_USER_PROFILE_DETAILS } from "../ActionTypes/userActionTypes";
+import { ADD_UPLOADED_POST, COMMENT_POST, DISLIKE_POST, LIKE_POST, LOGOUT_USER, REMOVE_DISLIKE_POST, REMOVE_LIKE_POST, SET_USER, SET_USER_PROFILE_DETAILS } from "../ActionTypes/userActionTypes";
+
+export type UploadPostType = {
+  id: number;
+  title: string;
+  body: string;
+  tags: string[];
+  reactions: {
+    likes: number;
+    dislikes: number;
+  };
+  views: number;
+  userId: number;
+}
 
 export type CommentData = {
   postId: number;
@@ -25,6 +38,7 @@ export type UserStateType = {
   likedPostId: number[];
   dislikePostId:number[];
   commentedPosts: CommentData[];
+  uploadedPosts:UploadPostType[]
 }
 
 const initialUserState:UserStateType={
@@ -44,7 +58,7 @@ const initialUserState:UserStateType={
     likedPostId:[],
     dislikePostId:[],
     commentedPosts:[],
-    // uploadedPosts:[]
+    uploadedPosts:[]
 }
 
 export const userReducer = (
@@ -151,6 +165,11 @@ export const userReducer = (
       title: action.payload.company.title,
     },
   };
+  case ADD_UPLOADED_POST:
+      return {
+        ...state,
+        uploadedPosts: [...state.uploadedPosts, action.payload],
+      };
 
     default:
       return state;
