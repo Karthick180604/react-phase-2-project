@@ -54,8 +54,8 @@ const PostDialog: React.FC<PostDialogProps> = ({ open, onClose, post }) => {
       body: userComment.comment,
       postId: userComment.postId,
       user: {
-        id: userDetails.userId,
-        fullName: userDetails.userName,
+        id: userDetails.id,
+        fullName: userDetails.username,
       },
     }));
 

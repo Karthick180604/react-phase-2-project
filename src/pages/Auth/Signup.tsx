@@ -34,19 +34,6 @@ const Signup = () => {
     password: "",
   });
 
-  useEffect(()=>{
-    const fetching=async()=>{
-        try {
-            const response=await axios.get('https://dummyjson.com/users?limit=208')
-            const products=await axios.get('https://dummyjson.com/posts')
-            console.log(response.data)
-            console.log(products.data)
-        } catch (error) {
-            console.log(error)
-        }
-    }
-    fetching()
-  },[])
 
   const [showPassword, setShowPassword] = useState(false);
 

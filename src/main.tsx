@@ -8,9 +8,10 @@ import Home from "./pages/Home/Home.tsx";
 import WebLayout from "./pages/WebLayout/WebLayout.tsx";
 import { Provider } from "react-redux";
 import { store } from "./redux/Store/store.ts";
-import Search from "./pages/Search/Search.tsx";
-import SearchPosts from "./components/SearchPosts/SearchPosts.tsx";
-import SearchUsers from "./components/SearchUsers/SearchUsers.tsx";
+import SearchPosts from "./pages/SearchPosts/SearchPosts.tsx";
+import SearchUsers from "./pages/SearchUsers/SearchUsers.tsx";
+import UserProfile from "./pages/UserProfile/UserProfile.tsx";
+import MyProfile from "./pages/MyProfile/MyProfile.tsx";
 
 const router = createBrowserRouter([
     {
@@ -27,13 +28,16 @@ const router = createBrowserRouter([
         children:[
             {index:true, element:<Home />},
             {
-                path:"search", 
-                element:<Search />,
-                children:[
-                    {path:"posts", element:<SearchPosts />},
-                    {path:"users", element:<SearchUsers />}
-                ]
+                path:"explore", 
+                element:<SearchPosts />,
+                // children:[
+                //     {path:"posts", element:<SearchPosts />},
+                //     {path:"users", element:<SearchUsers />}
+                // ]
             },
+            {path:"search", element:<SearchUsers />},
+            {path:"search/profile/:id", element:<UserProfile />},
+            {path:"profile/me", element:<MyProfile />}
             
         ]
     }
