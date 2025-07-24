@@ -81,7 +81,6 @@ const UserProfile = () => {
 
   return (
     <Container sx={{ py: 5 }}>
-      {/* Back Button */}
       <Box display="flex" alignItems="center" mb={3}>
         <IconButton onClick={() => navigate(-1)}>
           <ArrowBackIcon />

@@ -14,6 +14,7 @@ import MyProfile from "./pages/MyProfile/MyProfile.tsx";
 import { createTheme, ThemeProvider } from "@mui/material";
 import ProtectedRoutes from "./components/ProtectedRoutes/ProtectedRoutes.tsx";
 import AuthProtectedRoutes from "./components/AuthProtectedRoutes/AuthProtectedRoutes.tsx";
+import PageNotFound from "./pages/PageNotFound/PageNotFound.tsx";
 
 
 const theme = createTheme({
@@ -61,10 +62,15 @@ const router = createBrowserRouter([
             },
             {path:"search", element:<SearchUsers />},
             {path:"search/profile/:id", element:<UserProfile />},
-            {path:"profile/me", element:<MyProfile />}
-            
+            {path:"profile/me", element:<MyProfile />},
+            { path: "*", element: <PageNotFound /> }
         ]
+    },
+    {
+      path:"*",
+      element:<PageNotFound />
     }
+    
 ])
 
 createRoot(document.getElementById("root")!).render(

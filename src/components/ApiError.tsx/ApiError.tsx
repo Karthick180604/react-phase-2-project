@@ -1,9 +1,14 @@
 import React from "react";
 import { Box, Typography, Button } from "@mui/material";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import ApiErrorImage from "../../assets/ApiErrorImage.png";
+import { useDispatch } from "react-redux";
+import { setApiError } from "../../redux/Actions/errorAction";
 
 const ApiError: React.FC = () => {
+    const dispatch = useDispatch();
   const handleRefresh = () => {
+    dispatch(setApiError(false));
     window.location.reload();
   };
 
@@ -19,7 +24,7 @@ const ApiError: React.FC = () => {
     >
       <Box
         component="img"
-        src="https://illustrations.popsy.co/gray/error.svg"
+        src={ApiErrorImage}
         alt="Error"
         sx={{ width: 250, mb: 3 }}
       />

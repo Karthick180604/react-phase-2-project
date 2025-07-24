@@ -56,7 +56,7 @@ const UserPostSection: React.FC<UserPostSectionProps> = ({ posts }) => {
       transition: 'transform 0.3s ease, box-shadow 0.3s ease',
       '&:hover': {
         transform: 'scale(1.02)',
-        boxShadow: 6, // MUI shadow levels (1–25)
+        boxShadow: 6,
         borderRadius: 2,
         cursor: 'pointer',
       },

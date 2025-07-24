@@ -26,6 +26,7 @@ import { dislikePost, likePost, removeDislikePost, removeLikePost } from '../../
 import debounce from 'lodash.debounce';
 import NoResults from '../../components/NoResults/NoResults';
 import PostCardSmallSkeleton from '../../components/PostCardSmallSkeleton/PostCardSmallSkeleton';
+import ApiError from '../../components/ApiError.tsx/ApiError';
 
 
 const SearchPosts = () => {
@@ -47,6 +48,8 @@ const SearchPosts = () => {
 
   const userDetails=useSelector((state:RootState)=>state.user)
   const uploadedPost=userDetails.uploadedPosts
+
+  const hasError = useSelector((state: RootState) => state.error.hasApiError);
 
   const handleOpenDialog = (post: any) => {
   setSelectedPost(post);
@@ -154,6 +157,10 @@ const debouncedSearch = useMemo(() => debounce(fetchSearchedPosts, 500), [fetchS
     },
     [loading, hasMore, searchTerm, selectedTag]
   );
+
+  if(hasError){
+    return <ApiError /> 
+  }
 
   return (
   <Container sx={{ py: 4 }}>

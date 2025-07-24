@@ -28,6 +28,8 @@ const Home = () => {
   const [hasMore, setHasMore] = useState(true);
   const limit = 10;
 
+  const hasError = useSelector((state: RootState) => state.error.hasApiError);
+
   const postsState = useSelector((state: RootState) => state.posts);
   const userDetails = useSelector((state: RootState) => state.user);
 
@@ -102,7 +104,7 @@ const userUploadedPost=userDetails.uploadedPosts.map((uploadPost)=>{
     ...postsState.posts
   ]
 
-  if(error)
+  if(hasError)
   {
     return <ApiError />
   }

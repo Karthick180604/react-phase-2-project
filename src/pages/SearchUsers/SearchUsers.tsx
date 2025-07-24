@@ -12,6 +12,9 @@ import {
 import SearchIcon from '@mui/icons-material/Search';
 import debounce from 'lodash.debounce';
 import NoResults from '../../components/NoResults/NoResults';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../../redux/Store/store';
+import ApiError from '../../components/ApiError.tsx/ApiError';
 
 interface User {
   id: number;
@@ -24,6 +27,8 @@ const SearchUsers = () => {
   const [userList, setUserList] = useState<User[]>([]);
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
+
+  const hasError = useSelector((state: RootState) => state.error.hasApiError);
 
   useEffect(() => {
     fetchUsers();
@@ -57,6 +62,10 @@ const SearchUsers = () => {
     () => debounce((value: string) => fetchSearchedUsers(value), 500),
     [fetchSearchedUsers]
   );
+
+  if(hasError) {
+    return <ApiError />
+  }
 
   return (
     <Container sx={{ py: 5 }}>

@@ -4,7 +4,7 @@ const initialState = {
   hasApiError: false,
 };
 
-export default function appReducer(state = initialState, action: any) {
+export default function errorReducer(state = initialState, action: any) {
   switch (action.type) {
     case SET_API_ERROR:
       return { ...state, hasApiError: action.payload };

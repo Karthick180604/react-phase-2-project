@@ -1,38 +1,37 @@
-import axios from "axios"
+import api from "./axiosInterceptor";
 
-export const getAllUsers=()=>{
-    return axios.get('https://dummyjson.com/users?limit=208')
-}
-
-export const getAllPosts = (limit = 10, skip = 0) => {
-  return axios.get(`https://dummyjson.com/posts?limit=${limit}&skip=${skip}`);
+export const getAllUsers = () => {
+  return api.get('/users?limit=208');
 };
 
+export const getSingleUser = (id: number) => {
+  return api.get(`/users/${id}`);
+};
 
-export const getSingleUser=(id:number)=>{
-    return axios.get(`https://dummyjson.com/users/${id}`)
-}
+export const getSearchedUsers = (searchText: string) => {
+  return api.get(`/users/search?q=${searchText}`);
+};
 
-export const getPostComments=(postId:number)=>{
-    return axios.get(`https://dummyjson.com/comments/post/${postId}`)
-}
+export const getAllPosts = (limit = 10, skip = 0) => {
+  return api.get(`/posts?limit=${limit}&skip=${skip}`);
+};
 
-export const getSearchedPosts=(searchText:string)=>{
-    return axios.get(`https://dummyjson.com/posts/search?q=${searchText}`)
-}
+export const getSingleUserPosts = (userId: number) => {
+  return api.get(`/posts/user/${userId}`);
+};
 
-export const getAllPostTags=()=>{
-    return axios.get("https://dummyjson.com/posts/tags")
-}
+export const getPostComments = (postId: number) => {
+  return api.get(`/comments/post/${postId}`);
+};
 
-export const getSearchedUsers=(searchText:string)=>{
-    return axios.get(`https://dummyjson.com/users/search?q=${searchText}`)
-}
+export const getSearchedPosts = (searchText: string) => {
+  return api.get(`/posts/search?q=${searchText}`);
+};
 
-export const getSingleUserPosts=(userId:number)=>{
-    return axios.get(`https://dummyjson.com/posts/user/${userId}`);
-}
+export const getAllPostTags = () => {
+  return api.get('/posts/tags');
+};
 
-export const getAllPostTagsArray=()=>{
-    return axios.get('https://dummyjson.com/posts/tag-list')
-}
+export const getAllPostTagsArray = () => {
+  return api.get('/posts/tag-list');
+};
