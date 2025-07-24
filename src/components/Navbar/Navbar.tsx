@@ -1,11 +1,7 @@
-import { useState } from "react";
 import {
-  AppBar,
-  Toolbar,
   Typography,
   IconButton,
   Box,
-  Drawer,
   List,
   ListItemText,
   ListItemButton,
@@ -14,7 +10,6 @@ import {
   useMediaQuery,
   Paper,
 } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
 import HomeIcon from "@mui/icons-material/Home";
 import ExploreIcon from "@mui/icons-material/Explore";
 import SearchIcon from "@mui/icons-material/Search";
@@ -24,6 +19,7 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../../redux/Actions/userActions";
+import ElectricalServicesIcon from '@mui/icons-material/ElectricalServices';
 
 const navItems = [
   { label: "Home", path: "/home", icon: <HomeIcon /> },
@@ -39,7 +35,7 @@ const Navbar = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md"));
-  const [mobileOpen, setMobileOpen] = useState(false);
+
 
   const handleLogout = () => {
     dispatch(logoutUser());
@@ -48,7 +44,6 @@ const Navbar = () => {
 
   const isExactPath = (targetPath: string) => location.pathname === targetPath;
 
-  // ---- Mobile Navbar ----
   if (isMobile) {
     return (
       <Paper
@@ -103,7 +98,6 @@ const Navbar = () => {
     );
   }
 
-  // ---- Tablet Navbar ----
   if (isTablet) {
     return (
       <Box
@@ -157,7 +151,6 @@ const Navbar = () => {
     );
   }
 
-  // ---- Desktop Navbar ----
   return (
     <Box
       sx={{
@@ -172,17 +165,20 @@ const Navbar = () => {
         boxShadow: 3,
       }}
     >
-      <Typography
-        variant="h6"
-        sx={{
-          textAlign: "center",
-          mb: 3,
-          fontWeight: "bold",
-          color: theme.palette.secondary.main,
-        }}
-      >
-        Connectify
-      </Typography>
+      <Box display="flex" alignItems="center" justifyContent="center" mb={3}>
+  <ElectricalServicesIcon
+    sx={{ mr: 1, color: theme.palette.secondary.main }}
+  />
+  <Typography
+    variant="h6"
+    sx={{
+      fontWeight: "bold",
+      color: theme.palette.secondary.main,
+    }}
+  >
+    Connectify
+  </Typography>
+</Box>
 
       <Box sx={{ flexGrow: 1 }}>
         <List disablePadding>

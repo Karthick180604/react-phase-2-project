@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
+import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import {
   Grid,
   Container,
@@ -11,6 +11,7 @@ import {
   Box,
   Typography,
   type SelectChangeEvent,
+  useTheme,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import PostCardSmall from '../../components/PostCardSmall/PostCardSmall';
@@ -30,6 +31,7 @@ import PostCardSmallSkeleton from '../../components/PostCardSmallSkeleton/PostCa
 const SearchPosts = () => {
   const dispatch: ThunkDispatch<RootState, unknown, AnyAction> = useDispatch();
   const { posts, loading } = useSelector((state: RootState) => state.posts);
+  const theme=useTheme()
 
   const [selectedPost, setSelectedPost] = useState<any | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -44,6 +46,7 @@ const SearchPosts = () => {
   const [selectedTag, setSelectedTag] = useState('');
 
   const userDetails=useSelector((state:RootState)=>state.user)
+  const uploadedPost=userDetails.uploadedPosts
 
   const handleOpenDialog = (post: any) => {
   setSelectedPost(post);
@@ -80,7 +83,7 @@ const onLikeHandler = (postId: number, like: boolean) => {
 
   useEffect(() => {
     if (page === 1) {
-      setPostList(posts);
+      setPostList([...uploadedPost,...posts]);
     } else {
       setPostList((prev) => [...prev, ...posts]);
     }
@@ -178,26 +181,42 @@ const debouncedSearch = useMemo(() => debounce(fetchSearchedPosts, 500), [fetchS
           ),
         }}
       />
-      <FormControl color='tertiary' sx={{ minWidth: 180 }}>
-        <InputLabel  id="tag-select-label">Filter by Tag</InputLabel>
-        <Select
-          labelId="tag-select-label"
-          value={selectedTag}
-          label="Filter by Tag"
-          
-          onChange={settedTag}
-        >
-          <MenuItem value="All">All</MenuItem>
-          {tags.map((tag) => (
-            <MenuItem key={tag.slug} value={tag.slug}>
-              {tag.name}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+     <FormControl
+  sx={{
+    minWidth: 180,
+    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+      borderColor: theme.palette.tertiary.main,
+    },
+    '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+      borderColor: theme.palette.tertiary.main,
+    },
+    '& label.Mui-focused': {
+      color: theme.palette.tertiary.main,
+    },
+    '& svg': {
+      color: theme.palette.tertiary.main,
+    },
+  }}
+>
+  <InputLabel id="tag-select-label">Tags</InputLabel>
+  <Select
+    labelId="tag-select-label"
+    value={selectedTag}
+    label="Filter by Tag"
+    onChange={settedTag}
+  >
+    <MenuItem value="All">All</MenuItem>
+    {tags.map((tag) => (
+      <MenuItem key={tag.slug} value={tag.slug}>
+        {tag.name}
+      </MenuItem>
+    ))}
+  </Select>
+</FormControl>
+
+
     </Box>
 
-    {/* Content Area */}
     {loading && postList.length === 0 ? (
       <Grid container spacing={3}>
         {Array.from({ length: 6 }).map((_, index) => (

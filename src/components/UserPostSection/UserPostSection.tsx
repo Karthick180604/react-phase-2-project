@@ -50,17 +50,30 @@ const UserPostSection: React.FC<UserPostSectionProps> = ({ posts }) => {
         Posts
       </Typography>
       {posts.map((post) => (
-        <UserProfilePostCard
-          key={post.id}
-          id={post.id}
-          title={post.title}
-          body={post.body}
-          tags={post.tags}
-          onClick={() => handleCardClick(post)} // ✅ handle click
-        />
-      ))}
+  <Box
+    key={post.id}
+    sx={{
+      transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+      '&:hover': {
+        transform: 'scale(1.02)',
+        boxShadow: 6, // MUI shadow levels (1–25)
+        borderRadius: 2,
+        cursor: 'pointer',
+      },
+      mb: 2,
+    }}
+  >
+    <UserProfilePostCard
+      id={post.id}
+      title={post.title}
+      body={post.body}
+      tags={post.tags}
+      onClick={() => handleCardClick(post)}
+    />
+  </Box>
+))}
 
-      {/* PostDialog Box */}
+
       <PostDialog
         open={dialogOpen}
         onClose={handleCloseDialog}

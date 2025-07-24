@@ -1,4 +1,3 @@
-// import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -16,14 +15,6 @@ import { createTheme, ThemeProvider } from "@mui/material";
 import ProtectedRoutes from "./components/ProtectedRoutes/ProtectedRoutes.tsx";
 import AuthProtectedRoutes from "./components/AuthProtectedRoutes/AuthProtectedRoutes.tsx";
 
-// declare module '@mui/material/styles' {
-//   interface Palette {
-//     tertiary: Palette['primary'];
-//   }
-//   interface PaletteOptions {
-//     tertiary?: PaletteOptions['primary'];
-//   }
-// }
 
 const theme = createTheme({
   palette: {
@@ -67,10 +58,6 @@ const router = createBrowserRouter([
             {
                 path:"explore", 
                 element:<SearchPosts />,
-                // children:[
-                //     {path:"posts", element:<SearchPosts />},
-                //     {path:"users", element:<SearchUsers />}
-                // ]
             },
             {path:"search", element:<SearchUsers />},
             {path:"search/profile/:id", element:<UserProfile />},

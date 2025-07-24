@@ -7,7 +7,7 @@ export type UserType ={
   gender: string;
   email: string;
   username: string;
-  password: string; // Note: Do NOT store or use this on frontend
+  password: string;
   phone: string;
   birthDate: string;
   image: string;

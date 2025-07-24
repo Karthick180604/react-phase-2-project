@@ -16,16 +16,15 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate, Link as RouterLink } from "react-router-dom";
-import { getAllUsers, getSingleUserPosts } from "../../services/apiCalls";
+import { getAllUsers} from "../../services/apiCalls";
 import type { UserType } from "../../types/types";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
-  addUploadedPostAction,
   setUser,
   setUserProfileDetails,
 } from "../../redux/Actions/userActions";
-import type { UploadPostType } from "../../redux/Reducers/userReducer";
 import AuthImage from "../../components/AuthImage/AuthImage";
+import type { RootState } from "../../redux/Store/store";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -37,6 +36,8 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [open, setOpen] = useState(false);
+
+  const userDetails = useSelector((state: RootState) => state.user);
 
   const findUser = async () => {
     try {
@@ -56,8 +57,10 @@ const Login = () => {
   const handleLogin = async () => {
     const userExist = await findUser();
     const isExist = !!userExist;
-
-    if (isExist) {
+    if(userDetails.email===email && userDetails.password===password) {
+      navigate('/home');
+    }
+    else if (isExist) {
       dispatch(
         setUser(
           userExist.id,
@@ -77,15 +80,6 @@ const Login = () => {
       };
       dispatch(setUserProfileDetails(userData));
 
-      // try {
-      //   const response = await getSingleUserPosts(userExist.id);
-      //   response.data.posts.forEach((post: UploadPostType) => {
-      //     dispatch(addUploadedPostAction(post));
-      //   });
-      // } catch (error) {
-      //   console.log(error);
-      // }
-
       navigate("/home");
     } else {
       setOpen(true);
@@ -98,7 +92,6 @@ const Login = () => {
 
   return (
     <Grid container sx={{ minHeight: "100vh" }}>
-      {/* Left Image */}
       {!isSmallScreen && (
         <Grid item md={6}>
           <Box
@@ -114,7 +107,6 @@ const Login = () => {
         </Grid>
       )}
 
-      {/* Right Login Form */}
       <Grid item xs={12} md={6}>
         <Box
           display="flex"
@@ -203,7 +195,6 @@ const Login = () => {
                 </Button>
               </Box>
 
-              {/* Signup link */}
               <Typography
                 variant="body2"
                 textAlign="center"
@@ -219,7 +210,6 @@ const Login = () => {
           </Paper>
         </Box>
 
-        {/* Snackbar with Alert */}
         <Snackbar open={open} autoHideDuration={5000} onClose={handleClose} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
           <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
             Invalid email or password. Please try again.

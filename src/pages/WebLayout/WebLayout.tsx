@@ -1,4 +1,3 @@
-import React from 'react';
 import Navbar from '../../components/Navbar/Navbar';
 import { Outlet } from 'react-router-dom';
 import { Box, useMediaQuery } from '@mui/material';
@@ -19,7 +18,7 @@ const WebLayout = () => {
         component="main"
         sx={{
           flexGrow: 1,
-          ml: { sm: `${drawerWidth}px` }, // Left margin to avoid overlap
+          ml: { sm: `${drawerWidth}px` },
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           p: 2,
           pt: topPadding,

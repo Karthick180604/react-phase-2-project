@@ -55,7 +55,6 @@ const PostCard: React.FC<PostCardProps> = ({
         overflow: "hidden",
       }}
     >
-      {/* Left: Image + Actions */}
       <Box
         sx={{
           width: { xs: "100%", sm: 300 },
@@ -116,10 +115,8 @@ const PostCard: React.FC<PostCardProps> = ({
         </Stack>
       </Box>
 
-      {/* Right: Content */}
       <Box flex={1}>
         <CardContent>
-          {/* User Info */}
           <Stack direction="row" alignItems="center" spacing={2} mb={1}>
             <Link to={`/home/search/profile/${post.userId}`} className="link-tag">
               <Avatar
@@ -134,7 +131,6 @@ const PostCard: React.FC<PostCardProps> = ({
 
           </Stack>
 
-          {/* Title & Body */}
           <Typography variant="h6" gutterBottom>
             {post.title}
           </Typography>
@@ -166,8 +162,6 @@ const PostCard: React.FC<PostCardProps> = ({
               Read more
             </Typography>
 
-
-          {/* Tags */}
           <Stack direction="row" spacing={1} mt={2} flexWrap="wrap">
             {post.tags.map((tag, index) => (
               <Chip

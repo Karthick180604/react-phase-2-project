@@ -6,10 +6,7 @@ import {
   Stack,
   Box,
   Avatar,
-  Chip,
   IconButton,
-  Typography,
-  CardMedia,
 } from "@mui/material";
 import ThumbUpAltOutlinedIcon from "@mui/icons-material/ThumbUpAltOutlined";
 import ThumbDownAltOutlinedIcon from "@mui/icons-material/ThumbDownAltOutlined";
@@ -28,7 +25,6 @@ const PostCardSkeleton: React.FC = () => {
         overflow: "hidden",
       }}
     >
-      {/* Left: Image & Actions */}
       <Box
         sx={{
           width: { xs: "100%", sm: 300 },
@@ -38,10 +34,8 @@ const PostCardSkeleton: React.FC = () => {
           bgcolor: "grey.100",
         }}
       >
-        {/* Image Placeholder */}
         <Skeleton variant="rectangular" width="100%" height={210} />
 
-        {/* Reactions */}
         <Stack
           direction="row"
           justifyContent="space-around"
@@ -70,10 +64,8 @@ const PostCardSkeleton: React.FC = () => {
         </Stack>
       </Box>
 
-      {/* Right: Content */}
       <Box flex={1}>
         <CardContent>
-          {/* User Info */}
           <Stack direction="row" alignItems="center" spacing={2} mb={1}>
             <Skeleton variant="circular">
               <Avatar sx={{ width: 40, height: 40 }} />
@@ -81,7 +73,6 @@ const PostCardSkeleton: React.FC = () => {
             <Skeleton variant="text" width={100} height={20} />
           </Stack>
 
-          {/* Title & Body */}
           <Skeleton variant="text" width="70%" height={28} />
           <Skeleton variant="text" width="100%" height={20} sx={{ my: 0.5 }} />
           <Skeleton variant="text" width="95%" height={20} />
@@ -90,7 +81,6 @@ const PostCardSkeleton: React.FC = () => {
 
           <Skeleton variant="text" width={80} height={20} sx={{ mt: 1 }} />
 
-          {/* Tags */}
           <Stack direction="row" spacing={1} mt={2} flexWrap="wrap">
             {Array.from({ length: 3 }).map((_, i) => (
               <Skeleton key={i} variant="rounded" width={60} height={24} />

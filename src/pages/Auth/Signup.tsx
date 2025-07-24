@@ -123,7 +123,6 @@ const Signup = () => {
 
   return (
     <Grid container sx={{ minHeight: "100vh" }}>
-      {/* Left Image */}
       {!isSmallScreen && (
         <Grid item md={6}>
           <Box
@@ -139,7 +138,6 @@ const Signup = () => {
         </Grid>
       )}
 
-      {/* Right Signup Form */}
       <Grid item xs={12} md={6}>
         <Box
           display="flex"
@@ -244,7 +242,6 @@ const Signup = () => {
                 </Button>
               </Box>
 
-              {/* 🔗 Login Link */}
               <Box mt={2} textAlign="center">
                 <Typography variant="body2">
                   Already have an account?{" "}

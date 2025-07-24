@@ -5,21 +5,18 @@ import {
   FETCH_POSTS_SUCCESS,
 } from "../ActionTypes/postsActionTypes";
 
-// State Type
 export type PostStateType = {
   posts: Post[];
   loading: boolean;
   error: string | null;
 };
 
-// Initial State
 const initialState: PostStateType = {
   posts: [],
   loading: false,
   error: null,
 };
 
-// Reducer
 export const postReducer = (
   state = initialState,
   action: PostActionType

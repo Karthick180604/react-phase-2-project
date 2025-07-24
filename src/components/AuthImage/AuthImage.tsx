@@ -1,8 +1,6 @@
-// src/components/AuthAssets/LoginImageMockup.tsx
 
 import { Box } from "@mui/material";
-import React from "react";
-import socialMediaImage from "../../assets/socialMediaPng.png"; // Make sure the image exists here
+import socialMediaImage from "../../assets/socialMediaPng.png";
 
 const AuthImage = () => {
   return (

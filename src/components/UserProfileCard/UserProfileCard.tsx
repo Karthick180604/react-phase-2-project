@@ -27,7 +27,6 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({
   return (
     <Paper elevation={3} sx={{ p: 3, borderRadius: 3 }}>
       <Box textAlign="center">
-        {/* Avatar with elevated border */}
         <Box
           sx={{
             width: 108,

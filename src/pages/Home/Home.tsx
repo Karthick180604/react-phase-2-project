@@ -16,11 +16,13 @@ import {
 } from "../../redux/Actions/userActions";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { Fab, Zoom } from "@mui/material";
+import ApiError from "../../components/ApiError.tsx/ApiError";
 
 
 const Home = () => {
   const dispatch: ThunkDispatch<RootState, unknown, AnyAction> = useDispatch();
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+  const [error, setError]=useState(false)
   const [page, setPage] = useState(1);
   const observerRef = useRef<IntersectionObserver | null>(null);
   const [hasMore, setHasMore] = useState(true);
@@ -75,7 +77,7 @@ const Home = () => {
 
 useEffect(() => {
   const handleScroll = () => {
-    setShowScrollTop(window.scrollY > 300); // show after 300px
+    setShowScrollTop(window.scrollY > 300);
   };
 
   window.addEventListener("scroll", handleScroll);
@@ -99,6 +101,11 @@ const userUploadedPost=userDetails.uploadedPosts.map((uploadPost)=>{
     ,
     ...postsState.posts
   ]
+
+  if(error)
+  {
+    return <ApiError />
+  }
 
   return (
     <Container maxWidth="md" sx={{ mt: 4 }}>
@@ -142,7 +149,7 @@ const userUploadedPost=userDetails.uploadedPosts.map((uploadPost)=>{
       />
       <Zoom in={showScrollTop}>
         <Fab
-          color="primary"
+          color="secondary"
           onClick={handleScrollToTop}
           sx={{
             position: "fixed",

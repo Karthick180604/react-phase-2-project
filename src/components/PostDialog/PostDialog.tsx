@@ -18,8 +18,6 @@ import type { CommentType } from "../../types/types";
 import { useDispatch, useSelector } from "react-redux";
 import { commentPost } from "../../redux/Actions/userActions";
 import type { RootState } from "../../redux/Store/store";
-import ThumbUpOffAltOutlinedIcon from "@mui/icons-material/ThumbUpOffAltOutlined";
-import ThumbDownOffAltOutlinedIcon from "@mui/icons-material/ThumbDownOffAltOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import ThumbDownAltOutlinedIcon from "@mui/icons-material/ThumbDownAltOutlined";
 import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
@@ -58,15 +56,11 @@ const PostDialog: React.FC<PostDialogProps> = ({ open, onClose, post, onLikeHand
         fetchComments()
     },[post?.id, userDetails.commentedPosts])
     const fetchComments = async () => {
-  // 1. Fetch API comments
+
   const response = await getPostComments(post.id);
   const apiComments = response.data.comments.map((comment: CommentType) => comment);
-
-  // 2. Get user details from Redux (call this OUTSIDE the async function)
-
-  // 3. Add user comments if any
-  const userComments = userDetails.commentedPosts
-    .filter((userComment) => userComment.postId === post.id) // Optional: filter only this post
+const userComments = userDetails.commentedPosts
+    .filter((userComment) => userComment.postId === post.id)
     .map((userComment, index) => ({
       id: apiComments.length + index + 1,
       body: userComment.comment,
@@ -77,7 +71,6 @@ const PostDialog: React.FC<PostDialogProps> = ({ open, onClose, post, onLikeHand
       },
     }));
 
-  // 4. Merge and set state
   const combinedComments = [...apiComments, ...userComments];
 
   setComments(combinedComments);
@@ -89,7 +82,7 @@ const PostDialog: React.FC<PostDialogProps> = ({ open, onClose, post, onLikeHand
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
       <DialogContent sx={{ display: "flex", flexDirection: { xs: "column", md: "row" }, p: 0 }}>
-        {/* Left side - Post */}
+
         <Box flex={1} p={3} display="flex" flexDirection="column">
   <Stack direction="row" justifyContent="space-between" alignItems="center">
     <Typography variant="h6">Post by {post.username}</Typography>
@@ -109,7 +102,6 @@ const PostDialog: React.FC<PostDialogProps> = ({ open, onClose, post, onLikeHand
     ))}
   </Stack>
 
-  {/* Fixed Bottom Icons */}
   <Box
     mt="auto"
     pt={2}
@@ -146,18 +138,16 @@ const PostDialog: React.FC<PostDialogProps> = ({ open, onClose, post, onLikeHand
 
         <Divider orientation="vertical" flexItem sx={{ display: { xs: "none", md: "block" } }} />
 
-        {/* Right side - Comments */}
         <Box
           flex={1}
           p={3}
           display="flex"
           flexDirection="column"
-          height={{ xs: "auto", md: 500 }} // fixed height for md and above
+          height={{ xs: "auto", md: 500 }}
           borderLeft={{ md: "1px solid #ccc" }}
         >
           <Typography variant="subtitle1" gutterBottom>Comments</Typography>
 
-          {/* Scrollable Comments */}
           <Box
             sx={{
               flexGrow: 1,
@@ -196,7 +186,6 @@ const PostDialog: React.FC<PostDialogProps> = ({ open, onClose, post, onLikeHand
           </Box>
 
 
-          {/* Fixed input */}
           <Stack direction="row" spacing={1}>
             <TextField 
             color="tertiary"

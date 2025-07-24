@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import { getAllUsers, getSearchedUsers } from '../../services/apiCalls';
 import UserCard from '../../components/UserCard/UserCard';
 import {

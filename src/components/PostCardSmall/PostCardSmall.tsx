@@ -4,16 +4,14 @@ import {
   CardContent,
   Typography,
   Box,
-  Link,
 } from "@mui/material";
 
 
-// PostCardSmall.tsx
 type PostCardSmallProps = {
   id: number;
   title: string;
   body: string;
-  onReadMore: () => void; // <-- new prop
+  onReadMore: () => void;
 };
 
 const PostCardSmall: React.FC<PostCardSmallProps> = ({ title, body, id, onReadMore }) => {

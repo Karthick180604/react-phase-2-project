@@ -8,7 +8,6 @@ import { getAllPosts, getSingleUser } from "../../services/apiCalls";
 import type { UserType } from "../../types/types";
 import type { RootState } from "../Store/store";
 
-// Post type
 export type Post = {
   id: number;
   title: string;
@@ -24,7 +23,6 @@ export type Post = {
   image?: string;
 };
 
-// Action Types
 type FetchPostsRequest = {
   type: typeof FETCH_POSTS_REQUEST;
 };
@@ -32,7 +30,7 @@ type FetchPostsRequest = {
 type FetchPostsSuccess = {
   type: typeof FETCH_POSTS_SUCCESS;
   payload: Post[];
-  meta: { page: number }; // ✅ added meta for pagination
+  meta: { page: number }; 
 };
 
 type FetchPostsFailure = {
@@ -45,7 +43,6 @@ export type PostActionType =
   | FetchPostsSuccess
   | FetchPostsFailure;
 
-// Thunk Action
 export const fetchPosts = (page = 1, limit = 10) => async (
   dispatch: Dispatch<PostActionType>,
   getState: () => RootState
@@ -72,7 +69,7 @@ export const fetchPosts = (page = 1, limit = 10) => async (
     dispatch({
       type: FETCH_POSTS_SUCCESS,
       payload: postData,
-      meta: { page }, // ✅ pass page info
+      meta: { page }, 
     });
   } catch (error: any) {
     dispatch({

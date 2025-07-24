@@ -41,9 +41,7 @@ interface EditProfileDialogProps {
 const EditProfileDialog: React.FC<EditProfileDialogProps> = ({
   open,
   onClose,
-  onSave,
   initialData,
-  updateUser
 }) => {
 
     const dispatch = useDispatch();
@@ -91,7 +89,6 @@ const EditProfileDialog: React.FC<EditProfileDialogProps> = ({
     title: formData.company.title
   }
 }));
-    // updateUser()
     onClose();
   };
 

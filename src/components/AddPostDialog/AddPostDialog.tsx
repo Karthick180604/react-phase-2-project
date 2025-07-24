@@ -9,7 +9,7 @@ import {
   Autocomplete,
   Stack,
 } from '@mui/material';
-import { getAllPostTags, getAllPostTagsArray } from '../../services/apiCalls';
+import { getAllPostTagsArray } from '../../services/apiCalls';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../../redux/Store/store';
 import { addUploadedPostAction } from '../../redux/Actions/userActions';
@@ -59,7 +59,7 @@ const AddPostDialog: React.FC<AddPostDialogProps> = ({ open, onClose, onSave }) 
         }
         dispatch(addUploadedPostAction(postObj))
       onSave({ title, body, tags: selectedTags });
-      handleClose(); // Reset and close
+      handleClose();
     }
   };
 
