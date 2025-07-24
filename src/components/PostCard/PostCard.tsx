@@ -17,6 +17,8 @@ import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import type { Post } from "../../redux/Actions/postsActions";
+import { Link } from "react-router-dom";
+import "./PostCard.css"
 
 type PostCardProps = {
   post: Post;
@@ -119,14 +121,17 @@ const PostCard: React.FC<PostCardProps> = ({
         <CardContent>
           {/* User Info */}
           <Stack direction="row" alignItems="center" spacing={2} mb={1}>
-            <Avatar
-              src={post.image}
-              alt={post.username}
-              sx={{ width: 40, height: 40 }}
-            />
-            <Typography variant="subtitle2" color="text.secondary">
-              {post.username}
-            </Typography>
+            <Link to={`/home/search/profile/${post.userId}`} className="link-tag">
+              <Avatar
+                src={post.image}
+                alt={post.username}
+                sx={{ width: 40, height: 40 }}
+              />
+              <Typography variant="subtitle2" color="text.secondary">
+                {post.username}
+              </Typography>
+            </Link>
+
           </Stack>
 
           {/* Title & Body */}

@@ -1,0 +1,8 @@
+.link-tag {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  gap: 8px;
+}

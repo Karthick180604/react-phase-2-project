@@ -12,19 +12,56 @@ import SearchPosts from "./pages/SearchPosts/SearchPosts.tsx";
 import SearchUsers from "./pages/SearchUsers/SearchUsers.tsx";
 import UserProfile from "./pages/UserProfile/UserProfile.tsx";
 import MyProfile from "./pages/MyProfile/MyProfile.tsx";
+import { createTheme, ThemeProvider } from "@mui/material";
+import ProtectedRoutes from "./components/ProtectedRoutes/ProtectedRoutes.tsx";
+import AuthProtectedRoutes from "./components/AuthProtectedRoutes/AuthProtectedRoutes.tsx";
+
+// declare module '@mui/material/styles' {
+//   interface Palette {
+//     tertiary: Palette['primary'];
+//   }
+//   interface PaletteOptions {
+//     tertiary?: PaletteOptions['primary'];
+//   }
+// }
+
+const theme = createTheme({
+  palette: {
+    mode: 'light',
+    primary: {
+      main: '#F5F5F5',
+      contrastText: '#2C3E50',
+    },
+    secondary: {
+      main: '#2C3E50',
+      contrastText: '#FFFFFF',
+    },
+    tertiary: {
+      main: '#1ABC9C',
+      contrastText: '#FFFFFF',
+    },
+    background: {
+      default: '#FFFFFF',
+      paper: '#FAFAFA',
+    },
+  },
+  typography: {
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+  },
+});
 
 const router = createBrowserRouter([
     {
-        path:"/login",
-        element:<Login />
+        path:"/",
+        element:<AuthProtectedRoutes><Login /></AuthProtectedRoutes>
     },
     {
         path:"/signup",
-        element:<Signup />
+        element:<AuthProtectedRoutes><Signup /></AuthProtectedRoutes>
     },
     {
-        path:"/",
-        element:<WebLayout />,
+        path:"/home",
+        element:<ProtectedRoutes><WebLayout /></ProtectedRoutes>,
         children:[
             {index:true, element:<Home />},
             {
@@ -45,6 +82,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")!).render(
     <Provider store={store}>
-        <RouterProvider router={router} />
+        <ThemeProvider theme={theme}>
+            <RouterProvider router={router} />
+        </ThemeProvider>
     </Provider>
 );

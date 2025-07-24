@@ -1,5 +1,4 @@
-// src/pages/Search/SearchUsers.tsx
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { getAllUsers, getSearchedUsers } from '../../services/apiCalls';
 import UserCard from '../../components/UserCard/UserCard';
 import {
@@ -11,6 +10,8 @@ import {
   Box
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import debounce from 'lodash.debounce';
+import NoResults from '../../components/NoResults/NoResults';
 
 interface User {
   id: number;
@@ -38,31 +39,24 @@ const SearchUsers = () => {
     }
   };
 
-  const fetchSearchedUsers = async () => {
+  const fetchSearchedUsers = useCallback(async (term: string) => {
     try {
-      if(searchTerm.trim() === '') {
+      if (term.trim() === '') {
         setFilteredUsers(userList);
         return;
-      }
-      else
-      {
-        const response= await getSearchedUsers(searchTerm);
+      } else {
+        const response = await getSearchedUsers(term);
         setFilteredUsers(response.data.users);
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  }, [userList]);
 
-
-
-  // const filteredUsers = useMemo(() => {
-  //   return userList.filter(user =>
-  //     `${user.firstName} ${user.lastName}`
-  //       .toLowerCase()
-  //       .includes(searchTerm.toLowerCase())
-  //   );
-  // }, [userList, searchTerm]);
+  const debouncedSearch = useMemo(
+    () => debounce((value: string) => fetchSearchedUsers(value), 500),
+    [fetchSearchedUsers]
+  );
 
   return (
     <Container sx={{ py: 5 }}>
@@ -72,15 +66,15 @@ const SearchUsers = () => {
 
       <Box mb={4}>
         <TextField
+        color="tertiary"
           variant="outlined"
           fullWidth
           placeholder="Search users by name..."
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              fetchSearchedUsers();
-            }
+          onChange={(e) => {
+            const value = e.target.value;
+            setSearchTerm(value);
+            debouncedSearch(value);
           }}
           InputProps={{
             startAdornment: (
@@ -92,17 +86,21 @@ const SearchUsers = () => {
         />
       </Box>
 
-      <Grid container spacing={4}>
-        {filteredUsers.map((user) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} xl={2.4} key={user.id}>
-            <UserCard
-              id={user.id}
-              image={user.image}
-              name={`${user.firstName} ${user.lastName}`}
-            />
-          </Grid>
-        ))}
-      </Grid>
+      {filteredUsers.length === 0 ? (
+        <NoResults message="No users found"/>
+      ) : (
+        <Grid container spacing={4}>
+          {filteredUsers.map((user) => (
+            <Grid item xs={12} sm={6} md={4} lg={3} xl={2.4} key={user.id}>
+              <UserCard
+                id={user.id}
+                image={user.image}
+                name={`${user.firstName} ${user.lastName}`}
+              />
+            </Grid>
+          ))}
+        </Grid>
+      )}
     </Container>
   );
 };

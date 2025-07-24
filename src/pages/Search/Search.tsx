@@ -10,12 +10,14 @@ const Search = () => {
     <div>
       <Stack direction="row" spacing={2} sx={{ p: 2 }}>
         <Button 
+        color="tertiary"
           variant={location.pathname.includes('/posts') ? 'contained' : 'outlined'} 
           onClick={() => navigate('/search/posts')}
         >
           Posts
         </Button>
         <Button 
+        color="tertiary"
           variant={location.pathname.includes('/users') ? 'contained' : 'outlined'} 
           onClick={() => navigate('/search/users')}
         >

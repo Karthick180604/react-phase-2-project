@@ -7,7 +7,6 @@ import {
   Box,
   Drawer,
   List,
-  ListItem,
   ListItemText,
   ListItemButton,
   BottomNavigation,
@@ -16,54 +15,95 @@ import {
   Paper,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import PeopleIcon from "@mui/icons-material/People";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import HomeIcon from "@mui/icons-material/Home";
-import { Link as RouterLink, useLocation } from "react-router-dom";
+import ExploreIcon from "@mui/icons-material/Explore";
+import SearchIcon from "@mui/icons-material/Search";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
+import { useDispatch } from "react-redux";
+import { logoutUser } from "../../redux/Actions/userActions";
 
 const navItems = [
-  { label: "Home", path: "/", icon: <HomeIcon /> },
-  { label: "Users", path: "/users", icon: <PeopleIcon /> },
-  { label: "Profile", path: "/profile", icon: <AccountCircleIcon /> },
+  { label: "Home", path: "/home", icon: <HomeIcon /> },
+  { label: "Explore", path: "/home/explore", icon: <ExploreIcon /> },
+  { label: "Search Users", path: "/home/search", icon: <SearchIcon /> },
+  { label: "My Profile", path: "/home/profile/me", icon: <AccountCircleIcon /> },
 ];
 
 const Navbar = () => {
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const dispatch = useDispatch();
   const location = useLocation();
+  const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md"));
+  const [mobileOpen, setMobileOpen] = useState(false);
 
-  const handleDrawerToggle = () => {
-    setMobileOpen((prev) => !prev);
+  const handleLogout = () => {
+    dispatch(logoutUser());
+    navigate("/");
   };
 
+  const isExactPath = (targetPath: string) => location.pathname === targetPath;
+
+  // ---- Mobile Navbar ----
   if (isMobile) {
     return (
       <Paper
-        sx={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 1100 }}
-        elevation={3}
-      >
-        <BottomNavigation
-          showLabels
-          value={location.pathname}
-        >
-          {navItems.map((item) => (
-            <BottomNavigationAction
-              key={item.label}
-              label={item.label}
-              icon={item.icon}
-              component={RouterLink}
-              to={item.path}
-              value={item.path}
-            />
-          ))}
-        </BottomNavigation>
-      </Paper>
+  sx={{
+    position: "fixed",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    zIndex: 1100,
+    bgcolor: theme.palette.primary.main,
+  }}
+  elevation={3}
+>
+  <BottomNavigation
+    value={location.pathname}
+    showLabels
+    sx={{
+      bgcolor: theme.palette.primary.main,
+    }}
+  >
+    {navItems.map((item) => {
+      const isActive = isExactPath(item.path);
+      return (
+        <BottomNavigationAction
+          key={item.label}
+          label={item.label}
+          icon={item.icon}
+          component={NavLink}
+          to={item.path}
+          value={item.path}
+          sx={{
+            "&.Mui-selected": {
+              color: theme.palette.tertiary.main,
+              bgcolor: `${theme.palette.tertiary.main}22`,
+              borderRadius: 2,
+              mx: 0.5,
+            },
+            color: theme.palette.secondary.main,
+          }}
+        />
+      );
+    })}
+    <BottomNavigationAction
+      label="Logout"
+      icon={<LogoutIcon />}
+      onClick={handleLogout}
+      sx={{ color: theme.palette.secondary.main }}
+    />
+  </BottomNavigation>
+</Paper>
+
     );
   }
 
+  // ---- Tablet Navbar ----
   if (isTablet) {
     return (
       <Box
@@ -71,37 +111,61 @@ const Navbar = () => {
           width: 72,
           height: "100vh",
           position: "fixed",
-          backgroundColor: "#1976d2",
+          bgcolor: theme.palette.primary.main,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           pt: 2,
+          boxShadow: 2,
         }}
       >
         {navItems.map((item) => (
           <IconButton
             key={item.label}
-            component={RouterLink}
+            component={NavLink}
             to={item.path}
-            color="inherit"
-            sx={{ mb: 3 }}
+            sx={{
+              color: isExactPath(item.path)
+                ? theme.palette.tertiary.main
+                : theme.palette.secondary.main,
+              mb: 3,
+              borderRadius: 2,
+              backgroundColor: isExactPath(item.path)
+                ? `${theme.palette.tertiary.main}22`
+                : "transparent",
+              "&:hover": {
+                backgroundColor: "transparent !important",
+              },
+            }}
           >
             {item.icon}
           </IconButton>
         ))}
+        <IconButton
+          onClick={handleLogout}
+          sx={{
+            mt: 2,
+            color: theme.palette.secondary.main,
+            "&:hover": {
+              backgroundColor: "transparent !important",
+            },
+          }}
+        >
+          <LogoutIcon />
+        </IconButton>
       </Box>
     );
   }
 
-  // Desktop: full vertical sidebar
+  // ---- Desktop Navbar ----
   return (
     <Box
       sx={{
-        width: 200,
+        width: 220,
         height: "100vh",
         position: "fixed",
-        backgroundColor: "#1976d2",
-        color: "white",
+        bgcolor: theme.palette.primary.main,
+        color: theme.palette.secondary.main,
         display: "flex",
         flexDirection: "column",
         pt: 3,
@@ -110,24 +174,70 @@ const Navbar = () => {
     >
       <Typography
         variant="h6"
-        sx={{ textAlign: "center", mb: 3, fontWeight: "bold" }}
+        sx={{
+          textAlign: "center",
+          mb: 3,
+          fontWeight: "bold",
+          color: theme.palette.secondary.main,
+        }}
       >
         Connectify
       </Typography>
-      <List>
-        {navItems.map((item) => (
+
+      <Box sx={{ flexGrow: 1 }}>
+        <List disablePadding>
+          {navItems.map((item) => {
+            const active = isExactPath(item.path);
+            return (
+              <NavLink
+                key={item.label}
+                to={item.path}
+                style={{ textDecoration: "none" }}
+              >
+                <ListItemButton
+                  sx={{
+                    color: active
+                      ? theme.palette.primary.contrastText
+                      : theme.palette.secondary.main,
+                    bgcolor: active ? theme.palette.tertiary.main : "transparent",
+                    borderRadius: "12px",
+                    mx: 2,
+                    mb: 1,
+                    "&:hover": {
+                      backgroundColor: "transparent !important",
+                    },
+                  }}
+                >
+                  {item.icon}
+                  <ListItemText primary={item.label} sx={{ ml: 2 }} />
+                </ListItemButton>
+              </NavLink>
+            );
+          })}
+        </List>
+
+        <Box
+          sx={{
+            mt: 2,
+            pt: 2,
+            borderTop: `1px solid ${theme.palette.secondary.main}44`,
+          }}
+        >
           <ListItemButton
-            key={item.label}
-            component={RouterLink}
-            to={item.path}
-            sx={{ color: "white", pl: 3 }}
-            selected={location.pathname === item.path}
+            onClick={handleLogout}
+            sx={{
+              color: theme.palette.secondary.main,
+              pl: 3,
+              "&:hover": {
+                backgroundColor: "transparent !important",
+              },
+            }}
           >
-            {item.icon}
-            <ListItemText primary={item.label} sx={{ ml: 2 }} />
+            <LogoutIcon />
+            <ListItemText primary="Logout" sx={{ ml: 2 }} />
           </ListItemButton>
-        ))}
-      </List>
+        </Box>
+      </Box>
     </Box>
   );
 };

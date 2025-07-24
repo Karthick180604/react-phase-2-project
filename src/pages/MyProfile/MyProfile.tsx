@@ -8,6 +8,7 @@ import UserPostSection from '../../components/UserPostSection/UserPostSection';
 import EditProfileDialog from '../../components/EditProfileDialog/EditProfileDialog';
 import AddPostDialog from '../../components/AddPostDialog/AddPostDialog';
 import type { Post } from '../../redux/Actions/postsActions';
+import NoPosts from '../../components/NoPosts/NoPosts';
 
 interface User {
   id: number;
@@ -64,12 +65,19 @@ const MyProfile = () => {
     updatePost()
   },[userDetails])
 
-  const updatePost=()=>{
-    const postData=userDetails.uploadedPosts.map((post:Post)=>{
-      return post
-    })
-    setUserPosts(postData)
+  const updatePost = async () => {
+  try {
+    const response = await getSingleUserPosts(userDetails.id);
+    const apiPosts = response.data.posts;
+
+    const uploadedPosts = [...userDetails.uploadedPosts];
+
+    setUserPosts([...apiPosts, ...uploadedPosts]);
+  } catch (error) {
+    console.error("Error fetching user posts:", error);
   }
+};
+
 
   if (!user) return <Typography>Loading...</Typography>;
 
@@ -89,7 +97,7 @@ const MyProfile = () => {
 
           {/* Update Info Button */}
           <Box mt={2} textAlign="center">
-            <Button variant="outlined" onClick={() => setEditOpen(true)}>
+            <Button variant="contained" color="tertiary" onClick={() => setEditOpen(true)}>
               Refresh Profile Info
             </Button>
           </Box>
@@ -99,12 +107,16 @@ const MyProfile = () => {
         <Grid item xs={12} md={8}>
           {/* Add Post Button */}
           <Stack direction="row" justifyContent="flex-end" mb={2}>
-            <Button variant="contained" color="primary" onClick={() => setAddOpen(true)}>
+            <Button variant="contained" color="tertiary" onClick={() => setAddOpen(true)}>
               Add Post
             </Button>
           </Stack>
+            {userPosts.length === 0 ? (
+              <NoPosts />
+            ) : (
+              <UserPostSection posts={userPosts} />
+            )}
 
-          <UserPostSection posts={userPosts} />
         </Grid>
       </Grid>
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Box,
   Typography,
@@ -6,34 +6,39 @@ import {
   Paper,
   InputAdornment,
   IconButton,
-  FormHelperText,
-  Snackbar
+  Snackbar,
+  Grid,
+  useTheme,
+  useMediaQuery,
+  TextField,
+  Alert,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import FormInput from "../../components/MuiComponents/FormInput";
-import axios from "axios";
 import { getAllUsers } from "../../services/apiCalls";
 import type { UserType } from "../../types/types";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../redux/Actions/userActions";
+import AuthImage from "../../components/AuthImage/AuthImage";
 
 const Signup = () => {
-  const dispatch=useDispatch()
-  const navigate=useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
+
   const [formData, setFormData] = useState({
-    id:208,
+    id: 208,
     name: "",
     email: "",
     password: "",
   });
-  const [open, setOpen]=useState(false)
+  const [open, setOpen] = useState(false);
 
   const [errors, setErrors] = useState({
     email: "",
     password: "",
   });
-
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -73,45 +78,43 @@ const Signup = () => {
     }
   };
 
-  const findUser=async():Promise<boolean>=>{
+  const findUser = async (): Promise<boolean> => {
     try {
-      const response=await getAllUsers();
-      console.log(response.data.users)
-      const findUser=response.data.users.find((user:UserType)=>{
-        return user.email===formData.email
-      })
-      const isExist=!!findUser
-      console.log(findUser)
-      return isExist
+      const response = await getAllUsers();
+      const findUser = response.data.users.find(
+        (user: UserType) => user.email === formData.email
+      );
+      return !!findUser;
     } catch (error) {
-      console.log(error)
-      return false
-    }
-  }
-
-  const handleSignup =async()=> {
-    const isUserExist=await findUser()
-    if(isUserExist)
-    {
-      setOpen(true)
-    }
-    else
-    {
-      dispatch(setUser(formData.id+1, formData.name, formData.email, formData.password))
-      setFormData((prevState)=>{
-        return {
-          ...prevState,
-          id:prevState.id+1
-        }
-      })
-      navigate("/")
-
+      console.log(error);
+      return false;
     }
   };
 
-  const handleClose=()=>{
-    setOpen(false)
-  }
+  const handleSignup = async () => {
+    const isUserExist = await findUser();
+    if (isUserExist) {
+      setOpen(true);
+    } else {
+      dispatch(
+        setUser(
+          formData.id + 1,
+          formData.name,
+          formData.email,
+          formData.password
+        )
+      );
+      setFormData((prevState) => ({
+        ...prevState,
+        id: prevState.id + 1,
+      }));
+      navigate("/home");
+    }
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const isFormValid =
     formData.name &&
@@ -119,82 +122,151 @@ const Signup = () => {
     validatePassword(formData.password);
 
   return (
-    <Box
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      minHeight="100vh"
-      sx={{ backgroundColor: "#f5f5f5", padding: 2 }}
-    >
-      <Paper elevation={3} sx={{ p: 4, maxWidth: 400, width: "100%" }}>
-        <Typography variant="h5" gutterBottom textAlign="center">
-          Sign Up to Connectify
-        </Typography>
-
-        <Box mt={2}>
-          <FormInput
-            label="Name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-          />
-        </Box>
-
-        <Box mt={2}>
-          <FormInput
-            label="Email"
-            name="email"
-            type="email"
-            value={formData.email}
-            onChange={handleChange}
-            error={!!errors.email}
-          />
-          {errors.email && (
-            <FormHelperText error>{errors.email}</FormHelperText>
-          )}
-        </Box>
-
-        <Box mt={2}>
-          <FormInput
-            label="Password"
-            name="password"
-            type={showPassword ? "text" : "password"}
-            value={formData.password}
-            onChange={handleChange}
-            error={!!errors.password}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton onClick={() => setShowPassword((prev) => !prev)}>
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
-          {errors.password && (
-            <FormHelperText error>{errors.password}</FormHelperText>
-          )}
-        </Box>
-
-        <Box mt={3}>
-          <Button
-            variant="contained"
-            fullWidth
-            onClick={handleSignup}
-            disabled={!isFormValid}
+    <Grid container sx={{ minHeight: "100vh" }}>
+      {/* Left Image */}
+      {!isSmallScreen && (
+        <Grid item md={6}>
+          <Box
+            height="100%"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
           >
-            Sign Up
-          </Button>
+            <Box sx={{ maxWidth: "70%", maxHeight: "80%" }}>
+              <AuthImage />
+            </Box>
+          </Box>
+        </Grid>
+      )}
+
+      {/* Right Signup Form */}
+      <Grid item xs={12} md={6}>
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          minHeight="100vh"
+          sx={{ px: 2 }}
+        >
+          <Paper
+            elevation={4}
+            sx={{
+              p: 5,
+              width: "100%",
+              maxWidth: 400,
+              borderRadius: 3,
+              boxShadow: "0px 4px 20px rgba(0,0,0,0.1)",
+            }}
+          >
+            <Typography
+              variant="h4"
+              gutterBottom
+              textAlign="center"
+              fontWeight={600}
+            >
+              Sign Up
+            </Typography>
+
+            <Typography
+              variant="subtitle1"
+              gutterBottom
+              textAlign="center"
+              color="text.secondary"
+            >
+              Create your Connectify account
+            </Typography>
+
+            <Box mt={3}>
+              <TextField
+              color="tertiary"
+                fullWidth
+                label="Name"
+                name="name"
+                variant="outlined"
+                value={formData.name}
+                onChange={handleChange}
+                sx={{ mb: 2 }}
+              />
+
+              <TextField
+                color="tertiary"
+                fullWidth
+                label="Email"
+                name="email"
+                type="email"
+                variant="outlined"
+                value={formData.email}
+                onChange={handleChange}
+                error={!!errors.email}
+                helperText={errors.email}
+                sx={{ mb: 2 }}
+              />
+
+              <TextField
+              color="tertiary"
+                fullWidth
+                label="Password"
+                name="password"
+                type={showPassword ? "text" : "password"}
+                variant="outlined"
+                value={formData.password}
+                onChange={handleChange}
+                error={!!errors.password}
+                helperText={errors.password}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={() => setShowPassword((prev) => !prev)}
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+
+              <Box mt={3}>
+                <Button
+                color="tertiary"
+                  variant="contained"
+                  fullWidth
+                  size="large"
+                  onClick={handleSignup}
+                  disabled={!isFormValid}
+                  sx={{
+                    borderRadius: 2,
+                    textTransform: "none",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Sign Up
+                </Button>
+              </Box>
+
+              {/* 🔗 Login Link */}
+              <Box mt={2} textAlign="center">
+                <Typography variant="body2">
+                  Already have an account?{" "}
+                  <Button
+                  color="tertiary"
+                    onClick={() => navigate("/")}
+                    sx={{ textTransform: "none", fontWeight: "bold" }}
+                  >
+                    Login
+                  </Button>
+                </Typography>
+              </Box>
+            </Box>
+          </Paper>
         </Box>
-      </Paper>
-      <Snackbar
-          open={open}
-          autoHideDuration={6000}
-          onClose={handleClose}
-          message="User already exist"
-      />
-    </Box>
+        <Snackbar open={open} autoHideDuration={5000} onClose={handleClose} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+                  <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
+                    User Already exist
+                  </Alert>
+                </Snackbar>
+      </Grid>
+    </Grid>
   );
 };
 

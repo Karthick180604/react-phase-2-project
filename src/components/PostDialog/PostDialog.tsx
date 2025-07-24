@@ -25,6 +25,8 @@ import ThumbDownAltOutlinedIcon from "@mui/icons-material/ThumbDownAltOutlined";
 import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import ThumbUpAltOutlinedIcon from "@mui/icons-material/ThumbUpAltOutlined";
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
+
 
 
 
@@ -161,27 +163,49 @@ const PostDialog: React.FC<PostDialogProps> = ({ open, onClose, post, onLikeHand
               flexGrow: 1,
               overflowY: "auto",
               mb: 2,
-              pr: 1, // space for scrollbar
+              pr: 1,
             }}
           >
-            {comments.map((c:CommentType) => (
-              <Box key={c.id} sx={{ mb: 1 }}>
-                <Typography variant="body2">
-                  <strong>{c.user.fullName}</strong>: {c.body}
+            {comments.length === 0 ? (
+              <Box
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+                justifyContent="center"
+                height="100%"
+                color="text.secondary"
+                mt={4}
+              >
+                <ChatBubbleOutlineIcon fontSize="large" />
+                <Typography variant="body2" mt={1}>
+                  No comments yet
                 </Typography>
               </Box>
-            ))}
+            ) : (
+              comments.map((c: CommentType) => (
+                <Box key={c.id} sx={{ mb: 2 }}>
+                  <Typography variant="subtitle2" fontWeight={600}>
+                    {c.user.fullName}
+                  </Typography>
+                  <Typography variant="body2" sx={{ pl: 2 }}>
+                    {c.body}
+                  </Typography>
+                </Box>
+              ))
+            )}
           </Box>
+
 
           {/* Fixed input */}
           <Stack direction="row" spacing={1}>
             <TextField 
+            color="tertiary"
             fullWidth size="small" 
             placeholder="Write a comment..." 
             value={wroteComment}
             onChange={(e:React.ChangeEvent<HTMLInputElement>)=>setWroteComment(e.target.value)} 
             />
-            <Button variant="contained" onClick={handleComment}>Post</Button>
+            <Button color="tertiary" variant="contained" onClick={handleComment}>Post</Button>
           </Stack>
         </Box>
       </DialogContent>

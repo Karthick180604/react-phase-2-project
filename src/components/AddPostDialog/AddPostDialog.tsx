@@ -76,12 +76,14 @@ const AddPostDialog: React.FC<AddPostDialogProps> = ({ open, onClose, onSave }) 
       <DialogContent>
         <Stack spacing={2} mt={1}>
           <TextField
+          color="tertiary"
             label="Title"
             fullWidth
             value={title}
             onChange={e => setTitle(e.target.value)}
           />
           <TextField
+          color="tertiary"
             label="Body"
             fullWidth
             multiline
@@ -95,14 +97,14 @@ const AddPostDialog: React.FC<AddPostDialogProps> = ({ open, onClose, onSave }) 
             value={selectedTags}
             onChange={(event, value) => setSelectedTags(value)}
             renderInput={(params) => (
-              <TextField {...params} label="Select Tags" placeholder="Tags" />
+              <TextField color="tertiary" {...params} label="Select Tags" placeholder="Tags" />
             )}
           />
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="inherit">Cancel</Button>
-        <Button onClick={handleSubmit} variant="contained">Add Post</Button>
+        <Button  onClick={handleClose} color="inherit">Cancel</Button>
+        <Button color="tertiary" onClick={handleSubmit} variant="contained">Add Post</Button>
       </DialogActions>
     </Dialog>
   );

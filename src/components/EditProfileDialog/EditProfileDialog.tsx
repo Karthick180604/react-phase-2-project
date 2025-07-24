@@ -102,6 +102,7 @@ const EditProfileDialog: React.FC<EditProfileDialogProps> = ({
         <Grid container spacing={2} mt={1}>
           <Grid item xs={6}>
             <TextField
+            color="tertiary"
               name="firstName"
               label="First Name"
               fullWidth
@@ -111,6 +112,7 @@ const EditProfileDialog: React.FC<EditProfileDialogProps> = ({
           </Grid>
           <Grid item xs={6}>
             <TextField
+            color="tertiary"
               name="lastName"
               label="Last Name"
               fullWidth
@@ -121,6 +123,7 @@ const EditProfileDialog: React.FC<EditProfileDialogProps> = ({
           <Grid item xs={12}>
             <TextField
               name="image"
+              color="tertiary"
               label="Profile Image URL"
               fullWidth
               value={formData.image}
@@ -129,6 +132,7 @@ const EditProfileDialog: React.FC<EditProfileDialogProps> = ({
           </Grid>
           <Grid item xs={6}>
             <TextField
+            color="tertiary"
               name="phone"
               label="Phone"
               fullWidth
@@ -138,6 +142,7 @@ const EditProfileDialog: React.FC<EditProfileDialogProps> = ({
           </Grid>
           <Grid item xs={6}>
             <TextField
+            color="tertiary"
               name="gender"
               label="Gender"
               fullWidth
@@ -147,6 +152,7 @@ const EditProfileDialog: React.FC<EditProfileDialogProps> = ({
           </Grid>
           <Grid item xs={6}>
             <TextField
+            color="tertiary"
               name="companyName"
               label="Company Name"
               fullWidth
@@ -156,6 +162,7 @@ const EditProfileDialog: React.FC<EditProfileDialogProps> = ({
           </Grid>
           <Grid item xs={6}>
             <TextField
+            color="tertiary"
               name="companyTitle"
               label="Job Title"
               fullWidth
@@ -173,6 +180,7 @@ const EditProfileDialog: React.FC<EditProfileDialogProps> = ({
           onClick={handleSubmit}
           variant="contained"
           disabled={!isFormValid}
+          color="tertiary"
         >
           Save
         </Button>
