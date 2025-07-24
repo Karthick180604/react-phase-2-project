@@ -22,7 +22,6 @@ import ApiError from "../../components/ApiError.tsx/ApiError";
 const Home = () => {
   const dispatch: ThunkDispatch<RootState, unknown, AnyAction> = useDispatch();
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
-  const [error, setError]=useState(false)
   const [page, setPage] = useState(1);
   const observerRef = useRef<IntersectionObserver | null>(null);
   const [hasMore, setHasMore] = useState(true);

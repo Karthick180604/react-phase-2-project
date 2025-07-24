@@ -9,7 +9,6 @@ import {
   TextField,
   Button,
   Stack,
-  Icon,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import type { Post } from "../../redux/Actions/postsActions";

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Paper, Typography, Box, Chip, Stack } from '@mui/material';
+import { Paper, Typography, Chip, Stack } from '@mui/material';
 
 interface Post {
   id: number;
