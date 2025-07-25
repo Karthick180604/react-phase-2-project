@@ -1,5 +1,5 @@
-import React from 'react';
-import { Paper, Typography, Chip, Stack } from '@mui/material';
+import React from "react";
+import { Paper, Typography, Chip, Stack } from "@mui/material";
 
 interface Post {
   id: number;
@@ -9,12 +9,17 @@ interface Post {
   onClick: () => void;
 }
 
-const UserProfilePostCard: React.FC<Post> = ({ title, body, tags, onClick }) => {
+const UserProfilePostCard: React.FC<Post> = ({
+  title,
+  body,
+  tags,
+  onClick,
+}) => {
   return (
-    <Paper 
-    elevation={2} 
-    sx={{ p: 2, borderRadius: 2, mb: 2 }} 
-    onClick={onClick}
+    <Paper
+      elevation={2}
+      sx={{ p: 2, borderRadius: 2, mb: 2 }}
+      onClick={onClick}
     >
       <Typography variant="h6" fontWeight={600} gutterBottom>
         {title}

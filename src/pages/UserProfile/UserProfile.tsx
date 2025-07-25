@@ -1,20 +1,20 @@
-import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { getSingleUser, getSingleUserPosts } from '../../services/apiCalls';
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { getSingleUser, getSingleUserPosts } from "../../services/apiCalls";
 import {
   Container,
   Grid,
   CircularProgress,
   Box,
   IconButton,
-} from '@mui/material';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import UserPostSection from '../../components/UserPostSection/UserPostSection';
-import UserProfileCard from '../../components/UserProfileCard/UserProfileCard';
-import NoPosts from '../../components/NoPosts/NoPosts';
-import type { Post } from '../../redux/Actions/postsActions';
-import { useSelector } from 'react-redux';
-import type { RootState } from '../../redux/Store/store';
+} from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import UserPostSection from "../../components/UserPostSection/UserPostSection";
+import UserProfileCard from "../../components/UserProfileCard/UserProfileCard";
+import NoPosts from "../../components/NoPosts/NoPosts";
+import type { Post } from "../../redux/Actions/postsActions";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../redux/Store/store";
 
 interface User {
   id: number;
@@ -68,10 +68,10 @@ const UserProfile = () => {
     return (
       <Box
         sx={{
-          height: '60vh',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
+          height: "60vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
         }}
       >
         <CircularProgress size={50} />

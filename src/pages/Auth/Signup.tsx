@@ -82,7 +82,7 @@ const Signup = () => {
     try {
       const response = await getAllUsers();
       const findUser = response.data.users.find(
-        (user: UserType) => user.email === formData.email
+        (user: UserType) => user.email === formData.email,
       );
       return !!findUser;
     } catch (error) {
@@ -101,8 +101,8 @@ const Signup = () => {
           formData.id + 1,
           formData.name,
           formData.email,
-          formData.password
-        )
+          formData.password,
+        ),
       );
       setFormData((prevState) => ({
         ...prevState,
@@ -176,7 +176,7 @@ const Signup = () => {
 
             <Box mt={3}>
               <TextField
-              color="tertiary"
+                color="tertiary"
                 fullWidth
                 label="Name"
                 name="name"
@@ -201,7 +201,7 @@ const Signup = () => {
               />
 
               <TextField
-              color="tertiary"
+                color="tertiary"
                 fullWidth
                 label="Password"
                 name="password"
@@ -226,7 +226,7 @@ const Signup = () => {
 
               <Box mt={3}>
                 <Button
-                color="tertiary"
+                  color="tertiary"
                   variant="contained"
                   fullWidth
                   size="large"
@@ -246,7 +246,7 @@ const Signup = () => {
                 <Typography variant="body2">
                   Already have an account?{" "}
                   <Button
-                  color="tertiary"
+                    color="tertiary"
                     onClick={() => navigate("/")}
                     sx={{ textTransform: "none", fontWeight: "bold" }}
                   >
@@ -257,11 +257,16 @@ const Signup = () => {
             </Box>
           </Paper>
         </Box>
-        <Snackbar open={open} autoHideDuration={5000} onClose={handleClose} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
-                  <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
-                    User Already exist
-                  </Alert>
-                </Snackbar>
+        <Snackbar
+          open={open}
+          autoHideDuration={5000}
+          onClose={handleClose}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        >
+          <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
+            User Already exist
+          </Alert>
+        </Snackbar>
       </Grid>
     </Grid>
   );

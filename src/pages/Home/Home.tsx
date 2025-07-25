@@ -16,8 +16,7 @@ import {
 } from "../../redux/Actions/userActions";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { Fab, Zoom } from "@mui/material";
-import ApiError from "../../components/ApiError.tsx/ApiError";
-
+import ApiError from "../../components/ApiError/ApiError";
 
 const Home = () => {
   const dispatch: ThunkDispatch<RootState, unknown, AnyAction> = useDispatch();
@@ -40,22 +39,22 @@ const Home = () => {
     });
   }, [dispatch, page]);
 
- const lastPostRef = useCallback(
-  (node: HTMLDivElement | null) => {
-    if (postsState.loading) return;
+  const lastPostRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (postsState.loading) return;
 
-    if (observerRef.current) observerRef.current.disconnect();
+      if (observerRef.current) observerRef.current.disconnect();
 
-    observerRef.current = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting && hasMore) {
-        setPage((prev) => prev + 1);
-      }
-    });
+      observerRef.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          setPage((prev) => prev + 1);
+        }
+      });
 
-    if (node) observerRef.current.observe(node);
-  },
-  [postsState.loading, hasMore]
-);
+      if (node) observerRef.current.observe(node);
+    },
+    [postsState.loading, hasMore],
+  );
 
   const onLikeHandler = (postId: number, like: boolean) => {
     if (!like) {
@@ -73,39 +72,33 @@ const Home = () => {
     }
   };
 
-
   const [showScrollTop, setShowScrollTop] = useState(false);
 
-useEffect(() => {
-  const handleScroll = () => {
-    setShowScrollTop(window.scrollY > 300);
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 300);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const handleScrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  window.addEventListener("scroll", handleScroll);
-  return () => window.removeEventListener("scroll", handleScroll);
-}, []);
+  const userUploadedPost = userDetails.uploadedPosts.map((uploadPost) => {
+    return {
+      ...uploadPost,
+      image: userDetails.image,
+      username: userDetails.username,
+    };
+  });
 
-const handleScrollToTop = () => {
-  window.scrollTo({ top: 0, behavior: "smooth" });
-};
+  const postToRender = [...userUploadedPost, ...postsState.posts];
 
-const userUploadedPost=userDetails.uploadedPosts.map((uploadPost)=>{
-  return {
-    ...uploadPost,
-    image:userDetails.image,
-    username:userDetails.username
-  }
-})
-
-  const postToRender=[
-    ...userUploadedPost
-    ,
-    ...postsState.posts
-  ]
-
-  if(hasError)
-  {
-    return <ApiError />
+  if (hasError) {
+    return <ApiError />;
   }
 
   return (
@@ -145,8 +138,16 @@ const userUploadedPost=userDetails.uploadedPosts.map((uploadPost)=>{
         post={selectedPost}
         onLikeHandler={onLikeHandler}
         onDislikeHandler={onDislikeHandler}
-        like={selectedPost ? userDetails.likedPostId.includes(selectedPost.id) : false}
-        dislike={selectedPost ? userDetails.dislikePostId.includes(selectedPost.id) : false}
+        like={
+          selectedPost
+            ? userDetails.likedPostId.includes(selectedPost.id)
+            : false
+        }
+        dislike={
+          selectedPost
+            ? userDetails.dislikePostId.includes(selectedPost.id)
+            : false
+        }
       />
       <Zoom in={showScrollTop}>
         <Fab
@@ -163,7 +164,6 @@ const userUploadedPost=userDetails.uploadedPosts.map((uploadPost)=>{
           <KeyboardArrowUpIcon />
         </Fab>
       </Zoom>
-
     </Container>
   );
 };

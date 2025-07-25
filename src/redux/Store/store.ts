@@ -6,15 +6,14 @@ import { postReducer } from "../Reducers/postsReducers";
 import { thunk } from "redux-thunk";
 import errorReducer from "../Reducers/errorReducer";
 
-const middleWare=[thunk]
-const enhancer=compose(applyMiddleware(...middleWare))
+const middleWare = [thunk];
+const enhancer = compose(applyMiddleware(...middleWare));
 
 const rootReducer = combineReducers({
   user: userReducer,
-  posts:postReducer,
-  error:errorReducer
+  posts: postReducer,
+  error: errorReducer,
 });
-
 
 const persistConfig = {
   key: "root",

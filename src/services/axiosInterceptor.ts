@@ -1,9 +1,9 @@
-import axios from 'axios';
-import { setApiError } from '../redux/Actions/errorAction';
-import { store } from '../redux/Store/store';
+import axios from "axios";
+import { setApiError } from "../redux/Actions/errorAction";
+import { store } from "../redux/Store/store";
 
 const api = axios.create({
-  baseURL: 'https://dummyjson.com',
+  baseURL: "https://dummyjson.com",
 });
 
 api.interceptors.response.use(
@@ -11,7 +11,7 @@ api.interceptors.response.use(
   (error) => {
     store.dispatch(setApiError(true));
     return Promise.reject(error);
-  }
+  },
 );
 
 export default api;

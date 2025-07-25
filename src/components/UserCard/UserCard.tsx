@@ -1,6 +1,6 @@
-import React from 'react';
-import { Card, Typography, Avatar, useTheme } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import { Card, Typography, Avatar, useTheme } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 interface UserCardProps {
   id: number;
@@ -20,14 +20,14 @@ const UserCard: React.FC<UserCardProps> = ({ image, name, id }) => {
         borderRadius: 3,
         boxShadow: 3,
         height: 200,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        textAlign: 'center',
-        transition: 'transform 0.3s',
-        '&:hover': { transform: 'scale(1.03)' },
-        cursor: 'pointer',
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        textAlign: "center",
+        transition: "transform 0.3s",
+        "&:hover": { transform: "scale(1.03)" },
+        cursor: "pointer",
       }}
     >
       <Avatar

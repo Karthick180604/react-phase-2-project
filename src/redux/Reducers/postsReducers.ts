@@ -19,7 +19,7 @@ const initialState: PostStateType = {
 
 export const postReducer = (
   state = initialState,
-  action: PostActionType
+  action: PostActionType,
 ): PostStateType => {
   switch (action.type) {
     case FETCH_POSTS_REQUEST:

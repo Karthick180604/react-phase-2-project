@@ -30,7 +30,7 @@ type FetchPostsRequest = {
 type FetchPostsSuccess = {
   type: typeof FETCH_POSTS_SUCCESS;
   payload: Post[];
-  meta: { page: number }; 
+  meta: { page: number };
 };
 
 type FetchPostsFailure = {
@@ -43,38 +43,37 @@ export type PostActionType =
   | FetchPostsSuccess
   | FetchPostsFailure;
 
-export const fetchPosts = (page = 1, limit = 10) => async (
-  dispatch: Dispatch<PostActionType>,
-  getState: () => RootState
-) => {
-  dispatch({ type: FETCH_POSTS_REQUEST });
+export const fetchPosts =
+  (page = 1, limit = 10) =>
+  async (dispatch: Dispatch<PostActionType>, getState: () => RootState) => {
+    dispatch({ type: FETCH_POSTS_REQUEST });
 
-  try {
-    const skip = (page - 1) * limit;
-    const response = await getAllPosts(limit, skip);
-    const posts = response.data.posts;
+    try {
+      const skip = (page - 1) * limit;
+      const response = await getAllPosts(limit, skip);
+      const posts = response.data.posts;
 
-    const postData: Post[] = await Promise.all(
-      posts.map(async (post: Post) => {
-        const userRes = await getSingleUser(post.userId);
-        const user: UserType = userRes.data;
-        return {
-          ...post,
-          username: user.firstName,
-          image: user.image,
-        };
-      })
-    );
+      const postData: Post[] = await Promise.all(
+        posts.map(async (post: Post) => {
+          const userRes = await getSingleUser(post.userId);
+          const user: UserType = userRes.data;
+          return {
+            ...post,
+            username: user.firstName,
+            image: user.image,
+          };
+        }),
+      );
 
-    dispatch({
-      type: FETCH_POSTS_SUCCESS,
-      payload: postData,
-      meta: { page }, 
-    });
-  } catch (error: any) {
-    dispatch({
-      type: FETCH_POSTS_FAILURE,
-      payload: error.message || "Something went wrong",
-    });
-  }
-};
+      dispatch({
+        type: FETCH_POSTS_SUCCESS,
+        payload: postData,
+        meta: { page },
+      });
+    } catch (error: any) {
+      dispatch({
+        type: FETCH_POSTS_FAILURE,
+        payload: error.message || "Something went wrong",
+      });
+    }
+  };

@@ -54,7 +54,12 @@ const PostCardSkeleton: React.FC = () => {
                 {idx === 1 && <ThumbDownAltOutlinedIcon />}
                 {idx === 2 && <CommentOutlinedIcon />}
               </IconButton>
-              <Skeleton variant="text" width={30} height={16} sx={{ mx: "auto" }} />
+              <Skeleton
+                variant="text"
+                width={30}
+                height={16}
+                sx={{ mx: "auto" }}
+              />
             </Box>
           ))}
           <Box textAlign="center" display="flex" alignItems="center" gap={0.5}>

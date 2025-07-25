@@ -1,5 +1,15 @@
 import type { UserActionType } from "../Actions/userActions";
-import { ADD_UPLOADED_POST, COMMENT_POST, DISLIKE_POST, LIKE_POST, LOGOUT_USER, REMOVE_DISLIKE_POST, REMOVE_LIKE_POST, SET_USER, SET_USER_PROFILE_DETAILS } from "../ActionTypes/userActionTypes";
+import {
+  ADD_UPLOADED_POST,
+  COMMENT_POST,
+  DISLIKE_POST,
+  LIKE_POST,
+  LOGOUT_USER,
+  REMOVE_DISLIKE_POST,
+  REMOVE_LIKE_POST,
+  SET_USER,
+  SET_USER_PROFILE_DETAILS,
+} from "../ActionTypes/userActionTypes";
 
 export type UploadPostType = {
   id: number;
@@ -12,64 +22,64 @@ export type UploadPostType = {
   };
   views: number;
   userId: number;
-}
+};
 
 export type CommentData = {
   postId: number;
   comment: string;
-}
+};
 
-export type CompanyType={
-  name:string;
-  title:string;
-}
+export type CompanyType = {
+  name: string;
+  title: string;
+};
 
 export type UserStateType = {
-    id:number;
+  id: number;
   username: string;
   firstName: string;
   lastName: string;
   email: string;
   password: string;
-  image:string;
-  gender:string;
-  phone:string;
+  image: string;
+  gender: string;
+  phone: string;
   company: CompanyType;
   likedPostId: number[];
-  dislikePostId:number[];
+  dislikePostId: number[];
   commentedPosts: CommentData[];
-  uploadedPosts:UploadPostType[]
-}
+  uploadedPosts: UploadPostType[];
+};
 
-const initialUserState:UserStateType={
-    id:-1,
-    username:"",
-    firstName:"",
-    lastName:"",
-    email:"",
-    password:"",
-    image:"",
-    gender:"",
-    phone:"",
-    company:{
-      name:"",
-      title:"",
-    },
-    likedPostId:[],
-    dislikePostId:[],
-    commentedPosts:[],
-    uploadedPosts:[]
-}
+const initialUserState: UserStateType = {
+  id: -1,
+  username: "",
+  firstName: "",
+  lastName: "",
+  email: "",
+  password: "",
+  image: "",
+  gender: "",
+  phone: "",
+  company: {
+    name: "",
+    title: "",
+  },
+  likedPostId: [],
+  dislikePostId: [],
+  commentedPosts: [],
+  uploadedPosts: [],
+};
 
 export const userReducer = (
   state = initialUserState,
-  action: UserActionType
+  action: UserActionType,
 ): UserStateType => {
   switch (action.type) {
     case SET_USER:
       return {
         ...state,
-        id:action.payload.userId,
+        id: action.payload.userId,
         username: action.payload.userName,
         email: action.payload.userEmail,
         password: action.payload.userPassword,
@@ -78,94 +88,86 @@ export const userReducer = (
     case LOGOUT_USER:
       return initialUserState;
 
-    case LIKE_POST:{
-      if(!state.likedPostId.includes(action.payload))
-      {
-        let filteredArray=[]
-        if(state.dislikePostId.includes(action.payload))
-        {
-          filteredArray=state.dislikePostId.filter((data)=>{
-            return data!==action.payload
-          })
-        }
-        else
-        {
-          filteredArray=state.dislikePostId
+    case LIKE_POST: {
+      if (!state.likedPostId.includes(action.payload)) {
+        let filteredArray = [];
+        if (state.dislikePostId.includes(action.payload)) {
+          filteredArray = state.dislikePostId.filter((data) => {
+            return data !== action.payload;
+          });
+        } else {
+          filteredArray = state.dislikePostId;
         }
         return {
           ...state,
           likedPostId: [...state.likedPostId, action.payload],
-          dislikePostId:filteredArray
+          dislikePostId: filteredArray,
         };
       }
       return state;
     }
-    case REMOVE_LIKE_POST:{
-      const filteredArray=state.likedPostId.filter((data)=>{
-        return data!==action.payload
-      })
+    case REMOVE_LIKE_POST: {
+      const filteredArray = state.likedPostId.filter((data) => {
+        return data !== action.payload;
+      });
       return {
         ...state,
-        likedPostId:filteredArray
-      }
+        likedPostId: filteredArray,
+      };
     }
 
     case COMMENT_POST:
-  return {
-    ...state,
-    commentedPosts: [
-      ...state.commentedPosts,
-      {
-        postId: action.payload.postId,
-        comment: action.payload.comment,
-      },
-    ],
-  };
-  case DISLIKE_POST:{
-    if(!state.dislikePostId.includes(action.payload))
-    {
-      let filteredArray=[]
-      if(state.likedPostId.includes(action.payload))
-      {
-        filteredArray=state.likedPostId.filter((data)=>{
-          return data!==action.payload
-        })
-      }
-      else
-      {
-        filteredArray=state.likedPostId
-      }
-      return{
+      return {
         ...state,
-        dislikePostId:[...state.dislikePostId, action.payload],
-        likedPostId:filteredArray
+        commentedPosts: [
+          ...state.commentedPosts,
+          {
+            postId: action.payload.postId,
+            comment: action.payload.comment,
+          },
+        ],
+      };
+    case DISLIKE_POST: {
+      if (!state.dislikePostId.includes(action.payload)) {
+        let filteredArray = [];
+        if (state.likedPostId.includes(action.payload)) {
+          filteredArray = state.likedPostId.filter((data) => {
+            return data !== action.payload;
+          });
+        } else {
+          filteredArray = state.likedPostId;
+        }
+        return {
+          ...state,
+          dislikePostId: [...state.dislikePostId, action.payload],
+          likedPostId: filteredArray,
+        };
       }
+      return state;
     }
-    return state
-  }
-  case REMOVE_DISLIKE_POST:{
-    const filteredArray=state.dislikePostId.filter((data)=>{
-      return data!==action.payload
-    })
-    return{
-      ...state,
-      dislikePostId:filteredArray
+    case REMOVE_DISLIKE_POST: {
+      const filteredArray = state.dislikePostId.filter((data) => {
+        return data !== action.payload;
+      });
+      return {
+        ...state,
+        dislikePostId: filteredArray,
+      };
     }
-  }
-  case SET_USER_PROFILE_DETAILS:
-  return {
-    ...state,
-    firstName: action.payload.firstName,
-    lastName: action.payload.lastName,
-    image: action.payload.image,
-    phone: action.payload.phone,
-    gender: action.payload.gender,
-    company: {
-      name: action.payload.company.name,
-      title: action.payload.company.title,
-    },
-  };
-  case ADD_UPLOADED_POST:
+    case SET_USER_PROFILE_DETAILS:
+      return {
+        ...state,
+        firstName: action.payload.firstName,
+        lastName: action.payload.lastName,
+        image: action.payload.image,
+        phone: action.payload.phone,
+        gender: action.payload.gender,
+        company: {
+          name: action.payload.company.name,
+          title: action.payload.company.title,
+        },
+      };
+    case ADD_UPLOADED_POST:
       return {
         ...state,
         uploadedPosts: [...state.uploadedPosts, action.payload],
@@ -175,4 +177,3 @@ export const userReducer = (
       return state;
   }
 };
-

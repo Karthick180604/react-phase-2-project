@@ -1,5 +1,5 @@
-import React from 'react';
-import { Card, CardContent, Skeleton, Box } from '@mui/material';
+import React from "react";
+import { Card, CardContent, Skeleton, Box } from "@mui/material";
 
 const PostCardSmallSkeleton: React.FC = () => {
   return (
@@ -14,7 +14,12 @@ const PostCardSmallSkeleton: React.FC = () => {
       }}
     >
       <Box sx={{ width: "100%", pt: "56.25%", position: "relative" }}>
-        <Skeleton variant="rectangular" width="100%" height="100%" sx={{ position: "absolute", top: 0, left: 0 }} />
+        <Skeleton
+          variant="rectangular"
+          width="100%"
+          height="100%"
+          sx={{ position: "absolute", top: 0, left: 0 }}
+        />
       </Box>
       <CardContent>
         <Skeleton variant="text" width="80%" height={30} />

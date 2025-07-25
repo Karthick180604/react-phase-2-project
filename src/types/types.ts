@@ -1,4 +1,4 @@
-export type UserType ={
+export type UserType = {
   id: number;
   firstName: string;
   lastName: string;
@@ -60,23 +60,23 @@ export type UserType ={
     wallet: string;
     network: string;
   };
-}
+};
 
-export type formType={
-    id?:number;
-    name?:string;
-    email:string;
-    password:string;
-}
+export type formType = {
+  id?: number;
+  name?: string;
+  email: string;
+  password: string;
+};
 
 export type CommentType = {
   id: number;
   body: string;
   postId: number;
-  likes: number;
+  likes?: number;
   user: {
     id: number;
-    username: string;
-    fullName: string;
+    username?: string;
+    fullName?: string;
   };
 };

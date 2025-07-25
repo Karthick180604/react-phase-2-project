@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { setApiError } from "../../redux/Actions/errorAction";
 
 const ApiError: React.FC = () => {
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const handleRefresh = () => {
     dispatch(setApiError(false));
     window.location.reload();

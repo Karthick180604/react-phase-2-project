@@ -1,4 +1,3 @@
-
 import { Box } from "@mui/material";
 import socialMediaImage from "../../assets/socialMediaPng.png";
 

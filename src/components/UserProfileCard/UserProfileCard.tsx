@@ -1,6 +1,6 @@
-import React from 'react';
-import { Avatar, Box, Typography, Paper } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import React from "react";
+import { Avatar, Box, Typography, Paper } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 
 interface UserProfileCardProps {
   image: string;
@@ -20,7 +20,7 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({
   email,
   phone,
   gender,
-  company
+  company,
 }) => {
   const theme = useTheme();
 
@@ -31,26 +31,34 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({
           sx={{
             width: 108,
             height: 108,
-            mx: 'auto',
+            mx: "auto",
             mb: 2,
-            borderRadius: '50%',
+            borderRadius: "50%",
             border: `4px solid ${theme.palette.tertiary.main}`,
             boxShadow: `0 0 10px ${theme.palette.tertiary.main}`,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
           <Avatar src={image} sx={{ width: 100, height: 100 }} />
         </Box>
 
-        <Typography variant="h6" fontWeight={600}>{fullName}</Typography>
-        <Typography variant="body2" color="text.secondary">{email}</Typography>
-        <Typography variant="body2" color="text.secondary">{phone} | {gender}</Typography>
+        <Typography variant="h6" fontWeight={600}>
+          {fullName}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {email}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {phone} | {gender}
+        </Typography>
       </Box>
 
       <Box mt={3}>
-        <Typography variant="subtitle2" color="text.secondary">Company</Typography>
+        <Typography variant="subtitle2" color="text.secondary">
+          Company
+        </Typography>
         <Typography variant="body2">{company.name}</Typography>
         <Typography variant="body2">{company.title}</Typography>
       </Box>

@@ -1,20 +1,20 @@
-import { useEffect, useState, useMemo, useCallback } from 'react';
-import { getAllUsers, getSearchedUsers } from '../../services/apiCalls';
-import UserCard from '../../components/UserCard/UserCard';
+import { useEffect, useState, useMemo, useCallback } from "react";
+import { getAllUsers, getSearchedUsers } from "../../services/apiCalls";
+import UserCard from "../../components/UserCard/UserCard";
 import {
   Grid,
   Container,
   Typography,
   TextField,
   InputAdornment,
-  Box
-} from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
-import debounce from 'lodash.debounce';
-import NoResults from '../../components/NoResults/NoResults';
-import { useSelector } from 'react-redux';
-import type { RootState } from '../../redux/Store/store';
-import ApiError from '../../components/ApiError.tsx/ApiError';
+  Box,
+} from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import debounce from "lodash.debounce";
+import NoResults from "../../components/NoResults/NoResults";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../redux/Store/store";
+import ApiError from "../../components/ApiError/ApiError";
 
 interface User {
   id: number;
@@ -26,7 +26,7 @@ interface User {
 const SearchUsers = () => {
   const [userList, setUserList] = useState<User[]>([]);
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
   const hasError = useSelector((state: RootState) => state.error.hasApiError);
 
@@ -44,27 +44,30 @@ const SearchUsers = () => {
     }
   };
 
-  const fetchSearchedUsers = useCallback(async (term: string) => {
-    try {
-      if (term.trim() === '') {
-        setFilteredUsers(userList);
-        return;
-      } else {
-        const response = await getSearchedUsers(term);
-        setFilteredUsers(response.data.users);
+  const fetchSearchedUsers = useCallback(
+    async (term: string) => {
+      try {
+        if (term.trim() === "") {
+          setFilteredUsers(userList);
+          return;
+        } else {
+          const response = await getSearchedUsers(term);
+          setFilteredUsers(response.data.users);
+        }
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
-    }
-  }, [userList]);
+    },
+    [userList],
+  );
 
   const debouncedSearch = useMemo(
     () => debounce((value: string) => fetchSearchedUsers(value), 500),
-    [fetchSearchedUsers]
+    [fetchSearchedUsers],
   );
 
-  if(hasError) {
-    return <ApiError />
+  if (hasError) {
+    return <ApiError />;
   }
 
   return (
@@ -75,7 +78,7 @@ const SearchUsers = () => {
 
       <Box mb={4}>
         <TextField
-        color="tertiary"
+          color="tertiary"
           variant="outlined"
           fullWidth
           placeholder="Search users by name..."
@@ -96,7 +99,7 @@ const SearchUsers = () => {
       </Box>
 
       {filteredUsers.length === 0 ? (
-        <NoResults message="No users found"/>
+        <NoResults message="No users found" />
       ) : (
         <Grid container spacing={4}>
           {filteredUsers.map((user) => (
