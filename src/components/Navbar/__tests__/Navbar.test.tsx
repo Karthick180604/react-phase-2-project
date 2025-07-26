@@ -1,3 +1,4 @@
+//cleared test
 import { render, screen, fireEvent } from "@testing-library/react";
 import Navbar from "../Navbar";
 import { BrowserRouter } from "react-router-dom";
@@ -5,8 +6,11 @@ import { logoutUser } from "../../../redux/Actions/userActions";
 import { ThemeProvider } from "@emotion/react";
 import { theme } from "../../../constants/theme";
 
-// MUI mocking for breakpoints
-jest.mock("@mui/material/useMediaQuery", () => jest.fn());
+// ✅ Mock useMediaQuery inline to avoid ReferenceError
+jest.mock("@mui/material/useMediaQuery", () => ({
+  __esModule: true,
+  default: jest.fn(),
+}));
 
 // Mock hooks and functions
 const mockDispatch = jest.fn();
@@ -19,9 +23,7 @@ jest.mock("react-redux", () => ({
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
   useNavigate: () => mockNavigate,
-  useLocation: () => ({
-    pathname: "/home/profile/me",
-  }),
+  useLocation: () => ({ pathname: "/home/profile/me" }),
 }));
 
 jest.mock("../../../redux/Actions/userActions", () => ({
@@ -35,20 +37,18 @@ const renderWithRouter = () =>
       <ThemeProvider theme={theme}>
         <Navbar />
       </ThemeProvider>
-    </BrowserRouter>,
+    </BrowserRouter>
   );
 
 describe("Navbar Component", () => {
+  const useMediaQuery = require("@mui/material/useMediaQuery").default;
+
   afterEach(() => {
     jest.clearAllMocks();
   });
 
   test("renders mobile layout with nav links", () => {
-    require("@mui/material/useMediaQuery").mockImplementation((query) =>
-      typeof query === "function"
-        ? query({ breakpoints: { down: () => true } })
-        : true,
-    );
+    useMediaQuery.mockImplementation((query: string) => query.includes("max-width: 600px"));
 
     renderWithRouter();
 
@@ -60,17 +60,10 @@ describe("Navbar Component", () => {
     expect(screen.getByTestId("nav-logout")).toBeInTheDocument();
   });
 
-  test.skip("renders tablet layout with icons", () => {
-    require("@mui/material/useMediaQuery").mockImplementation((query) => {
-      if (typeof query === "function")
-        return query({
-          breakpoints: {
-            down: (key) => key === "sm",
-            between: (a, b) => a === "sm" && b === "md",
-          },
-        });
-      return false;
-    });
+  test("renders tablet layout with icons", () => {
+    useMediaQuery.mockImplementation((query: string) =>
+      query.includes("(min-width: 601px) and (max-width: 960px)")
+    );
 
     renderWithRouter();
 
@@ -83,7 +76,9 @@ describe("Navbar Component", () => {
   });
 
   test("renders desktop layout with full sidebar", () => {
-    require("@mui/material/useMediaQuery").mockImplementation(() => false);
+    useMediaQuery.mockImplementation((query: string) =>
+      query.includes("(min-width: 961px)")
+    );
 
     renderWithRouter();
 
@@ -96,7 +91,7 @@ describe("Navbar Component", () => {
   });
 
   test("logout button calls dispatch and navigate", () => {
-    require("@mui/material/useMediaQuery").mockImplementation(() => false);
+    useMediaQuery.mockImplementation(() => true); // assume visible
 
     renderWithRouter();
 
@@ -108,12 +103,11 @@ describe("Navbar Component", () => {
   });
 
   test("highlights the active nav item on desktop", () => {
-    require("@mui/material/useMediaQuery").mockImplementation(() => false);
+    useMediaQuery.mockImplementation(() => true);
 
     renderWithRouter();
 
     const activeLink = screen.getByTestId("navlink-profile");
-    // Just check if it rendered with expected color class
     expect(activeLink).toBeInTheDocument();
   });
 });

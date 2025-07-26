@@ -50,8 +50,9 @@ const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md"));
+const isMobile = useMediaQuery("(max-width: 600px)");
+const isTablet = useMediaQuery("(min-width: 601px) and (max-width: 960px)");
+
 
   const handleLogout = () => {
     dispatch(logoutUser());
@@ -59,7 +60,6 @@ const Navbar = () => {
   };
 
   const isExactPath = (targetPath: string) => location.pathname === targetPath;
-  console.log(isMobile, isTablet, "===============");
 
   if (isMobile) {
     return (
