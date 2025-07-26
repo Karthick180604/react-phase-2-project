@@ -46,13 +46,10 @@ const AddPostDialog: React.FC<AddPostDialogProps> = ({
     if (title.trim() && body.trim()) {
       const postObj = {
         id: 252 + userDetails.uploadedPosts.length,
-        title: title,
-        body: body,
+        title,
+        body,
         tags: selectedTags,
-        reactions: {
-          likes: 0,
-          dislikes: 0,
-        },
+        reactions: { likes: 0, dislikes: 0 },
         views: 0,
         userId: userDetails.id,
       };
@@ -70,7 +67,7 @@ const AddPostDialog: React.FC<AddPostDialogProps> = ({
   };
 
   return (
-    <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
+    <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth data-testid="add-post-dialog">
       <DialogTitle>Add New Post</DialogTitle>
       <DialogContent>
         <Stack spacing={2} mt={1}>
@@ -80,6 +77,7 @@ const AddPostDialog: React.FC<AddPostDialogProps> = ({
             fullWidth
             value={title}
             onChange={(e) => setTitle(e.target.value)}
+            data-testid="add-post-title"
           />
           <TextField
             color="tertiary"
@@ -89,6 +87,7 @@ const AddPostDialog: React.FC<AddPostDialogProps> = ({
             minRows={4}
             value={body}
             onChange={(e) => setBody(e.target.value)}
+            data-testid="add-post-body"
           />
           <Autocomplete
             multiple
@@ -97,20 +96,26 @@ const AddPostDialog: React.FC<AddPostDialogProps> = ({
             onChange={(event, value) => setSelectedTags(value)}
             renderInput={(params) => (
               <TextField
-                color="tertiary"
                 {...params}
                 label="Select Tags"
                 placeholder="Tags"
+                color="tertiary"
+                data-testid="add-post-tags"
               />
             )}
           />
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="inherit">
+        <Button onClick={handleClose} color="inherit" data-testid="add-post-cancel">
           Cancel
         </Button>
-        <Button color="tertiary" onClick={handleSubmit} variant="contained">
+        <Button
+          color="tertiary"
+          onClick={handleSubmit}
+          variant="contained"
+          data-testid="add-post-submit"
+        >
           Add Post
         </Button>
       </DialogActions>
