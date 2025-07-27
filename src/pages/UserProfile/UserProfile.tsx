@@ -67,6 +67,7 @@ const UserProfile = () => {
   if (!user) {
     return (
       <Box
+        data-testid="loading-spinner"
         sx={{
           height: "60vh",
           display: "flex",
@@ -80,15 +81,19 @@ const UserProfile = () => {
   }
 
   return (
-    <Container sx={{ py: 5 }}>
-      <Box display="flex" alignItems="center" mb={3}>
-        <IconButton onClick={() => navigate(-1)}>
+    <Container sx={{ py: 5 }} data-testid="user-profile-page">
+      <Box display="flex" alignItems="center" mb={3} data-testid="back-button-box">
+        <IconButton
+          onClick={() => navigate(-1)}
+          data-testid="back-button"
+          aria-label="go-back"
+        >
           <ArrowBackIcon />
         </IconButton>
       </Box>
 
       <Grid container spacing={4} alignItems="flex-start">
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={4} data-testid="user-profile-card-section">
           <UserProfileCard
             image={user.image}
             fullName={`${user.firstName} ${user.lastName}`}
@@ -99,12 +104,12 @@ const UserProfile = () => {
           />
         </Grid>
 
-        <Grid item xs={12} md={8}>
+        <Grid item xs={12} md={8} data-testid="user-posts-section">
           <Box sx={{ mt: -1 }}>
             {userPosts.length === 0 ? (
-              <NoPosts />
+              <NoPosts data-testid="no-posts-message" />
             ) : (
-              <UserPostSection posts={userPosts} />
+              <UserPostSection posts={userPosts} data-testid="user-post-section" />
             )}
           </Box>
         </Grid>

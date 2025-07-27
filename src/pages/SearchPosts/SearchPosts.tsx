@@ -127,7 +127,7 @@ const SearchPosts = () => {
 
   const debouncedSearch = useMemo(
     () => debounce(fetchSearchedPosts, 500),
-    [fetchSearchedPosts],
+    [fetchSearchedPosts]
   );
 
   const settedTag = (e: SelectChangeEvent<string>) => {
@@ -136,7 +136,7 @@ const SearchPosts = () => {
       resetPagination();
     } else {
       const filtered = posts.filter((post) =>
-        post.tags.includes(e.target.value),
+        post.tags.includes(e.target.value)
       );
       setPostList(filtered);
       setHasMore(false);
@@ -168,20 +168,20 @@ const SearchPosts = () => {
 
       if (node) observerRef.current.observe(node);
     },
-    [loading, hasMore, searchTerm, selectedTag],
+    [loading, hasMore, searchTerm, selectedTag]
   );
 
   if (hasError) {
-    return <ApiError />;
+    return <ApiError data-testid="api-error" />;
   }
 
   return (
-    <Container sx={{ py: 4 }}>
-      <Typography variant="h4" gutterBottom>
+    <Container sx={{ py: 4 }} data-testid="search-posts-page">
+      <Typography variant="h4" gutterBottom data-testid="page-title">
         Search Posts
       </Typography>
 
-      <Box sx={{ display: "flex", gap: 2, mb: 4 }}>
+      <Box sx={{ display: "flex", gap: 2, mb: 4 }} data-testid="search-bar-section">
         <TextField
           color="tertiary"
           label="Search Posts"
@@ -200,35 +200,20 @@ const SearchPosts = () => {
               </InputAdornment>
             ),
           }}
+          inputProps={{ "data-testid": "search-input" }}
         />
-        <FormControl
-          sx={{
-            minWidth: 180,
-            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-              borderColor: theme.palette.tertiary.main,
-            },
-            "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-              {
-                borderColor: theme.palette.tertiary.main,
-              },
-            "& label.Mui-focused": {
-              color: theme.palette.tertiary.main,
-            },
-            "& svg": {
-              color: theme.palette.tertiary.main,
-            },
-          }}
-        >
+        <FormControl sx={{ minWidth: 180 }}>
           <InputLabel id="tag-select-label">Tags</InputLabel>
           <Select
             labelId="tag-select-label"
             value={selectedTag}
             label="Filter by Tag"
             onChange={settedTag}
+            data-testid="tag-select"
           >
-            <MenuItem value="All">All</MenuItem>
+            <MenuItem value="All" data-testid="tag-option-All">All</MenuItem>
             {tags.map((tag) => (
-              <MenuItem key={tag.slug} value={tag.slug}>
+              <MenuItem key={tag.slug} value={tag.slug} data-testid={`tag-option-${tag.slug}`}>
                 {tag.name}
               </MenuItem>
             ))}
@@ -237,17 +222,17 @@ const SearchPosts = () => {
       </Box>
 
       {loading && postList.length === 0 ? (
-        <Grid container spacing={3}>
+        <Grid container spacing={3} data-testid="loading-state">
           {Array.from({ length: 6 }).map((_, index) => (
             <Grid item xs={12} sm={6} md={4} key={index}>
-              <PostCardSmallSkeleton />
+              <PostCardSmallSkeleton data-testid={`skeleton-${index}`} />
             </Grid>
           ))}
         </Grid>
       ) : postList.length === 0 ? (
-        <NoResults message="No posts found" />
+        <NoResults message="No posts found" data-testid="no-posts" />
       ) : (
-        <Grid container spacing={3}>
+        <Grid container spacing={3} data-testid="post-list">
           {postList.map((post, index) => {
             const isLast = postList.length === index + 1;
             return (
@@ -258,6 +243,7 @@ const SearchPosts = () => {
                 sm={6}
                 md={4}
                 ref={isLast ? lastPostRef : null}
+                data-testid={`post-${post.id}`}
               >
                 <PostCardSmall
                   title={post.title}
@@ -287,6 +273,7 @@ const SearchPosts = () => {
             ? userDetails.dislikePostId.includes(selectedPost.id)
             : false
         }
+        data-testid="post-dialog"
       />
     </Container>
   );

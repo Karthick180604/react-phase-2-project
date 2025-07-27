@@ -67,12 +67,17 @@ const SearchUsers = () => {
   );
 
   if (hasError) {
-    return <ApiError />;
+    return <ApiError data-testid="api-error" />;
   }
 
   return (
-    <Container sx={{ py: 5 }}>
-      <Typography variant="h4" mb={3} fontWeight={700}>
+    <Container sx={{ py: 5 }} data-testid="search-users-container">
+      <Typography
+        variant="h4"
+        mb={3}
+        fontWeight={700}
+        data-testid="search-users-title"
+      >
         Explore Users
       </Typography>
 
@@ -95,15 +100,25 @@ const SearchUsers = () => {
               </InputAdornment>
             ),
           }}
+          inputProps={{ "data-testid": "search-input" }}
         />
       </Box>
 
       {filteredUsers.length === 0 ? (
-        <NoResults message="No users found" />
+        <NoResults message="No users found" data-testid="no-users" />
       ) : (
-        <Grid container spacing={4}>
+        <Grid container spacing={4} data-testid="user-list">
           {filteredUsers.map((user) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} xl={2.4} key={user.id}>
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              md={4}
+              lg={3}
+              xl={2.4}
+              key={user.id}
+              data-testid={`user-card-${user.id}`}
+            >
               <UserCard
                 id={user.id}
                 image={user.image}

@@ -27,7 +27,6 @@ const Home = () => {
   const limit = 10;
 
   const hasError = useSelector((state: RootState) => state.error.hasApiError);
-
   const postsState = useSelector((state: RootState) => state.posts);
   const userDetails = useSelector((state: RootState) => state.user);
 
@@ -57,19 +56,13 @@ const Home = () => {
   );
 
   const onLikeHandler = (postId: number, like: boolean) => {
-    if (!like) {
-      dispatch(likePost(postId));
-    } else {
-      dispatch(removeLikePost(postId));
-    }
+    if (!like) dispatch(likePost(postId));
+    else dispatch(removeLikePost(postId));
   };
 
   const onDislikeHandler = (postId: number, dislike: boolean) => {
-    if (!dislike) {
-      dispatch(dislikePost(postId));
-    } else {
-      dispatch(removeDislikePost(postId));
-    }
+    if (!dislike) dispatch(dislikePost(postId));
+    else dispatch(removeDislikePost(postId));
   };
 
   const [showScrollTop, setShowScrollTop] = useState(false);
@@ -87,13 +80,11 @@ const Home = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const userUploadedPost = userDetails.uploadedPosts.map((uploadPost) => {
-    return {
-      ...uploadPost,
-      image: userDetails.image,
-      username: userDetails.username,
-    };
-  });
+  const userUploadedPost = userDetails.uploadedPosts.map((uploadPost) => ({
+    ...uploadPost,
+    image: userDetails.image,
+    username: userDetails.username,
+  }));
 
   const postToRender = [...userUploadedPost, ...postsState.posts];
 
@@ -102,8 +93,8 @@ const Home = () => {
   }
 
   return (
-    <Container maxWidth="md" sx={{ mt: 4 }}>
-      <Typography variant="h4" gutterBottom>
+    <Container maxWidth="md" sx={{ mt: 4 }} data-testid="home-container">
+      <Typography variant="h4" gutterBottom data-testid="page-title">
         Latest Posts
       </Typography>
 
@@ -114,6 +105,7 @@ const Home = () => {
             key={post.id}
             ref={isLast ? lastPostRef : null}
             style={{ cursor: "pointer" }}
+            data-testid={`post-${post.id}`}
           >
             <PostCard
               post={post}
@@ -129,7 +121,7 @@ const Home = () => {
 
       {postsState.loading &&
         Array.from({ length: 3 }).map((_, i) => (
-          <PostCardSkeleton key={`skeleton-${i}`} />
+          <PostCardSkeleton key={`skeleton-${i}`} data-testid={`skeleton-${i}`} />
         ))}
 
       <PostDialog
@@ -149,17 +141,14 @@ const Home = () => {
             : false
         }
       />
+
       <Zoom in={showScrollTop}>
         <Fab
           color="secondary"
           onClick={handleScrollToTop}
-          sx={{
-            position: "fixed",
-            bottom: 32,
-            right: 32,
-            zIndex: 1000,
-          }}
+          sx={{ position: "fixed", bottom: 32, right: 32, zIndex: 1000 }}
           aria-label="scroll back to top"
+          data-testid="scroll-top-fab"
         >
           <KeyboardArrowUpIcon />
         </Fab>

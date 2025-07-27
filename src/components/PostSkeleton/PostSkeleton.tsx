@@ -16,6 +16,7 @@ import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 const PostCardSkeleton: React.FC = () => {
   return (
     <Card
+      data-testid="post-card-skeleton"
       sx={{
         mb: 3,
         display: "flex",
@@ -26,6 +27,7 @@ const PostCardSkeleton: React.FC = () => {
       }}
     >
       <Box
+        data-testid="skeleton-media-section"
         sx={{
           width: { xs: "100%", sm: 300 },
           display: "flex",
@@ -34,7 +36,12 @@ const PostCardSkeleton: React.FC = () => {
           bgcolor: "grey.100",
         }}
       >
-        <Skeleton variant="rectangular" width="100%" height={210} />
+        <Skeleton
+          variant="rectangular"
+          width="100%"
+          height={210}
+          data-testid="skeleton-image"
+        />
 
         <Stack
           direction="row"
@@ -46,33 +53,35 @@ const PostCardSkeleton: React.FC = () => {
             bgcolor: "background.paper",
             borderTop: "1px solid #eee",
           }}
+          data-testid="skeleton-actions"
         >
           {[1, 2, 3].map((_, idx) => (
-            <Box key={idx} textAlign="center">
-              <IconButton disabled>
+            <Box key={idx} textAlign="center" data-testid={`skeleton-action-${idx}`}>
+              <IconButton disabled data-testid={`skeleton-icon-${idx}`}>
                 {idx === 0 && <ThumbUpAltOutlinedIcon />}
                 {idx === 1 && <ThumbDownAltOutlinedIcon />}
                 {idx === 2 && <CommentOutlinedIcon />}
               </IconButton>
-              <Skeleton
-                variant="text"
-                width={30}
-                height={16}
-                sx={{ mx: "auto" }}
-              />
+              <Skeleton variant="text" width={30} height={16} />
             </Box>
           ))}
-          <Box textAlign="center" display="flex" alignItems="center" gap={0.5}>
+          <Box
+            data-testid="skeleton-views"
+            textAlign="center"
+            display="flex"
+            alignItems="center"
+            gap={0.5}
+          >
             <VisibilityOutlinedIcon fontSize="small" />
             <Skeleton variant="text" width={30} height={16} />
           </Box>
         </Stack>
       </Box>
 
-      <Box flex={1}>
+      <Box flex={1} data-testid="skeleton-content-section">
         <CardContent>
           <Stack direction="row" alignItems="center" spacing={2} mb={1}>
-            <Skeleton variant="circular">
+            <Skeleton variant="circular" data-testid="skeleton-avatar">
               <Avatar sx={{ width: 40, height: 40 }} />
             </Skeleton>
             <Skeleton variant="text" width={100} height={20} />
@@ -86,7 +95,7 @@ const PostCardSkeleton: React.FC = () => {
 
           <Skeleton variant="text" width={80} height={20} sx={{ mt: 1 }} />
 
-          <Stack direction="row" spacing={1} mt={2} flexWrap="wrap">
+          <Stack direction="row" spacing={1} mt={2} flexWrap="wrap" data-testid="skeleton-tags">
             {Array.from({ length: 3 }).map((_, i) => (
               <Skeleton key={i} variant="rounded" width={60} height={24} />
             ))}

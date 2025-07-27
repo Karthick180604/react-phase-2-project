@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/10</span>
+                <span class='fraction'>10/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/9</span>
+                <span class='fraction'>9/9</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -85,44 +85,44 @@
 <a name='L20'></a><a href='#L20'>20</a>
 <a name='L21'></a><a href='#L21'>21</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">22x</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React from "react";
 import type { RootState } from "../../redux/Store/store";
-<span class="cstat-no" title="statement not covered" >import { useSelector } from "react-redux";</span>
-<span class="cstat-no" title="statement not covered" >import { Navigate } from "react-router-dom";</span>
+import { useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
 &nbsp;
 interface ProtectedRoutesProps {
   children: React.ReactNode;
 }
 &nbsp;
-const AuthProtectedRoutes: React.FC&lt;ProtectedRoutesProps&gt; = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span> children }) =&gt; {</span>
-  const userDetails = <span class="cstat-no" title="statement not covered" >useSelector(<span class="fstat-no" title="function not covered" >(s</span>tate: RootState) =&gt; <span class="cstat-no" title="statement not covered" >state.user)</span>;</span>
-  const isAuthenticated = <span class="cstat-no" title="statement not covered" >!!userDetails.email;</span>
-<span class="cstat-no" title="statement not covered" >  if (!isAuthenticated) {</span>
-<span class="cstat-no" title="statement not covered" >    return children;</span>
+const AuthProtectedRoutes: React.FC&lt;ProtectedRoutesProps&gt; = ({ children }) =&gt; {
+  const userDetails = useSelector((state: RootState) =&gt; state.user);
+  const isAuthenticated = !!userDetails.email;
+  if (!isAuthenticated) {
+    return children;
   } else {
-<span class="cstat-no" title="statement not covered" >    return &lt;Navigate to="/home" /&gt;;</span>
+    return &lt;Navigate to="/home" /&gt;;
   }
 };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >export default AuthProtectedRoutes;</span>
+export default AuthProtectedRoutes;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -130,7 +130,7 @@ const AuthProtectedRoutes: React.FC&lt;ProtectedRoutesProps&gt; = <span class="c
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-07-26T15:54:44.883Z
+                at 2025-07-27T14:31:45.265Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

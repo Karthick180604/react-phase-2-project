@@ -9,7 +9,7 @@ import errorReducer from "../Reducers/errorReducer";
 const middleWare = [thunk];
 const enhancer = compose(applyMiddleware(...middleWare));
 
-const rootReducer = combineReducers({
+export const rootReducer = combineReducers({
   user: userReducer,
   posts: postReducer,
   error: errorReducer,

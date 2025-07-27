@@ -184,6 +184,7 @@ const Signup = () => {
                 value={formData.name}
                 onChange={handleChange}
                 sx={{ mb: 2 }}
+                inputProps={{ "data-testid": "name-input" }}
               />
 
               <TextField
@@ -198,6 +199,7 @@ const Signup = () => {
                 error={!!errors.email}
                 helperText={errors.email}
                 sx={{ mb: 2 }}
+                inputProps={{ "data-testid": "email-input" }} // ✅ add this
               />
 
               <TextField
@@ -216,12 +218,14 @@ const Signup = () => {
                     <InputAdornment position="end">
                       <IconButton
                         onClick={() => setShowPassword((prev) => !prev)}
+                        data-testid="toggle-password-visibility"
                       >
                         {showPassword ? <VisibilityOff /> : <Visibility />}
                       </IconButton>
                     </InputAdornment>
                   ),
                 }}
+                inputProps={{ "data-testid": "password-input" }}
               />
 
               <Box mt={3}>
@@ -237,6 +241,7 @@ const Signup = () => {
                     textTransform: "none",
                     fontWeight: "bold",
                   }}
+                  data-testid="signup-button"
                 >
                   Sign Up
                 </Button>
@@ -249,6 +254,7 @@ const Signup = () => {
                     color="tertiary"
                     onClick={() => navigate("/")}
                     sx={{ textTransform: "none", fontWeight: "bold" }}
+                    data-testid="login-redirect"
                   >
                     Login
                   </Button>
@@ -262,6 +268,7 @@ const Signup = () => {
           autoHideDuration={5000}
           onClose={handleClose}
           anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          data-testid="user-exists-snackbar"
         >
           <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
             User Already exist

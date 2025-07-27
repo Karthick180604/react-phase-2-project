@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/12</span>
+                <span class='fraction'>12/12</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>1/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/12</span>
+                <span class='fraction'>12/12</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -96,22 +96,20 @@
 <a name='L31'></a><a href='#L31'>31</a>
 <a name='L32'></a><a href='#L32'>32</a>
 <a name='L33'></a><a href='#L33'>33</a>
-<a name='L34'></a><a href='#L34'>34</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<a name='L34'></a><a href='#L34'>34</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -128,21 +126,23 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import Navbar from "../../components/Navbar/Navbar";</span>
-<span class="cstat-no" title="statement not covered" >import { Outlet } from "react-router-dom";</span>
-<span class="cstat-no" title="statement not covered" >import { Box, useMediaQuery } from "@mui/material";</span>
-<span class="cstat-no" title="statement not covered" >import { useTheme } from "@mui/material/styles";</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import Navbar from "../../components/Navbar/Navbar";
+import { Outlet } from "react-router-dom";
+import { Box, useMediaQuery } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 &nbsp;
-const WebLayout = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
-  const theme = <span class="cstat-no" title="statement not covered" >useTheme();</span>
-  const isTablet = <span class="cstat-no" title="statement not covered" >useMediaQuery(theme.breakpoints.between("sm", "md"));</span>
-  const isDesktop = <span class="cstat-no" title="statement not covered" >useMediaQuery(theme.breakpoints.up("md"));</span>
+const WebLayout = () =&gt; {
+  const theme = useTheme();
+  const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md"));
+  const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
 &nbsp;
-  const drawerWidth = <span class="cstat-no" title="statement not covered" >isTablet ? 72 : isDesktop ? 200 : 0;</span>
-  const topPadding = <span class="cstat-no" title="statement not covered" >{ xs: 2, sm: 3 };</span>
+  const drawerWidth = isTablet ? 72 : isDesktop ? 200 : 0;
+  const topPadding = { xs: 2, sm: 3 };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return (</span>
+  return (
     &lt;Box sx={{ display: "flex" }}&gt;
       &lt;Navbar /&gt;
       &lt;Box
@@ -161,7 +161,7 @@ const WebLayout = <span class="cstat-no" title="statement not covered" ><span cl
   );
 };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >export default WebLayout;</span>
+export default WebLayout;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -169,7 +169,7 @@ const WebLayout = <span class="cstat-no" title="statement not covered" ><span cl
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-07-26T15:54:44.883Z
+                at 2025-07-27T14:31:45.265Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
