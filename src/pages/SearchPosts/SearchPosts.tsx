@@ -205,7 +205,7 @@ const SearchPosts = () => {
           }}
           inputProps={{ "data-testid": "search-input" }}
         />
-        <FormControl sx={{ minWidth: 180 }}>
+        <FormControl color="tertiary" sx={{ minWidth: 180 }}>
           <InputLabel id="tag-select-label">Tags</InputLabel>
           <Select
             labelId="tag-select-label"

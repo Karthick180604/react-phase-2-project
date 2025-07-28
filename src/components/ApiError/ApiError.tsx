@@ -56,7 +56,7 @@ const ApiError: React.FC = () => {
 
       <Button
         variant="contained"
-        color="secondary"
+        color="tertiary"
         onClick={handleRefresh}
         sx={{ mt: 2, textTransform: "none" }}
         data-testid="api-error-refresh-btn"
