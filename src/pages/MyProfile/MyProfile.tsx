@@ -97,7 +97,7 @@ const MyProfile = () => {
               onClick={() => setEditOpen(true)}
               data-testid="edit-profile-btn"
             >
-              Edit Profile Info
+              Add Profile Info
             </Button>
           </Box>
         </Grid>

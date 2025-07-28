@@ -9,6 +9,7 @@ import {
   TextField,
   Button,
   Stack,
+  CircularProgress,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import type { Post } from "../../redux/Actions/postsActions";
@@ -48,6 +49,7 @@ const PostDialog: React.FC<PostDialogProps> = ({
   const dispatch = useDispatch();
   const [wroteComment, setWroteComment] = useState("");
   const [comments, setComments] = useState<CommentType[]>([]);
+  const [loading, setLoading] = useState(false);
   const handleComment = () => {
     dispatch(commentPost(post.id, wroteComment));
     setWroteComment("");
@@ -58,6 +60,7 @@ const PostDialog: React.FC<PostDialogProps> = ({
   }, [post?.id, userDetails.commentedPosts]);
   const fetchComments = async () => {
     try {
+      setLoading(true);
       if (post.id <= 251) {
         const response = await getPostComments(post.id);
         const apiComments = response.data.comments.map(
@@ -91,7 +94,9 @@ const PostDialog: React.FC<PostDialogProps> = ({
           }));
         setComments(userComments);
       }
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
@@ -191,6 +196,17 @@ const PostDialog: React.FC<PostDialogProps> = ({
               pr: 1,
             }}
           >
+            {loading && (<Box
+                    data-testid="loading-spinner"
+                    sx={{
+                      height: "60vh",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <CircularProgress size={30} color="secondary" />
+                  </Box>)}
             {comments.length === 0 ? (
               <Box
                 display="flex"

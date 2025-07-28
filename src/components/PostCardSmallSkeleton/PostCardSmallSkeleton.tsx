@@ -11,7 +11,7 @@ const PostCardSmallSkeleton: React.FC = () => {
         boxShadow: 1,
         display: "flex",
         flexDirection: "column",
-        backgroundColor: "#fff",
+        backgroundColor: "#f9f9f9",
       }}
     >
       <Box
@@ -23,7 +23,7 @@ const PostCardSmallSkeleton: React.FC = () => {
           variant="rectangular"
           width="100%"
           height="100%"
-          sx={{ position: "absolute", top: 0, left: 0 }}
+          sx={{ position: "absolute", top: 0, left: 0,  bgcolor: "grey.300" }}
         />
       </Box>
       <CardContent data-testid="post-card-skeleton-content">
@@ -32,18 +32,21 @@ const PostCardSmallSkeleton: React.FC = () => {
           variant="text"
           width="80%"
           height={30}
+          sx={{ bgcolor: "grey.300"}}
         />
         <Skeleton
           data-testid="post-card-skeleton-line1"
           variant="text"
           width="100%"
           height={20}
+          sx={{ bgcolor: "grey.300"}}
         />
         <Skeleton
           data-testid="post-card-skeleton-line2"
           variant="text"
           width="60%"
           height={20}
+          sx={{ bgcolor: "grey.300"}}
         />
       </CardContent>
     </Card>

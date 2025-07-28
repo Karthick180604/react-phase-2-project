@@ -396,7 +396,7 @@ describe("MyProfile", () => {
       expect(screen.getByTestId("my-profile-root")).toBeInTheDocument();
     });
 
-    expect(screen.getByText("Edit Profile Info")).toBeInTheDocument();
+    expect(screen.getByText("Add Profile Info")).toBeInTheDocument();
     expect(screen.getByText("Add Post")).toBeInTheDocument();
   });
 

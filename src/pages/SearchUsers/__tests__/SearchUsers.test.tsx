@@ -6,16 +6,13 @@ import SearchUsers from '../SearchUsers';
 import { getAllUsers, getSearchedUsers } from '../../../services/apiCalls';
 import debounce from 'lodash.debounce';
 
-// Mock the API calls
 jest.mock('../../../services/apiCalls', () => ({
   getAllUsers: jest.fn(),
   getSearchedUsers: jest.fn(),
 }));
 
-// Mock debounce
 jest.mock('lodash.debounce', () => jest.fn((fn) => fn));
 
-// Mock the components
 jest.mock('../../../components/UserCard/UserCard', () => {
   return function UserCard({ id, name, image }: { id: number; name: string; image: string }) {
     return (
@@ -43,7 +40,6 @@ const mockGetAllUsers = getAllUsers as jest.MockedFunction<typeof getAllUsers>;
 const mockGetSearchedUsers = getSearchedUsers as jest.MockedFunction<typeof getSearchedUsers>;
 const mockDebounce = debounce as jest.MockedFunction<typeof debounce>;
 
-// Mock user data
 const mockUsers = [
   {
     id: 1,
@@ -65,7 +61,6 @@ const mockUsers = [
   },
 ];
 
-// Create mock store
 const createMockStore = (hasApiError = false) => {
   const initialState = {
     error: {
@@ -77,7 +72,6 @@ const createMockStore = (hasApiError = false) => {
   return createStore(rootReducer);
 };
 
-// Helper function to render component with store
 const renderWithStore = (hasApiError = false) => {
   const store = createMockStore(hasApiError);
   return render(
@@ -126,7 +120,6 @@ describe('SearchUsers Component', () => {
         expect(screen.getByTestId('user-list')).toBeInTheDocument();
       });
 
-      // Check if all users are displayed
       mockUsers.forEach((user) => {
         expect(screen.getAllByTestId(`user-card-${user.id}`)[0]).toBeInTheDocument();
       });
@@ -198,18 +191,15 @@ describe('SearchUsers Component', () => {
       
       const searchInput = screen.getByTestId('search-input');
       
-      // First search for something
       fireEvent.change(searchInput, { target: { value: 'John' } });
       
       await waitFor(() => {
         expect(mockGetSearchedUsers).toHaveBeenCalledWith('John');
       });
       
-      // Then clear the search
       fireEvent.change(searchInput, { target: { value: '' } });
 
       await waitFor(() => {
-        // Should show all users again (using getAllByTestId to handle multiple elements)
         mockUsers.forEach((user) => {
           expect(screen.getAllByTestId(`user-card-${user.id}`)[0]).toBeInTheDocument();
         });
@@ -317,17 +307,15 @@ describe('SearchUsers Component', () => {
 
     it('should render search input with search icon', () => {
       expect(screen.getByTestId('search-input')).toBeInTheDocument();
-      // Search icon is rendered through MUI InputAdornment
+      
     });
   });
 
   describe('Redux Integration', () => {
     it('should correctly read hasApiError from Redux store', () => {
-      // Test with error state
       const { unmount: unmountWithError } = renderWithStore(true);
       expect(screen.getByTestId('api-error')).toBeInTheDocument();
       
-      // Unmount and test without error state
       unmountWithError();
       renderWithStore(false);
       expect(screen.queryByTestId('api-error')).not.toBeInTheDocument();

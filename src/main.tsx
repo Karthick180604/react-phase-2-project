@@ -1,20 +1,23 @@
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Login from "./pages/Auth/Login.tsx";
-import Signup from "./pages/Auth/Signup.tsx";
-import Home from "./pages/Home/Home.tsx";
-import WebLayout from "./pages/WebLayout/WebLayout.tsx";
 import { Provider } from "react-redux";
 import { store } from "./redux/Store/store.ts";
-import SearchPosts from "./pages/SearchPosts/SearchPosts.tsx";
-import SearchUsers from "./pages/SearchUsers/SearchUsers.tsx";
-import UserProfile from "./pages/UserProfile/UserProfile.tsx";
-import MyProfile from "./pages/MyProfile/MyProfile.tsx";
 import { createTheme, ThemeProvider } from "@mui/material";
+import { Suspense, lazy } from "react";
+
 import ProtectedRoutes from "./components/ProtectedRoutes/ProtectedRoutes.tsx";
 import AuthProtectedRoutes from "./components/AuthProtectedRoutes/AuthProtectedRoutes.tsx";
-import PageNotFound from "./pages/PageNotFound/PageNotFound.tsx";
+
+const Login = lazy(() => import("./pages/Auth/Login.tsx"));
+const Signup = lazy(() => import("./pages/Auth/Signup.tsx"));
+const Home = lazy(() => import("./pages/Home/Home.tsx"));
+const WebLayout = lazy(() => import("./pages/WebLayout/WebLayout.tsx"));
+const SearchPosts = lazy(() => import("./pages/SearchPosts/SearchPosts.tsx"));
+const SearchUsers = lazy(() => import("./pages/SearchUsers/SearchUsers.tsx"));
+const UserProfile = lazy(() => import("./pages/UserProfile/UserProfile.tsx"));
+const MyProfile = lazy(() => import("./pages/MyProfile/MyProfile.tsx"));
+const PageNotFound = lazy(() => import("./pages/PageNotFound/PageNotFound.tsx"));
 
 export const theme = createTheme({
   palette: {
@@ -86,7 +89,9 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
     <ThemeProvider theme={theme}>
-      <RouterProvider router={router} />
+      <Suspense fallback={<div style={{ textAlign: "center", marginTop: "20vh" }}>Loading...</div>}>
+        <RouterProvider router={router} />
+      </Suspense>
     </ThemeProvider>
-  </Provider>,
+  </Provider>
 );

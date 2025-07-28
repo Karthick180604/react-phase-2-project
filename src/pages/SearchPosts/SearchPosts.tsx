@@ -230,7 +230,7 @@ const SearchPosts = () => {
         </FormControl>
       </Box>
 
-      {loading && postList.length === 0 ? (
+      {loading ? (
         <Grid container spacing={3} data-testid="loading-state">
           {Array.from({ length: 6 }).map((_, index) => (
             <Grid item xs={12} sm={6} md={4} key={index}>
