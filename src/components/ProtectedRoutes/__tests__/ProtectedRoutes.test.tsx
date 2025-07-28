@@ -1,5 +1,3 @@
-//cleared tests
-
 import React from "react";
 import { render } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
@@ -13,7 +11,7 @@ describe("ProtectedRoutes", () => {
   test("renders children when authenticated", () => {
     const store = mockStore({
       user: {
-        email: "test@example.com", // Authenticated
+        email: "test@example.com",
       },
     });
 
@@ -24,7 +22,7 @@ describe("ProtectedRoutes", () => {
             <div>Protected Content</div>
           </ProtectedRoutes>
         </MemoryRouter>
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText("Protected Content")).toBeInTheDocument();
@@ -33,7 +31,7 @@ describe("ProtectedRoutes", () => {
   test("redirects to / when not authenticated", () => {
     const store = mockStore({
       user: {
-        email: "", // Not authenticated
+        email: "",
       },
     });
 
@@ -44,7 +42,7 @@ describe("ProtectedRoutes", () => {
             <div>Protected Content</div>
           </ProtectedRoutes>
         </MemoryRouter>
-      </Provider>
+      </Provider>,
     );
 
     expect(container.innerHTML).not.toContain("Protected Content");

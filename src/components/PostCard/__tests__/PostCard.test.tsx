@@ -1,5 +1,3 @@
-//clear tests
-
 import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -7,7 +5,6 @@ import { BrowserRouter } from "react-router-dom";
 import PostCard from "../PostCard";
 import type { Post } from "../../../redux/Actions/postsActions";
 
-// Mock the CSS import
 jest.mock("../PostCard.css", () => ({}));
 
 describe("PostCard Component", () => {
@@ -43,7 +40,7 @@ describe("PostCard Component", () => {
     return render(
       <BrowserRouter>
         <PostCard {...defaultProps} {...props} />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
   };
 
@@ -57,7 +54,9 @@ describe("PostCard Component", () => {
 
       expect(screen.getByTestId("post-card")).toBeInTheDocument();
       expect(screen.getByTestId("post-image")).toBeInTheDocument();
-      expect(screen.getByTestId("post-title")).toHaveTextContent("Test Post Title");
+      expect(screen.getByTestId("post-title")).toHaveTextContent(
+        "Test Post Title",
+      );
       expect(screen.getByTestId("post-body")).toHaveTextContent(mockPost.body);
       expect(screen.getByTestId("post-tags")).toBeInTheDocument();
     });
@@ -67,7 +66,10 @@ describe("PostCard Component", () => {
 
       const postImage = screen.getByTestId("post-image");
       expect(postImage).toHaveAttribute("alt", "Post Image");
-      expect(postImage).toHaveAttribute("src", `https://picsum.photos/seed/${mockPost.id}/300/200`);
+      expect(postImage).toHaveAttribute(
+        "src",
+        `https://picsum.photos/seed/${mockPost.id}/300/200`,
+      );
     });
 
     it("displays user information correctly", () => {
@@ -75,9 +77,12 @@ describe("PostCard Component", () => {
 
       const userLink = screen.getByTestId("user-link");
       expect(userLink).toBeInTheDocument();
-      expect(userLink).toHaveAttribute("href", `/home/search/profile/${mockPost.userId}`);
+      expect(userLink).toHaveAttribute(
+        "href",
+        `/home/search/profile/${mockPost.userId}`,
+      );
       expect(screen.getByText(mockPost.username)).toBeInTheDocument();
-      
+
       const avatar = screen.getByAltText(mockPost.username);
       expect(avatar).toHaveAttribute("src", mockPost.image);
     });
@@ -87,8 +92,8 @@ describe("PostCard Component", () => {
 
       const tagsContainer = screen.getByTestId("post-tags");
       expect(tagsContainer).toBeInTheDocument();
-      
-      mockPost.tags.forEach(tag => {
+
+      mockPost.tags.forEach((tag) => {
         expect(screen.getByText(`#${tag}`)).toBeInTheDocument();
       });
     });
@@ -115,7 +120,6 @@ describe("PostCard Component", () => {
 
       const likeButton = screen.getByTestId("like-button");
       expect(likeButton).toBeInTheDocument();
-      // The outlined icon should be present (we can't easily test the exact icon component)
     });
 
     it("displays filled like icon when liked", () => {
@@ -123,7 +127,6 @@ describe("PostCard Component", () => {
 
       const likeButton = screen.getByTestId("like-button");
       expect(likeButton).toBeInTheDocument();
-      // When liked, the count should increase by 1
       expect(screen.getByTestId("like-count")).toHaveTextContent("11");
     });
 
@@ -139,7 +142,6 @@ describe("PostCard Component", () => {
 
       const dislikeButton = screen.getByTestId("dislike-button");
       expect(dislikeButton).toBeInTheDocument();
-      // When disliked, the count should increase by 1
       expect(screen.getByTestId("dislike-count")).toHaveTextContent("3");
     });
 
@@ -185,14 +187,14 @@ describe("PostCard Component", () => {
       renderComponent({ like: true });
 
       const likeCount = screen.getByTestId("like-count");
-      expect(likeCount).toHaveTextContent("11"); // 10 + 1
+      expect(likeCount).toHaveTextContent("11");
     });
 
     it("updates dislike count correctly when disliked", () => {
       renderComponent({ dislike: true });
 
       const dislikeCount = screen.getByTestId("dislike-count");
-      expect(dislikeCount).toHaveTextContent("3"); // 2 + 1
+      expect(dislikeCount).toHaveTextContent("3");
     });
 
     it("handles both like and dislike states simultaneously", () => {
@@ -236,20 +238,24 @@ describe("PostCard Component", () => {
 
       await waitFor(() => {
         const postImage = screen.getByTestId("post-image");
-        expect(postImage).toHaveAttribute("src", `https://picsum.photos/seed/${mockPost.id}/300/200`);
+        expect(postImage).toHaveAttribute(
+          "src",
+          `https://picsum.photos/seed/${mockPost.id}/300/200`,
+        );
       });
     });
 
     it("updates image URL when post ID changes", async () => {
       const { rerender } = renderComponent();
 
-      // Initial image URL
       await waitFor(() => {
         const postImage = screen.getByTestId("post-image");
-        expect(postImage).toHaveAttribute("src", "https://picsum.photos/seed/1/300/200");
+        expect(postImage).toHaveAttribute(
+          "src",
+          "https://picsum.photos/seed/1/300/200",
+        );
       });
 
-      // Change post ID
       const newPost = { ...mockPost, id: 2 };
       rerender(
         <BrowserRouter>
@@ -261,13 +267,15 @@ describe("PostCard Component", () => {
             like={false}
             dislike={false}
           />
-        </BrowserRouter>
+        </BrowserRouter>,
       );
 
-      // New image URL should be generated
       await waitFor(() => {
         const postImage = screen.getByTestId("post-image");
-        expect(postImage).toHaveAttribute("src", "https://picsum.photos/seed/2/300/200");
+        expect(postImage).toHaveAttribute(
+          "src",
+          "https://picsum.photos/seed/2/300/200",
+        );
       });
     });
   });
@@ -308,7 +316,7 @@ describe("PostCard Component", () => {
       const postWithManyTags = { ...mockPost, tags: manyTags };
       renderComponent({ post: postWithManyTags });
 
-      manyTags.forEach(tag => {
+      manyTags.forEach((tag) => {
         expect(screen.getByText(`#${tag}`)).toBeInTheDocument();
       });
     });
@@ -318,7 +326,7 @@ describe("PostCard Component", () => {
     it("handles zero likes and dislikes", () => {
       const postWithZeroReactions = {
         ...mockPost,
-        reactions: { likes: 0, dislikes: 0 }
+        reactions: { likes: 0, dislikes: 0 },
       };
       renderComponent({ post: postWithZeroReactions });
 
@@ -334,7 +342,8 @@ describe("PostCard Component", () => {
     });
 
     it("handles long post title", () => {
-      const longTitle = "This is a very long post title that might wrap to multiple lines and should still be displayed correctly";
+      const longTitle =
+        "This is a very long post title that might wrap to multiple lines and should still be displayed correctly";
       const postWithLongTitle = { ...mockPost, title: longTitle };
       renderComponent({ post: postWithLongTitle });
 
@@ -342,29 +351,34 @@ describe("PostCard Component", () => {
     });
 
     it("handles long post body", () => {
-      const longBody = "This is a very long post body content that should be truncated with ellipsis when displayed in the card component. ".repeat(10);
+      const longBody =
+        "This is a very long post body content that should be truncated with ellipsis when displayed in the card component. ".repeat(
+          10,
+        );
       const postWithLongBody = { ...mockPost, body: longBody };
       renderComponent({ post: postWithLongBody });
 
       const bodyElement = screen.getByTestId("post-body");
-      // Just verify that the body element contains the content (it may be visually truncated by CSS)
       expect(bodyElement).toBeInTheDocument();
-      expect(bodyElement.textContent).toContain("This is a very long post body content");
+      expect(bodyElement.textContent).toContain(
+        "This is a very long post body content",
+      );
     });
 
     it("handles missing user image", () => {
       const postWithoutImage = { ...mockPost, image: "" };
-      
-      // Should render without crashing even with empty image
+
       expect(() => renderComponent({ post: postWithoutImage })).not.toThrow();
-      
-      // Verify the component is still rendered
+
       expect(screen.getByTestId("post-card")).toBeInTheDocument();
       expect(screen.getByText(mockPost.username)).toBeInTheDocument();
     });
 
     it("handles special characters in username", () => {
-      const postWithSpecialUsername = { ...mockPost, username: "user@test.com" };
+      const postWithSpecialUsername = {
+        ...mockPost,
+        username: "user@test.com",
+      };
       renderComponent({ post: postWithSpecialUsername });
 
       expect(screen.getByText("user@test.com")).toBeInTheDocument();
@@ -399,7 +413,6 @@ describe("PostCard Component", () => {
       expect(commentButton).toBeInTheDocument();
       expect(readMore).toBeInTheDocument();
 
-      // Test that they're clickable
       await userEvent.click(likeButton);
       await userEvent.click(dislikeButton);
       await userEvent.click(commentButton);
@@ -407,7 +420,7 @@ describe("PostCard Component", () => {
 
       expect(mockOnLikeHandler).toHaveBeenCalled();
       expect(mockOnDislikeHandler).toHaveBeenCalled();
-      expect(mockSetSelectedPost).toHaveBeenCalledTimes(2); // comment + read more
+      expect(mockSetSelectedPost).toHaveBeenCalledTimes(2);
     });
   });
 
@@ -416,7 +429,10 @@ describe("PostCard Component", () => {
       renderComponent();
 
       const userLink = screen.getByTestId("user-link");
-      expect(userLink).toHaveAttribute("href", `/home/search/profile/${mockPost.userId}`);
+      expect(userLink).toHaveAttribute(
+        "href",
+        `/home/search/profile/${mockPost.userId}`,
+      );
     });
 
     it("handles different user IDs in links", () => {

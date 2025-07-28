@@ -1,4 +1,3 @@
-//cleared tests
 import { userReducer } from "../userReducer";
 import {
   SET_USER,
@@ -11,7 +10,12 @@ import {
   SET_USER_PROFILE_DETAILS,
   ADD_UPLOADED_POST,
 } from "../../ActionTypes/userActionTypes";
-import type { UserStateType, UploadPostType, CommentData, CompanyType } from "../../Reducers/userReducer";
+import type {
+  UserStateType,
+  UploadPostType,
+  CommentData,
+  CompanyType,
+} from "../../Reducers/userReducer";
 
 describe("userReducer", () => {
   const initialState: UserStateType = {
@@ -77,7 +81,10 @@ describe("userReducer", () => {
 
   it("should handle REMOVE_LIKE_POST", () => {
     const modified = { ...initialState, likedPostId: [1, 2] };
-    const result = userReducer(modified, { type: REMOVE_LIKE_POST, payload: 2 });
+    const result = userReducer(modified, {
+      type: REMOVE_LIKE_POST,
+      payload: 2,
+    });
     expect(result.likedPostId).toEqual([1]);
   });
 
@@ -96,7 +103,10 @@ describe("userReducer", () => {
 
   it("should handle REMOVE_DISLIKE_POST", () => {
     const modified = { ...initialState, dislikePostId: [4, 5] };
-    const result = userReducer(modified, { type: REMOVE_DISLIKE_POST, payload: 4 });
+    const result = userReducer(modified, {
+      type: REMOVE_DISLIKE_POST,
+      payload: 4,
+    });
     expect(result.dislikePostId).toEqual([5]);
   });
 

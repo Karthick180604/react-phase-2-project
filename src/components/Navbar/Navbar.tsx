@@ -50,9 +50,8 @@ const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const theme = useTheme();
-const isMobile = useMediaQuery("(max-width: 600px)");
-const isTablet = useMediaQuery("(min-width: 601px) and (max-width: 960px)");
-
+  const isMobile = useMediaQuery("(max-width: 600px)");
+  const isTablet = useMediaQuery("(min-width: 601px) and (max-width: 960px)");
 
   const handleLogout = () => {
     dispatch(logoutUser());

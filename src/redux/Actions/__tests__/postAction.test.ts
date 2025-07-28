@@ -1,11 +1,10 @@
-//cleared test
 import {
   FETCH_POSTS_REQUEST,
   FETCH_POSTS_SUCCESS,
   FETCH_POSTS_FAILURE,
 } from "../../ActionTypes/postsActionTypes";
 import { fetchPosts } from "../postsActions";
-import { getAllPosts, getSingleUser } from "../../../services/apiCalls"
+import { getAllPosts, getSingleUser } from "../../../services/apiCalls";
 import type { Post } from "../postsActions";
 import type { UserType } from "../../../types/types";
 
@@ -44,7 +43,6 @@ describe("fetchPosts thunk", () => {
       firstName: "John",
       lastName: "Doe",
       image: "https://example.com/john.jpg",
-      // any other fields needed by your UserType
     };
 
     mockedGetAllPosts.mockResolvedValue({

@@ -1,26 +1,20 @@
-//cleared tests
+import React from "react";
+import { render, screen } from "@testing-library/react";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import AuthImage from "../AuthImage";
 
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import AuthImage from '../AuthImage';
+jest.mock(
+  "../../../assets/socialMediaPng.png",
+  () => "test-social-media-image-stub",
+);
 
-// Mock the image import
-jest.mock('../../../assets/socialMediaPng.png', () => 'test-social-media-image-stub');
-
-// Create MUI theme for testing
 const theme = createTheme();
 
-// Test utilities
 const renderWithProviders = (ui: React.ReactElement) => {
-  return render(
-    <ThemeProvider theme={theme}>
-      {ui}
-    </ThemeProvider>
-  );
+  return render(<ThemeProvider theme={theme}>{ui}</ThemeProvider>);
 };
 
-describe('AuthImage', () => {
+describe("AuthImage", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -29,105 +23,99 @@ describe('AuthImage', () => {
     jest.restoreAllMocks();
   });
 
-  it('renders the image component', () => {
+  it("renders the image component", () => {
     renderWithProviders(<AuthImage />);
 
-    const image = screen.getByRole('img');
+    const image = screen.getByRole("img");
     expect(image).toBeInTheDocument();
   });
 
-  it('renders image with correct src attribute', () => {
+  it("renders image with correct src attribute", () => {
     renderWithProviders(<AuthImage />);
 
-    const image = screen.getByRole('img');
-    expect(image).toHaveAttribute('src', 'test-social-media-image-stub');
+    const image = screen.getByRole("img");
+    expect(image).toHaveAttribute("src", "test-social-media-image-stub");
   });
 
-  it('renders image with correct alt text', () => {
+  it("renders image with correct alt text", () => {
     renderWithProviders(<AuthImage />);
 
-    const image = screen.getByRole('img');
-    expect(image).toHaveAttribute('alt', 'Connectify App Preview');
+    const image = screen.getByRole("img");
+    expect(image).toHaveAttribute("alt", "Connectify App Preview");
   });
 
-  it('renders image with correct alt text using getByAltText', () => {
+  it("renders image with correct alt text using getByAltText", () => {
     renderWithProviders(<AuthImage />);
 
-    const image = screen.getByAltText('Connectify App Preview');
+    const image = screen.getByAltText("Connectify App Preview");
     expect(image).toBeInTheDocument();
   });
 
-  it('applies correct styling to the image', () => {
+  it("applies correct styling to the image", () => {
     renderWithProviders(<AuthImage />);
 
-    const image = screen.getByRole('img');
-    
-    // Check if MUI Box component is applied
+    const image = screen.getByRole("img");
+
     expect(image).toHaveStyle({
-      width: '100%',
-      height: '100%',
-      'object-fit': 'contain',
+      width: "100%",
+      height: "100%",
+      "object-fit": "contain",
     });
   });
 
-  it('renders as img element through MUI Box component', () => {
+  it("renders as img element through MUI Box component", () => {
     renderWithProviders(<AuthImage />);
 
-    const image = screen.getByRole('img');
-    expect(image.tagName).toBe('IMG');
+    const image = screen.getByRole("img");
+    expect(image.tagName).toBe("IMG");
   });
 
-  it('component has accessible image', () => {
+  it("component has accessible image", () => {
     renderWithProviders(<AuthImage />);
 
-    const image = screen.getByRole('img');
-    
-    // Check accessibility attributes
-    expect(image).toHaveAttribute('alt', 'Connectify App Preview');
+    const image = screen.getByRole("img");
+
+    expect(image).toHaveAttribute("alt", "Connectify App Preview");
     expect(image).toBeVisible();
   });
 
-  it('image loads with correct props', () => {
+  it("image loads with correct props", () => {
     renderWithProviders(<AuthImage />);
 
-    const image = screen.getByRole('img');
-    
-    // Verify all expected attributes are present
-    expect(image).toHaveAttribute('src', 'test-social-media-image-stub');
-    expect(image).toHaveAttribute('alt', 'Connectify App Preview');
+    const image = screen.getByRole("img");
+
+    expect(image).toHaveAttribute("src", "test-social-media-image-stub");
+    expect(image).toHaveAttribute("alt", "Connectify App Preview");
   });
 
-  it('component renders without crashing', () => {
+  it("component renders without crashing", () => {
     expect(() => {
       renderWithProviders(<AuthImage />);
     }).not.toThrow();
   });
 
-  it('matches expected structure', () => {
+  it("matches expected structure", () => {
     const { container } = renderWithProviders(<AuthImage />);
-    
-    // Should contain exactly one img element
-    const images = container.querySelectorAll('img');
+
+    const images = container.querySelectorAll("img");
     expect(images).toHaveLength(1);
   });
 
-  it('has correct component composition', () => {
+  it("has correct component composition", () => {
     renderWithProviders(<AuthImage />);
 
-    const image = screen.getByRole('img');
-    
-    // Verify it's styled as expected by MUI Box
+    const image = screen.getByRole("img");
+
     expect(image).toHaveStyle({
-      width: '100%',
-      height: '100%'
+      width: "100%",
+      height: "100%",
     });
   });
 
-  it('image element is properly rendered by MUI Box', () => {
+  it("image element is properly rendered by MUI Box", () => {
     renderWithProviders(<AuthImage />);
 
-    // Find image using different selectors to ensure it's properly rendered
-    expect(screen.getByRole('img')).toBeInTheDocument();
-    expect(screen.getByAltText('Connectify App Preview')).toBeInTheDocument();
+    expect(screen.getByRole("img")).toBeInTheDocument();
+    expect(screen.getByAltText("Connectify App Preview")).toBeInTheDocument();
   });
 });

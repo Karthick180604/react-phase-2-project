@@ -1,11 +1,10 @@
-//cleared tests
 import { postReducer } from "../postsReducers";
 import {
   FETCH_POSTS_REQUEST,
   FETCH_POSTS_SUCCESS,
   FETCH_POSTS_FAILURE,
 } from "../../ActionTypes/postsActionTypes";
-import type {  Post } from "../../Actions/postsActions";
+import type { Post } from "../../Actions/postsActions";
 import { PostStateType } from "../postsReducers";
 
 describe("postReducer", () => {

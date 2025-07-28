@@ -1,6 +1,11 @@
-//cleared tests
 import React from "react";
-import { render, screen, fireEvent, waitFor, within } from "@testing-library/react";
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  within,
+} from "@testing-library/react";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
@@ -13,14 +18,13 @@ import {
   removeLikePost,
 } from "../../../redux/Actions/userActions";
 
-// Mock the components
 jest.mock("../../UserProfilePostCard/UserProfilePostCard", () => {
-  return function MockUserProfilePostCard({ 
-    id, 
-    title, 
-    body, 
-    tags, 
-    onClick 
+  return function MockUserProfilePostCard({
+    id,
+    title,
+    body,
+    tags,
+    onClick,
   }: {
     id: number;
     title: string;
@@ -29,7 +33,7 @@ jest.mock("../../UserProfilePostCard/UserProfilePostCard", () => {
     onClick: () => void;
   }) {
     return (
-      <div 
+      <div
         data-testid={`post-card-${id}`}
         onClick={onClick}
         role="button"
@@ -48,14 +52,14 @@ jest.mock("../../UserProfilePostCard/UserProfilePostCard", () => {
 });
 
 jest.mock("../../PostDialog/PostDialog", () => {
-  return function MockPostDialog({ 
-    open, 
-    onClose, 
-    post, 
-    onLikeHandler, 
+  return function MockPostDialog({
+    open,
+    onClose,
+    post,
+    onLikeHandler,
     onDislikeHandler,
     like,
-    dislike
+    dislike,
   }: {
     open: boolean;
     onClose: () => void;
@@ -66,7 +70,7 @@ jest.mock("../../PostDialog/PostDialog", () => {
     dislike: boolean;
   }) {
     if (!open) return null;
-    
+
     return (
       <div data-testid="post-dialog">
         <button onClick={onClose} data-testid="close-dialog">
@@ -95,18 +99,22 @@ jest.mock("../../PostDialog/PostDialog", () => {
   };
 });
 
-// Mock Redux actions
 jest.mock("../../../redux/Actions/userActions", () => ({
-  likePost: jest.fn((postId) => ({ type: 'LIKE_POST', payload: postId })),
-  removeLikePost: jest.fn((postId) => ({ type: 'REMOVE_LIKE_POST', payload: postId })),
-  dislikePost: jest.fn((postId) => ({ type: 'DISLIKE_POST', payload: postId })),
-  removeDislikePost: jest.fn((postId) => ({ type: 'REMOVE_DISLIKE_POST', payload: postId })),
+  likePost: jest.fn((postId) => ({ type: "LIKE_POST", payload: postId })),
+  removeLikePost: jest.fn((postId) => ({
+    type: "REMOVE_LIKE_POST",
+    payload: postId,
+  })),
+  dislikePost: jest.fn((postId) => ({ type: "DISLIKE_POST", payload: postId })),
+  removeDislikePost: jest.fn((postId) => ({
+    type: "REMOVE_DISLIKE_POST",
+    payload: postId,
+  })),
 }));
 
-// Create mock reducer
 const mockUserReducer = (
   state = { likedPostId: [], dislikePostId: [] },
-  action: any
+  action: any,
 ) => {
   switch (action.type) {
     default:
@@ -118,7 +126,6 @@ const mockRootReducer = (state: any = {}, action: any) => ({
   user: mockUserReducer(state.user, action),
 });
 
-// Create mock store
 const createMockStore = (initialState = {}) => {
   const defaultState = {
     user: {
@@ -131,26 +138,21 @@ const createMockStore = (initialState = {}) => {
   return createStore(mockRootReducer, defaultState);
 };
 
-// Create MUI theme for testing
 const theme = createTheme();
 
-// Test wrapper component
-const TestWrapper: React.FC<{ 
-  children: React.ReactNode; 
+const TestWrapper: React.FC<{
+  children: React.ReactNode;
   store?: any;
 }> = ({ children, store }) => {
   const mockStore = store || createMockStore();
-  
+
   return (
     <Provider store={mockStore}>
-      <ThemeProvider theme={theme}>
-        {children}
-      </ThemeProvider>
+      <ThemeProvider theme={theme}>{children}</ThemeProvider>
     </Provider>
   );
 };
 
-// Mock data
 const mockPosts: Post[] = [
   {
     id: 1,
@@ -182,7 +184,7 @@ describe("UserPostSection", () => {
       render(
         <TestWrapper>
           <UserPostSection posts={mockPosts} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       expect(screen.getByText("Posts")).toBeInTheDocument();
@@ -192,7 +194,7 @@ describe("UserPostSection", () => {
       render(
         <TestWrapper>
           <UserPostSection posts={mockPosts} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       expect(screen.getByTestId("post-card-1")).toBeInTheDocument();
@@ -204,7 +206,7 @@ describe("UserPostSection", () => {
       render(
         <TestWrapper>
           <UserPostSection posts={[]} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       expect(screen.getByText("Posts")).toBeInTheDocument();
@@ -215,11 +217,13 @@ describe("UserPostSection", () => {
       render(
         <TestWrapper>
           <UserPostSection posts={[mockPosts[0]]} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       expect(screen.getByText("First Post")).toBeInTheDocument();
-      expect(screen.getByText("This is the first post content")).toBeInTheDocument();
+      expect(
+        screen.getByText("This is the first post content"),
+      ).toBeInTheDocument();
       expect(screen.getByText("react")).toBeInTheDocument();
       expect(screen.getByText("testing")).toBeInTheDocument();
     });
@@ -230,7 +234,7 @@ describe("UserPostSection", () => {
       render(
         <TestWrapper>
           <UserPostSection posts={mockPosts} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       const postCard = screen.getByTestId("post-card-1");
@@ -240,19 +244,19 @@ describe("UserPostSection", () => {
         expect(screen.getByTestId("post-dialog")).toBeInTheDocument();
       });
 
-      // Check if dialog shows the post content (title will appear in both card and dialog)
       const dialogElement = screen.getByTestId("post-dialog");
-      expect(dialogElement).toContainElement(screen.getAllByText("First Post")[1]); // Get the one in dialog
+      expect(dialogElement).toContainElement(
+        screen.getAllByText("First Post")[1],
+      );
     });
 
     it("closes dialog when close button is clicked", async () => {
       render(
         <TestWrapper>
           <UserPostSection posts={mockPosts} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
-      // Open dialog
       const postCard = screen.getByTestId("post-card-1");
       fireEvent.click(postCard);
 
@@ -260,7 +264,6 @@ describe("UserPostSection", () => {
         expect(screen.getByTestId("post-dialog")).toBeInTheDocument();
       });
 
-      // Close dialog
       const closeButton = screen.getByTestId("close-dialog");
       fireEvent.click(closeButton);
 
@@ -273,7 +276,7 @@ describe("UserPostSection", () => {
       render(
         <TestWrapper>
           <UserPostSection posts={mockPosts} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       const postCard = screen.getByTestId("post-card-2");
@@ -283,11 +286,9 @@ describe("UserPostSection", () => {
         expect(screen.getByTestId("post-dialog")).toBeInTheDocument();
       });
 
-      // Check dialog content by querying within the dialog
       const dialogElement = screen.getByTestId("post-dialog");
       expect(dialogElement).toBeInTheDocument();
-      
-      // Use within to query inside the dialog specifically
+
       const { getByText } = within(dialogElement);
       expect(getByText("Second Post")).toBeInTheDocument();
       expect(getByText("This is the second post content")).toBeInTheDocument();
@@ -306,10 +307,9 @@ describe("UserPostSection", () => {
       render(
         <TestWrapper store={mockStore}>
           <UserPostSection posts={mockPosts} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
-      // Open dialog
       const postCard = screen.getByTestId("post-card-1");
       fireEvent.click(postCard);
 
@@ -317,7 +317,6 @@ describe("UserPostSection", () => {
         expect(screen.getByTestId("post-dialog")).toBeInTheDocument();
       });
 
-      // Click like button
       const likeButton = screen.getByTestId("like-button");
       fireEvent.click(likeButton);
 
@@ -335,10 +334,9 @@ describe("UserPostSection", () => {
       render(
         <TestWrapper store={mockStore}>
           <UserPostSection posts={mockPosts} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
-      // Open dialog
       const postCard = screen.getByTestId("post-card-1");
       fireEvent.click(postCard);
 
@@ -346,7 +344,6 @@ describe("UserPostSection", () => {
         expect(screen.getByTestId("post-dialog")).toBeInTheDocument();
       });
 
-      // Click like button (to unlike)
       const likeButton = screen.getByTestId("like-button");
       fireEvent.click(likeButton);
 
@@ -364,10 +361,9 @@ describe("UserPostSection", () => {
       render(
         <TestWrapper store={mockStore}>
           <UserPostSection posts={mockPosts} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
-      // Open dialog
       const postCard = screen.getByTestId("post-card-1");
       fireEvent.click(postCard);
 
@@ -375,7 +371,6 @@ describe("UserPostSection", () => {
         expect(screen.getByTestId("post-dialog")).toBeInTheDocument();
       });
 
-      // Click dislike button
       const dislikeButton = screen.getByTestId("dislike-button");
       fireEvent.click(dislikeButton);
 
@@ -393,10 +388,9 @@ describe("UserPostSection", () => {
       render(
         <TestWrapper store={mockStore}>
           <UserPostSection posts={mockPosts} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
-      // Open dialog
       const postCard = screen.getByTestId("post-card-1");
       fireEvent.click(postCard);
 
@@ -404,7 +398,6 @@ describe("UserPostSection", () => {
         expect(screen.getByTestId("post-dialog")).toBeInTheDocument();
       });
 
-      // Click dislike button (to remove dislike)
       const dislikeButton = screen.getByTestId("dislike-button");
       fireEvent.click(dislikeButton);
 
@@ -424,10 +417,9 @@ describe("UserPostSection", () => {
       render(
         <TestWrapper store={mockStore}>
           <UserPostSection posts={mockPosts} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
-      // Open dialog
       const postCard = screen.getByTestId("post-card-1");
       fireEvent.click(postCard);
 
@@ -448,10 +440,9 @@ describe("UserPostSection", () => {
       render(
         <TestWrapper store={mockStore}>
           <UserPostSection posts={mockPosts} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
-      // Open dialog
       const postCard = screen.getByTestId("post-card-1");
       fireEvent.click(postCard);
 
@@ -467,10 +458,9 @@ describe("UserPostSection", () => {
       render(
         <TestWrapper>
           <UserPostSection posts={mockPosts} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
-      // Dialog should not be visible initially
       expect(screen.queryByTestId("post-dialog")).not.toBeInTheDocument();
     });
 
@@ -487,7 +477,7 @@ describe("UserPostSection", () => {
       render(
         <TestWrapper>
           <UserPostSection posts={postsWithEmptyTags} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       expect(screen.getByTestId("post-card-1")).toBeInTheDocument();
@@ -500,7 +490,7 @@ describe("UserPostSection", () => {
       render(
         <TestWrapper>
           <UserPostSection posts={[mockPosts[0]]} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       const postCard = screen.getByTestId("post-card-1");

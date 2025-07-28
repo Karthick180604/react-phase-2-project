@@ -1,4 +1,3 @@
-//cleared tests
 import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -59,7 +58,7 @@ describe("EditProfileDialog Component", () => {
     return render(
       <Provider store={store}>
         <EditProfileDialog {...defaultProps} {...props} />
-      </Provider>
+      </Provider>,
     );
   };
 
@@ -68,7 +67,9 @@ describe("EditProfileDialog Component", () => {
       renderComponent();
 
       expect(screen.getByTestId("edit-profile-dialog")).toBeInTheDocument();
-      expect(screen.getByTestId("dialog-title")).toHaveTextContent("Edit Profile");
+      expect(screen.getByTestId("dialog-title")).toHaveTextContent(
+        "Edit Profile",
+      );
       expect(screen.getByTestId("firstName-input")).toBeInTheDocument();
       expect(screen.getByTestId("lastName-input")).toBeInTheDocument();
       expect(screen.getByTestId("image-input")).toBeInTheDocument();
@@ -81,7 +82,9 @@ describe("EditProfileDialog Component", () => {
     it("does not render dialog when open is false", () => {
       renderComponent({ open: false });
 
-      expect(screen.queryByTestId("edit-profile-dialog")).not.toBeInTheDocument();
+      expect(
+        screen.queryByTestId("edit-profile-dialog"),
+      ).not.toBeInTheDocument();
     });
 
     it("displays initial data in form fields", () => {
@@ -89,18 +92,22 @@ describe("EditProfileDialog Component", () => {
 
       expect(screen.getByTestId("firstName-input")).toHaveValue("John");
       expect(screen.getByTestId("lastName-input")).toHaveValue("Doe");
-      expect(screen.getByTestId("image-input")).toHaveValue("https://example.com/image.jpg");
+      expect(screen.getByTestId("image-input")).toHaveValue(
+        "https://example.com/image.jpg",
+      );
       expect(screen.getByTestId("phone-input")).toHaveValue("123-456-7890");
       expect(screen.getByTestId("gender-input")).toHaveValue("Male");
       expect(screen.getByTestId("companyName-input")).toHaveValue("Tech Corp");
-      expect(screen.getByTestId("companyTitle-input")).toHaveValue("Software Engineer");
+      expect(screen.getByTestId("companyTitle-input")).toHaveValue(
+        "Software Engineer",
+      );
     });
   });
 
   describe("Form Interactions", () => {
     it("updates firstName field correctly", async () => {
       renderComponent();
-      
+
       const firstNameInput = screen.getByTestId("firstName-input");
       await userEvent.clear(firstNameInput);
       await userEvent.type(firstNameInput, "Jane");
@@ -110,7 +117,7 @@ describe("EditProfileDialog Component", () => {
 
     it("updates lastName field correctly", async () => {
       renderComponent();
-      
+
       const lastNameInput = screen.getByTestId("lastName-input");
       await userEvent.clear(lastNameInput);
       await userEvent.type(lastNameInput, "Smith");
@@ -120,7 +127,7 @@ describe("EditProfileDialog Component", () => {
 
     it("updates image URL field correctly", async () => {
       renderComponent();
-      
+
       const imageInput = screen.getByTestId("image-input");
       await userEvent.clear(imageInput);
       await userEvent.type(imageInput, "https://newimage.com/photo.jpg");
@@ -130,7 +137,7 @@ describe("EditProfileDialog Component", () => {
 
     it("updates phone field correctly", async () => {
       renderComponent();
-      
+
       const phoneInput = screen.getByTestId("phone-input");
       await userEvent.clear(phoneInput);
       await userEvent.type(phoneInput, "987-654-3210");
@@ -140,7 +147,7 @@ describe("EditProfileDialog Component", () => {
 
     it("updates gender field correctly", async () => {
       renderComponent();
-      
+
       const genderInput = screen.getByTestId("gender-input");
       await userEvent.clear(genderInput);
       await userEvent.type(genderInput, "Female");
@@ -150,7 +157,7 @@ describe("EditProfileDialog Component", () => {
 
     it("updates company name field correctly", async () => {
       renderComponent();
-      
+
       const companyNameInput = screen.getByTestId("companyName-input");
       await userEvent.clear(companyNameInput);
       await userEvent.type(companyNameInput, "New Company Inc");
@@ -160,7 +167,7 @@ describe("EditProfileDialog Component", () => {
 
     it("updates company title field correctly", async () => {
       renderComponent();
-      
+
       const companyTitleInput = screen.getByTestId("companyTitle-input");
       await userEvent.clear(companyTitleInput);
       await userEvent.type(companyTitleInput, "Senior Developer");
@@ -170,17 +177,17 @@ describe("EditProfileDialog Component", () => {
 
     it("updates multiple fields correctly", async () => {
       renderComponent();
-      
+
       const firstNameInput = screen.getByTestId("firstName-input");
       const lastNameInput = screen.getByTestId("lastName-input");
       const phoneInput = screen.getByTestId("phone-input");
 
       await userEvent.clear(firstNameInput);
       await userEvent.type(firstNameInput, "Alice");
-      
+
       await userEvent.clear(lastNameInput);
       await userEvent.type(lastNameInput, "Johnson");
-      
+
       await userEvent.clear(phoneInput);
       await userEvent.type(phoneInput, "555-0123");
 
@@ -234,11 +241,11 @@ describe("EditProfileDialog Component", () => {
     });
 
     it("disables save button when company name is empty", () => {
-      renderComponent({ 
-        initialData: { 
-          ...mockInitialData, 
-          company: { ...mockInitialData.company, name: "" } 
-        } 
+      renderComponent({
+        initialData: {
+          ...mockInitialData,
+          company: { ...mockInitialData.company, name: "" },
+        },
       });
 
       const saveButton = screen.getByTestId("save-button");
@@ -246,11 +253,11 @@ describe("EditProfileDialog Component", () => {
     });
 
     it("disables save button when company title is empty", () => {
-      renderComponent({ 
-        initialData: { 
-          ...mockInitialData, 
-          company: { ...mockInitialData.company, title: "" } 
-        } 
+      renderComponent({
+        initialData: {
+          ...mockInitialData,
+          company: { ...mockInitialData.company, title: "" },
+        },
       });
 
       const saveButton = screen.getByTestId("save-button");
@@ -327,13 +334,12 @@ describe("EditProfileDialog Component", () => {
     it("dispatches Redux action with updated data", async () => {
       renderComponent();
 
-      // Update some fields
       const firstNameInput = screen.getByTestId("firstName-input");
       const companyNameInput = screen.getByTestId("companyName-input");
 
       await userEvent.clear(firstNameInput);
       await userEvent.type(firstNameInput, "Updated");
-      
+
       await userEvent.clear(companyNameInput);
       await userEvent.type(companyNameInput, "Updated Company");
 
@@ -362,8 +368,6 @@ describe("EditProfileDialog Component", () => {
       const saveButton = screen.getByTestId("save-button");
       expect(saveButton).toBeDisabled();
 
-      // Verify no actions were dispatched and dialog wasn't closed
-      // (We don't need to actually click the disabled button)
       expect(store.getActions()).toHaveLength(0);
       expect(onCloseMock).not.toHaveBeenCalled();
     });
@@ -377,18 +381,16 @@ describe("EditProfileDialog Component", () => {
       await userEvent.click(cancelButton);
 
       expect(onCloseMock).toHaveBeenCalledTimes(1);
-      expect(store.getActions()).toHaveLength(0); // No Redux action should be dispatched
+      expect(store.getActions()).toHaveLength(0);
     });
 
     it("does not dispatch Redux action when dialog is cancelled", async () => {
       renderComponent();
 
-      // Make some changes
       const firstNameInput = screen.getByTestId("firstName-input");
       await userEvent.clear(firstNameInput);
       await userEvent.type(firstNameInput, "Changed");
 
-      // Cancel instead of save
       const cancelButton = screen.getByTestId("cancel-button");
       await userEvent.click(cancelButton);
 
@@ -404,14 +406,13 @@ describe("EditProfileDialog Component", () => {
       await userEvent.clear(companyNameInput);
       await userEvent.type(companyNameInput, "New Tech Company");
 
-      // Save to verify the company object is updated correctly
       const saveButton = screen.getByTestId("save-button");
       await userEvent.click(saveButton);
 
       await waitFor(() => {
         const actions = store.getActions();
         expect(actions[0].payload.company.name).toBe("New Tech Company");
-        expect(actions[0].payload.company.title).toBe("Software Engineer"); // Should remain unchanged
+        expect(actions[0].payload.company.title).toBe("Software Engineer");
       });
     });
 
@@ -422,14 +423,13 @@ describe("EditProfileDialog Component", () => {
       await userEvent.clear(companyTitleInput);
       await userEvent.type(companyTitleInput, "Lead Developer");
 
-      // Save to verify the company object is updated correctly
       const saveButton = screen.getByTestId("save-button");
       await userEvent.click(saveButton);
 
       await waitFor(() => {
         const actions = store.getActions();
         expect(actions[0].payload.company.title).toBe("Lead Developer");
-        expect(actions[0].payload.company.name).toBe("Tech Corp"); // Should remain unchanged
+        expect(actions[0].payload.company.name).toBe("Tech Corp");
       });
     });
 
@@ -441,11 +441,10 @@ describe("EditProfileDialog Component", () => {
 
       await userEvent.clear(companyNameInput);
       await userEvent.type(companyNameInput, "Startup Inc");
-      
+
       await userEvent.clear(companyTitleInput);
       await userEvent.type(companyTitleInput, "CTO");
 
-      // Save to verify both company fields are updated
       const saveButton = screen.getByTestId("save-button");
       await userEvent.click(saveButton);
 
@@ -461,7 +460,6 @@ describe("EditProfileDialog Component", () => {
 
   describe("Edge Cases", () => {
     it("handles undefined onSave prop gracefully", () => {
-      // Component should work without onSave prop
       expect(() => {
         renderComponent({ onSave: undefined });
       }).not.toThrow();
@@ -473,15 +471,12 @@ describe("EditProfileDialog Component", () => {
       const firstNameInput = screen.getByTestId("firstName-input");
       const lastNameInput = screen.getByTestId("lastName-input");
 
-      // Change first name
       await userEvent.clear(firstNameInput);
       await userEvent.type(firstNameInput, "Test");
 
-      // Change last name
       await userEvent.clear(lastNameInput);
       await userEvent.type(lastNameInput, "User");
 
-      // Change first name again
       await userEvent.clear(firstNameInput);
       await userEvent.type(firstNameInput, "Final");
 

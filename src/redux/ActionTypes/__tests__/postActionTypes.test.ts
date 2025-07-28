@@ -1,9 +1,8 @@
-// cleared tests
 import {
   FETCH_POSTS_REQUEST,
   FETCH_POSTS_SUCCESS,
   FETCH_POSTS_FAILURE,
-} from "../postsActionTypes"// Adjust path as needed
+} from "../postsActionTypes";
 
 describe("Post Action Types", () => {
   it("should define FETCH_POSTS_REQUEST correctly", () => {

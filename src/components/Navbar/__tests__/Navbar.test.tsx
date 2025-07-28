@@ -1,4 +1,3 @@
-//cleared test
 import { render, screen, fireEvent } from "@testing-library/react";
 import Navbar from "../Navbar";
 import { BrowserRouter } from "react-router-dom";
@@ -6,13 +5,11 @@ import { logoutUser } from "../../../redux/Actions/userActions";
 import { ThemeProvider } from "@emotion/react";
 import { theme } from "../../../constants/theme";
 
-// ✅ Mock useMediaQuery inline to avoid ReferenceError
 jest.mock("@mui/material/useMediaQuery", () => ({
   __esModule: true,
   default: jest.fn(),
 }));
 
-// Mock hooks and functions
 const mockDispatch = jest.fn();
 const mockNavigate = jest.fn();
 
@@ -30,14 +27,13 @@ jest.mock("../../../redux/Actions/userActions", () => ({
   logoutUser: jest.fn(() => ({ type: "LOGOUT" })),
 }));
 
-// Utility to render component with router
 const renderWithRouter = () =>
   render(
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <Navbar />
       </ThemeProvider>
-    </BrowserRouter>
+    </BrowserRouter>,
   );
 
 describe("Navbar Component", () => {
@@ -48,7 +44,9 @@ describe("Navbar Component", () => {
   });
 
   test("renders mobile layout with nav links", () => {
-    useMediaQuery.mockImplementation((query: string) => query.includes("max-width: 600px"));
+    useMediaQuery.mockImplementation((query: string) =>
+      query.includes("max-width: 600px"),
+    );
 
     renderWithRouter();
 
@@ -62,7 +60,7 @@ describe("Navbar Component", () => {
 
   test("renders tablet layout with icons", () => {
     useMediaQuery.mockImplementation((query: string) =>
-      query.includes("(min-width: 601px) and (max-width: 960px)")
+      query.includes("(min-width: 601px) and (max-width: 960px)"),
     );
 
     renderWithRouter();
@@ -77,7 +75,7 @@ describe("Navbar Component", () => {
 
   test("renders desktop layout with full sidebar", () => {
     useMediaQuery.mockImplementation((query: string) =>
-      query.includes("(min-width: 961px)")
+      query.includes("(min-width: 961px)"),
     );
 
     renderWithRouter();
@@ -91,7 +89,7 @@ describe("Navbar Component", () => {
   });
 
   test("logout button calls dispatch and navigate", () => {
-    useMediaQuery.mockImplementation(() => true); // assume visible
+    useMediaQuery.mockImplementation(() => true);
 
     renderWithRouter();
 

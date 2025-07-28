@@ -1,32 +1,24 @@
-//cleared tests
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import UserProfileCard from "../UserProfileCard";
 
-// Create a custom theme with tertiary color for testing
 const createTestTheme = () => {
   return createTheme({
     palette: {
       tertiary: {
-        main: "#9c27b0", // Purple color for testing
+        main: "#9c27b0",
       },
     },
   });
 };
 
-// Test wrapper component with theme
 const TestWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const theme = createTestTheme();
-  
-  return (
-    <ThemeProvider theme={theme}>
-      {children}
-    </ThemeProvider>
-  );
+
+  return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
 };
 
-// Mock data
 const mockUserData = {
   image: "https://example.com/avatar.jpg",
   fullName: "John Doe",
@@ -57,7 +49,7 @@ describe("UserProfileCard", () => {
       render(
         <TestWrapper>
           <UserProfileCard {...mockUserData} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       expect(screen.getByTestId("user-profile-card")).toBeInTheDocument();
@@ -67,14 +59,13 @@ describe("UserProfileCard", () => {
       render(
         <TestWrapper>
           <UserProfileCard {...mockUserData} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       const avatar = screen.getByTestId("user-avatar");
       expect(avatar).toBeInTheDocument();
-      
-      // MUI Avatar renders an img element inside, so we need to find it
-      const avatarImg = avatar.querySelector('img');
+
+      const avatarImg = avatar.querySelector("img");
       expect(avatarImg).toHaveAttribute("src", mockUserData.image);
     });
 
@@ -82,7 +73,7 @@ describe("UserProfileCard", () => {
       render(
         <TestWrapper>
           <UserProfileCard {...mockUserData} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       expect(screen.getByTestId("user-avatar-border")).toBeInTheDocument();
@@ -92,7 +83,7 @@ describe("UserProfileCard", () => {
       render(
         <TestWrapper>
           <UserProfileCard {...mockUserData} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       const fullNameElement = screen.getByTestId("user-fullname");
@@ -104,7 +95,7 @@ describe("UserProfileCard", () => {
       render(
         <TestWrapper>
           <UserProfileCard {...mockUserData} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       const emailElement = screen.getByTestId("user-email");
@@ -116,19 +107,21 @@ describe("UserProfileCard", () => {
       render(
         <TestWrapper>
           <UserProfileCard {...mockUserData} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       const contactElement = screen.getByTestId("user-contact");
       expect(contactElement).toBeInTheDocument();
-      expect(contactElement).toHaveTextContent(`${mockUserData.phone} | ${mockUserData.gender}`);
+      expect(contactElement).toHaveTextContent(
+        `${mockUserData.phone} | ${mockUserData.gender}`,
+      );
     });
 
     it("renders company section container", () => {
       render(
         <TestWrapper>
           <UserProfileCard {...mockUserData} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       expect(screen.getByTestId("user-company-section")).toBeInTheDocument();
@@ -138,7 +131,7 @@ describe("UserProfileCard", () => {
       render(
         <TestWrapper>
           <UserProfileCard {...mockUserData} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       const companyLabel = screen.getByTestId("company-label");
@@ -150,7 +143,7 @@ describe("UserProfileCard", () => {
       render(
         <TestWrapper>
           <UserProfileCard {...mockUserData} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       const companyNameElement = screen.getByTestId("company-name");
@@ -162,7 +155,7 @@ describe("UserProfileCard", () => {
       render(
         <TestWrapper>
           <UserProfileCard {...mockUserData} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       const companyTitleElement = screen.getByTestId("company-title");
@@ -176,18 +169,16 @@ describe("UserProfileCard", () => {
       render(
         <TestWrapper>
           <UserProfileCard {...mockUserDataMinimal} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       const avatar = screen.getByTestId("user-avatar");
       expect(avatar).toBeInTheDocument();
-      
-      // For empty image, MUI Avatar might not render an img element or have empty src
-      const avatarImg = avatar.querySelector('img');
+
+      const avatarImg = avatar.querySelector("img");
       if (avatarImg) {
         expect(avatarImg).toHaveAttribute("src", "");
       } else {
-        // If no img element, Avatar is showing fallback (initials or icon)
         expect(avatar).toBeInTheDocument();
       }
     });
@@ -196,14 +187,22 @@ describe("UserProfileCard", () => {
       render(
         <TestWrapper>
           <UserProfileCard {...mockUserDataMinimal} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
-      expect(screen.getByTestId("user-fullname")).toHaveTextContent("Jane Smith");
-      expect(screen.getByTestId("user-email")).toHaveTextContent("jane@test.com");
-      expect(screen.getByTestId("user-contact")).toHaveTextContent("555-0123 | Female");
+      expect(screen.getByTestId("user-fullname")).toHaveTextContent(
+        "Jane Smith",
+      );
+      expect(screen.getByTestId("user-email")).toHaveTextContent(
+        "jane@test.com",
+      );
+      expect(screen.getByTestId("user-contact")).toHaveTextContent(
+        "555-0123 | Female",
+      );
       expect(screen.getByTestId("company-name")).toHaveTextContent("StartupCo");
-      expect(screen.getByTestId("company-title")).toHaveTextContent("Product Manager");
+      expect(screen.getByTestId("company-title")).toHaveTextContent(
+        "Product Manager",
+      );
     });
 
     it("renders special characters in props correctly", () => {
@@ -221,13 +220,21 @@ describe("UserProfileCard", () => {
       render(
         <TestWrapper>
           <UserProfileCard {...specialCharData} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
-      expect(screen.getByTestId("user-fullname")).toHaveTextContent("José María O'Connor");
-      expect(screen.getByTestId("user-email")).toHaveTextContent("josé.maría@company-name.com");
-      expect(screen.getByTestId("company-name")).toHaveTextContent("Tech & Innovation Co.");
-      expect(screen.getByTestId("company-title")).toHaveTextContent("Lead Developer & Architect");
+      expect(screen.getByTestId("user-fullname")).toHaveTextContent(
+        "José María O'Connor",
+      );
+      expect(screen.getByTestId("user-email")).toHaveTextContent(
+        "josé.maría@company-name.com",
+      );
+      expect(screen.getByTestId("company-name")).toHaveTextContent(
+        "Tech & Innovation Co.",
+      );
+      expect(screen.getByTestId("company-title")).toHaveTextContent(
+        "Lead Developer & Architect",
+      );
     });
   });
 
@@ -236,13 +243,11 @@ describe("UserProfileCard", () => {
       render(
         <TestWrapper>
           <UserProfileCard {...mockUserData} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       const card = screen.getByTestId("user-profile-card");
-      // In MUI v6, check for the base Paper class and elevation
       expect(card).toHaveClass("MuiPaper-root");
-      // MUI v6 might use different elevation class patterns
       expect(card).toBeInTheDocument();
     });
 
@@ -250,7 +255,7 @@ describe("UserProfileCard", () => {
       render(
         <TestWrapper>
           <UserProfileCard {...mockUserData} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       const avatarBorder = screen.getByTestId("user-avatar-border");
@@ -265,7 +270,7 @@ describe("UserProfileCard", () => {
       render(
         <TestWrapper>
           <UserProfileCard {...mockUserData} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       const fullName = screen.getByTestId("user-fullname");
@@ -275,7 +280,6 @@ describe("UserProfileCard", () => {
       const companyName = screen.getByTestId("company-name");
       const companyTitle = screen.getByTestId("company-title");
 
-      // In MUI v6, check for the base Typography classes
       expect(fullName).toHaveClass("MuiTypography-root");
       expect(email).toHaveClass("MuiTypography-root");
       expect(contact).toHaveClass("MuiTypography-root");
@@ -283,10 +287,9 @@ describe("UserProfileCard", () => {
       expect(companyName).toHaveClass("MuiTypography-root");
       expect(companyTitle).toHaveClass("MuiTypography-root");
 
-      // Check the actual HTML elements for semantic structure
-      expect(fullName.tagName).toBe("H6"); // variant="h6"
-      expect(email.tagName).toBe("P"); // variant="body2" typically renders as p
-      expect(contact.tagName).toBe("P"); // variant="body2"
+      expect(fullName.tagName).toBe("H6");
+      expect(email.tagName).toBe("P");
+      expect(contact.tagName).toBe("P");
     });
   });
 
@@ -295,20 +298,17 @@ describe("UserProfileCard", () => {
       render(
         <TestWrapper>
           <UserProfileCard {...mockUserData} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       const avatar = screen.getByTestId("user-avatar");
       expect(avatar).toBeInTheDocument();
-      
-      // Check if there's an img element inside the Avatar
-      const avatarImg = avatar.querySelector('img');
+
+      const avatarImg = avatar.querySelector("img");
       if (avatarImg) {
-        // img elements have implicit role="img"
         expect(avatarImg).toBeInTheDocument();
       }
-      
-      // The Avatar component itself should be accessible
+
       expect(avatar).toHaveClass("MuiAvatar-root");
     });
 
@@ -316,11 +316,10 @@ describe("UserProfileCard", () => {
       render(
         <TestWrapper>
           <UserProfileCard {...mockUserData} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       const fullName = screen.getByTestId("user-fullname");
-      // h6 variant creates an h6 element
       expect(fullName.tagName).toBe("H6");
     });
 
@@ -328,22 +327,19 @@ describe("UserProfileCard", () => {
       render(
         <TestWrapper>
           <UserProfileCard {...mockUserData} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       const email = screen.getByTestId("user-email");
       const contact = screen.getByTestId("user-contact");
       const companyLabel = screen.getByTestId("company-label");
 
-      // In MUI v6, verify the Typography components render properly
       expect(email).toHaveClass("MuiTypography-root");
       expect(contact).toHaveClass("MuiTypography-root");
       expect(companyLabel).toHaveClass("MuiTypography-root");
-      
-      // Verify they're using the correct variants by checking tag names
-      expect(email.tagName).toBe("P"); // body2 variant
-      expect(contact.tagName).toBe("P"); // body2 variant
-      // subtitle2 might render as different element depending on MUI v6 implementation
+
+      expect(email.tagName).toBe("P");
+      expect(contact.tagName).toBe("P");
       expect(companyLabel).toBeInTheDocument();
     });
   });
@@ -353,7 +349,7 @@ describe("UserProfileCard", () => {
       render(
         <TestWrapper>
           <UserProfileCard {...mockUserData} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       const card = screen.getByTestId("user-profile-card");
@@ -368,7 +364,7 @@ describe("UserProfileCard", () => {
       render(
         <TestWrapper>
           <UserProfileCard {...mockUserData} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       const card = screen.getByTestId("user-profile-card");
@@ -380,7 +376,7 @@ describe("UserProfileCard", () => {
         screen.getByTestId("user-company-section"),
       ];
 
-      elements.forEach(element => {
+      elements.forEach((element) => {
         expect(card).toContainElement(element);
       });
     });
@@ -396,7 +392,7 @@ describe("UserProfileCard", () => {
       render(
         <TestWrapper>
           <UserProfileCard {...longNameData} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       const fullName = screen.getByTestId("user-fullname");
@@ -408,18 +404,23 @@ describe("UserProfileCard", () => {
         ...mockUserData,
         company: {
           name: "International Business Machines Corporation Technology Solutions Division",
-          title: "Senior Principal Software Development Engineer and Technical Lead",
+          title:
+            "Senior Principal Software Development Engineer and Technical Lead",
         },
       };
 
       render(
         <TestWrapper>
           <UserProfileCard {...longCompanyData} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
-      expect(screen.getByTestId("company-name")).toHaveTextContent(longCompanyData.company.name);
-      expect(screen.getByTestId("company-title")).toHaveTextContent(longCompanyData.company.title);
+      expect(screen.getByTestId("company-name")).toHaveTextContent(
+        longCompanyData.company.name,
+      );
+      expect(screen.getByTestId("company-title")).toHaveTextContent(
+        longCompanyData.company.title,
+      );
     });
 
     it("handles empty string values", () => {
@@ -438,19 +439,16 @@ describe("UserProfileCard", () => {
       render(
         <TestWrapper>
           <UserProfileCard {...emptyData} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
-      // Component should still render all elements, even if empty
       expect(screen.getByTestId("user-profile-card")).toBeInTheDocument();
       expect(screen.getByTestId("user-fullname")).toHaveTextContent("");
-      
-      // The contact shows "phone | gender" format, so with empty values it shows " | "
-      // But whitespace might be trimmed, so let's check it contains the pipe
+
       const contactElement = screen.getByTestId("user-contact");
       expect(contactElement).toBeInTheDocument();
       expect(contactElement.textContent).toContain("|");
-      
+
       expect(screen.getByTestId("company-name")).toHaveTextContent("");
     });
   });

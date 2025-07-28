@@ -1,4 +1,3 @@
-//cleared tests
 import errorReducer from "../errorReducer";
 import { SET_API_ERROR } from "../../Actions/errorAction";
 

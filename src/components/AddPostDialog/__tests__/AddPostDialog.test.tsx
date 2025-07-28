@@ -1,4 +1,3 @@
-//cleared tests
 import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -46,7 +45,7 @@ describe("AddPostDialog Component", () => {
     return render(
       <Provider store={store}>
         <AddPostDialog {...defaultProps} {...props} />
-      </Provider>
+      </Provider>,
     );
   };
 
@@ -74,7 +73,6 @@ describe("AddPostDialog Component", () => {
         expect(getAllPostTagsArray).toHaveBeenCalledTimes(1);
       });
 
-      // Click on autocomplete to see options
       const tagInput = screen.getByRole("combobox");
       await userEvent.click(tagInput);
 
@@ -88,8 +86,10 @@ describe("AddPostDialog Component", () => {
   describe("Form Interactions", () => {
     it("updates title input correctly", async () => {
       renderComponent();
-      
-      const titleInput = screen.getByTestId("add-post-title").querySelector('input') as HTMLInputElement;
+
+      const titleInput = screen
+        .getByTestId("add-post-title")
+        .querySelector("input") as HTMLInputElement;
       await userEvent.clear(titleInput);
       await userEvent.type(titleInput, "Test Title");
 
@@ -98,8 +98,10 @@ describe("AddPostDialog Component", () => {
 
     it("updates body input correctly", async () => {
       renderComponent();
-      
-      const bodyInput = screen.getByTestId("add-post-body").querySelector('textarea') as HTMLTextAreaElement;
+
+      const bodyInput = screen
+        .getByTestId("add-post-body")
+        .querySelector("textarea") as HTMLTextAreaElement;
       await userEvent.clear(bodyInput);
       await userEvent.type(bodyInput, "Test body content");
 
@@ -114,20 +116,17 @@ describe("AddPostDialog Component", () => {
       });
 
       const tagInput = screen.getByRole("combobox");
-      
-      // Select first tag
+
       await userEvent.click(tagInput);
       await userEvent.type(tagInput, "tech");
       await waitFor(() => expect(screen.getByText("tech")).toBeInTheDocument());
       await userEvent.click(screen.getByText("tech"));
 
-      // Select second tag
       await userEvent.click(tagInput);
       await userEvent.type(tagInput, "news");
       await waitFor(() => expect(screen.getByText("news")).toBeInTheDocument());
       await userEvent.click(screen.getByText("news"));
 
-      // Both tags should be selected (visible as chips)
       expect(screen.getAllByRole("button", { name: /tech/i })).toHaveLength(1);
       expect(screen.getAllByRole("button", { name: /news/i })).toHaveLength(1);
     });
@@ -137,33 +136,32 @@ describe("AddPostDialog Component", () => {
     it("submits form with correct data when all fields are filled", async () => {
       renderComponent();
 
-      // Wait for tags to load
       await waitFor(() => {
         expect(getAllPostTagsArray).toHaveBeenCalled();
       });
 
-      // Fill out form
-      const titleInput = screen.getByTestId("add-post-title").querySelector('input') as HTMLInputElement;
-      const bodyInput = screen.getByTestId("add-post-body").querySelector('textarea') as HTMLTextAreaElement;
-      
+      const titleInput = screen
+        .getByTestId("add-post-title")
+        .querySelector("input") as HTMLInputElement;
+      const bodyInput = screen
+        .getByTestId("add-post-body")
+        .querySelector("textarea") as HTMLTextAreaElement;
+
       await userEvent.clear(titleInput);
       await userEvent.type(titleInput, "My Awesome Post");
-      
+
       await userEvent.clear(bodyInput);
       await userEvent.type(bodyInput, "This is the post content");
 
-      // Select a tag
       const tagInput = screen.getByRole("combobox");
       await userEvent.click(tagInput);
       await userEvent.type(tagInput, "tech");
       await waitFor(() => expect(screen.getByText("tech")).toBeInTheDocument());
       await userEvent.click(screen.getByText("tech"));
 
-      // Submit form
       const submitBtn = screen.getByTestId("add-post-submit");
       await userEvent.click(submitBtn);
 
-      // Verify onSave was called with correct data
       await waitFor(() => {
         expect(onSaveMock).toHaveBeenCalledWith({
           title: "My Awesome Post",
@@ -172,7 +170,6 @@ describe("AddPostDialog Component", () => {
         });
       });
 
-      // Verify Redux action was dispatched
       const actions = store.getActions();
       expect(actions[0].type).toBe("ADD_UPLOADED_POST");
       expect(actions[0].payload).toMatchObject({
@@ -186,7 +183,9 @@ describe("AddPostDialog Component", () => {
     it("does not submit when title is empty", async () => {
       renderComponent();
 
-      const bodyInput = screen.getByTestId("add-post-body").querySelector('textarea') as HTMLTextAreaElement;
+      const bodyInput = screen
+        .getByTestId("add-post-body")
+        .querySelector("textarea") as HTMLTextAreaElement;
       await userEvent.type(bodyInput, "Body content");
 
       const submitBtn = screen.getByTestId("add-post-submit");
@@ -198,7 +197,9 @@ describe("AddPostDialog Component", () => {
     it("does not submit when body is empty", async () => {
       renderComponent();
 
-      const titleInput = screen.getByTestId("add-post-title").querySelector('input') as HTMLInputElement;
+      const titleInput = screen
+        .getByTestId("add-post-title")
+        .querySelector("input") as HTMLInputElement;
       await userEvent.type(titleInput, "Title");
 
       const submitBtn = screen.getByTestId("add-post-submit");
@@ -210,9 +211,13 @@ describe("AddPostDialog Component", () => {
     it("does not submit when both title and body are whitespace only", async () => {
       renderComponent();
 
-      const titleInput = screen.getByTestId("add-post-title").querySelector('input') as HTMLInputElement;
-      const bodyInput = screen.getByTestId("add-post-body").querySelector('textarea') as HTMLTextAreaElement;
-      
+      const titleInput = screen
+        .getByTestId("add-post-title")
+        .querySelector("input") as HTMLInputElement;
+      const bodyInput = screen
+        .getByTestId("add-post-body")
+        .querySelector("textarea") as HTMLTextAreaElement;
+
       await userEvent.type(titleInput, "   ");
       await userEvent.type(bodyInput, "   ");
 
@@ -227,8 +232,9 @@ describe("AddPostDialog Component", () => {
     it("closes dialog and resets form when cancel button is clicked", async () => {
       renderComponent();
 
-      // Fill out some data first
-      const titleInput = screen.getByTestId("add-post-title").querySelector('input') as HTMLInputElement;
+      const titleInput = screen
+        .getByTestId("add-post-title")
+        .querySelector("input") as HTMLInputElement;
       await userEvent.type(titleInput, "Test Title");
 
       const cancelBtn = screen.getByTestId("add-post-cancel");
@@ -244,10 +250,13 @@ describe("AddPostDialog Component", () => {
         expect(getAllPostTagsArray).toHaveBeenCalled();
       });
 
-      // Fill and submit form
-      const titleInput = screen.getByTestId("add-post-title").querySelector('input') as HTMLInputElement;
-      const bodyInput = screen.getByTestId("add-post-body").querySelector('textarea') as HTMLTextAreaElement;
-      
+      const titleInput = screen
+        .getByTestId("add-post-title")
+        .querySelector("input") as HTMLInputElement;
+      const bodyInput = screen
+        .getByTestId("add-post-body")
+        .querySelector("textarea") as HTMLTextAreaElement;
+
       await userEvent.type(titleInput, "Test Title");
       await userEvent.type(bodyInput, "Test Body");
 
@@ -262,27 +271,37 @@ describe("AddPostDialog Component", () => {
 
   describe("Error Handling", () => {
     it("handles API error when fetching tags", async () => {
-      const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
-      (getAllPostTagsArray as jest.Mock).mockRejectedValue(new Error("API Error"));
+      const consoleSpy = jest.spyOn(console, "error").mockImplementation();
+      (getAllPostTagsArray as jest.Mock).mockRejectedValue(
+        new Error("API Error"),
+      );
 
       renderComponent();
 
       await waitFor(() => {
-        expect(consoleSpy).toHaveBeenCalledWith("Failed to fetch tags", expect.any(Error));
+        expect(consoleSpy).toHaveBeenCalledWith(
+          "Failed to fetch tags",
+          expect.any(Error),
+        );
       });
 
       consoleSpy.mockRestore();
     });
 
     it("still allows form submission even if tags fail to load", async () => {
-      (getAllPostTagsArray as jest.Mock).mockRejectedValue(new Error("API Error"));
+      (getAllPostTagsArray as jest.Mock).mockRejectedValue(
+        new Error("API Error"),
+      );
 
       renderComponent();
 
-      // Fill out form without tags
-      const titleInput = screen.getByTestId("add-post-title").querySelector('input') as HTMLInputElement;
-      const bodyInput = screen.getByTestId("add-post-body").querySelector('textarea') as HTMLTextAreaElement;
-      
+      const titleInput = screen
+        .getByTestId("add-post-title")
+        .querySelector("input") as HTMLInputElement;
+      const bodyInput = screen
+        .getByTestId("add-post-body")
+        .querySelector("textarea") as HTMLTextAreaElement;
+
       await userEvent.type(titleInput, "Test Title");
       await userEvent.type(bodyInput, "Test Body");
 
@@ -301,23 +320,30 @@ describe("AddPostDialog Component", () => {
 
   describe("Redux Integration", () => {
     it("generates correct post ID based on existing posts", async () => {
-      // Store with existing posts
       const storeWithPosts = mockStore({
         user: {
           id: 1,
-          uploadedPosts: [{ id: 1 }, { id: 2 }], // 2 existing posts
+          uploadedPosts: [{ id: 1 }, { id: 2 }],
         },
       });
 
       render(
         <Provider store={storeWithPosts}>
-          <AddPostDialog open={true} onClose={onCloseMock} onSave={onSaveMock} />
-        </Provider>
+          <AddPostDialog
+            open={true}
+            onClose={onCloseMock}
+            onSave={onSaveMock}
+          />
+        </Provider>,
       );
 
-      const titleInput = screen.getByTestId("add-post-title").querySelector('input') as HTMLInputElement;
-      const bodyInput = screen.getByTestId("add-post-body").querySelector('textarea') as HTMLTextAreaElement;
-      
+      const titleInput = screen
+        .getByTestId("add-post-title")
+        .querySelector("input") as HTMLInputElement;
+      const bodyInput = screen
+        .getByTestId("add-post-body")
+        .querySelector("textarea") as HTMLTextAreaElement;
+
       await userEvent.type(titleInput, "Test Title");
       await userEvent.type(bodyInput, "Test Body");
 
@@ -326,7 +352,7 @@ describe("AddPostDialog Component", () => {
 
       await waitFor(() => {
         const actions = storeWithPosts.getActions();
-        expect(actions[0].payload.id).toBe(254); // 252 + 2 existing posts
+        expect(actions[0].payload.id).toBe(254);
       });
     });
   });

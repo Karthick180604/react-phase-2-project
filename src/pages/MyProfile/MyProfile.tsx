@@ -37,9 +37,7 @@ const MyProfile = () => {
       id: userDetails.id,
       firstName: userDetails.firstName || userDetails.username,
       lastName: userDetails.lastName || "",
-      image:
-        userDetails.image ||
-        "data:image/png;base64,...", // shortened for brevity
+      image: userDetails.image || "data:image/png;base64,...", // shortened for brevity
       email: userDetails.email,
       phone: userDetails.phone || "ph:no data",
       gender: userDetails.gender || "gender:no data",
@@ -60,7 +58,7 @@ const MyProfile = () => {
   }, [userDetails]);
 
   const updatePost = async () => {
-    if(!userDetails) return;
+    if (!userDetails) return;
     if (userDetails.id > 208) {
       setUserPosts([...userDetails.uploadedPosts]);
     } else {
@@ -99,7 +97,7 @@ const MyProfile = () => {
               onClick={() => setEditOpen(true)}
               data-testid="edit-profile-btn"
             >
-              Refresh Profile Info
+              Edit Profile Info
             </Button>
           </Box>
         </Grid>

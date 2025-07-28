@@ -67,7 +67,13 @@ const AddPostDialog: React.FC<AddPostDialogProps> = ({
   };
 
   return (
-    <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth data-testid="add-post-dialog">
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      maxWidth="sm"
+      fullWidth
+      data-testid="add-post-dialog"
+    >
       <DialogTitle>Add New Post</DialogTitle>
       <DialogContent>
         <Stack spacing={2} mt={1}>
@@ -107,7 +113,11 @@ const AddPostDialog: React.FC<AddPostDialogProps> = ({
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="inherit" data-testid="add-post-cancel">
+        <Button
+          onClick={handleClose}
+          color="inherit"
+          data-testid="add-post-cancel"
+        >
           Cancel
         </Button>
         <Button

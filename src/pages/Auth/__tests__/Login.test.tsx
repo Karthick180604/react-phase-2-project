@@ -1,25 +1,27 @@
-//clear tests
+jest.mock("../../../assets/socialMediaPng.png", () => "mocked-image");
 
-jest.mock('../../../assets/socialMediaPng.png', () => 'mocked-image');
-
-import { render, screen, fireEvent, waitFor, within } from "@testing-library/react";
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  within,
+} from "@testing-library/react";
 import Login from "../Login";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
-import {thunk} from "redux-thunk";
+import { thunk } from "redux-thunk";
 import { BrowserRouter } from "react-router-dom";
 import * as api from "../../../services/apiCalls";
 
 const mockStore = configureStore([thunk]);
 const mockNavigate = jest.fn();
 
-// Mock react-router-dom's useNavigate
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
   useNavigate: () => mockNavigate,
 }));
 
-// Mock API call
 jest.mock("../../../services/apiCalls", () => ({
   getAllUsers: jest.fn(),
 }));
@@ -42,7 +44,7 @@ describe("Login Component", () => {
 
   beforeEach(() => {
     store = mockStore({
-      user: { email: "", password: "" }, // initial state
+      user: { email: "", password: "" },
     });
     jest.clearAllMocks();
   });
@@ -53,7 +55,7 @@ describe("Login Component", () => {
         <BrowserRouter>
           <Login />
         </BrowserRouter>
-      </Provider>
+      </Provider>,
     );
 
   it("renders login form elements", () => {
@@ -68,62 +70,73 @@ describe("Login Component", () => {
     expect(screen.getByTestId("login-button")).toBeDisabled();
   });
 
- it("enables login button when fields are filled", () => {
-  renderLogin();
+  it("enables login button when fields are filled", () => {
+    renderLogin();
 
-  const emailField = screen.getByTestId("email-input");
-  const passwordField = screen.getByTestId("password-input");
+    const emailField = screen.getByTestId("email-input");
+    const passwordField = screen.getByTestId("password-input");
 
-  fireEvent.change(within(emailField).getByRole("textbox"), {
-    target: { value: "john@example.com" },
+    fireEvent.change(within(emailField).getByRole("textbox"), {
+      target: { value: "john@example.com" },
+    });
+    fireEvent.change(within(passwordField).getByLabelText("Password"), {
+      target: { value: "secret123" },
+    });
+
+    expect(screen.getByTestId("login-button")).not.toBeDisabled();
   });
-  fireEvent.change(within(passwordField).getByLabelText("Password"), {
-    target: { value: "secret123" },
-  });
-
-  expect(screen.getByTestId("login-button")).not.toBeDisabled();
-});
 
   it("logs in successfully and navigates", async () => {
-  (api.getAllUsers as jest.Mock).mockResolvedValue({
-    data: { users: [mockUser] },
+    (api.getAllUsers as jest.Mock).mockResolvedValue({
+      data: { users: [mockUser] },
+    });
+
+    renderLogin();
+
+    fireEvent.change(
+      within(screen.getByTestId("email-input")).getByRole("textbox"),
+      {
+        target: { value: "john@example.com" },
+      },
+    );
+    fireEvent.change(
+      within(screen.getByTestId("password-input")).getByLabelText("Password"),
+      {
+        target: { value: "secret123" },
+      },
+    );
+
+    fireEvent.click(screen.getByTestId("login-button"));
+
+    await waitFor(() => {
+      expect(api.getAllUsers).toHaveBeenCalled();
+      expect(mockNavigate).toHaveBeenCalledWith("/home");
+    });
   });
-
-  renderLogin();
-
-  fireEvent.change(within(screen.getByTestId("email-input")).getByRole("textbox"), {
-    target: { value: "john@example.com" },
-  });
-  fireEvent.change(within(screen.getByTestId("password-input")).getByLabelText("Password"), {
-    target: { value: "secret123" },
-  });
-
-  fireEvent.click(screen.getByTestId("login-button"));
-
-  await waitFor(() => {
-    expect(api.getAllUsers).toHaveBeenCalled();
-    expect(mockNavigate).toHaveBeenCalledWith("/home");
-  });
-});
-
 
   it("shows error snackbar when credentials are invalid", async () => {
-  (api.getAllUsers as jest.Mock).mockResolvedValue({
-    data: { users: [mockUser] },
+    (api.getAllUsers as jest.Mock).mockResolvedValue({
+      data: { users: [mockUser] },
+    });
+
+    renderLogin();
+
+    fireEvent.change(
+      within(screen.getByTestId("email-input")).getByRole("textbox"),
+      {
+        target: { value: "invalid@example.com" },
+      },
+    );
+    fireEvent.change(
+      within(screen.getByTestId("password-input")).getByLabelText("Password"),
+      {
+        target: { value: "wrongpass" },
+      },
+    );
+
+    fireEvent.click(screen.getByTestId("login-button"));
+
+    const alert = await screen.findByTestId("error-alert");
+    expect(alert).toHaveTextContent("Invalid email or password");
   });
-
-  renderLogin();
-
-  fireEvent.change(within(screen.getByTestId("email-input")).getByRole("textbox"), {
-    target: { value: "invalid@example.com" },
-  });
-  fireEvent.change(within(screen.getByTestId("password-input")).getByLabelText("Password"), {
-    target: { value: "wrongpass" },
-  });
-
-  fireEvent.click(screen.getByTestId("login-button"));
-
-  const alert = await screen.findByTestId("error-alert");
-  expect(alert).toHaveTextContent("Invalid email or password");
-});
 });

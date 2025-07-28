@@ -1,14 +1,12 @@
-//cleared tests
-
-jest.mock('../../../assets/socialMediaPng.png', () => 'mocked-image');
+jest.mock("../../../assets/socialMediaPng.png", () => "mocked-image");
 
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import Signup from "../Signup";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
-import {thunk} from "redux-thunk";
-import * as apiCalls from "../../../services/apiCalls"; // Adjust based on your structure
+import { thunk } from "redux-thunk";
+import * as apiCalls from "../../../services/apiCalls";
 
 const mockStore = configureStore([thunk]);
 
@@ -19,7 +17,7 @@ const renderSignup = (storeOverride = {}) => {
       <BrowserRouter>
         <Signup />
       </BrowserRouter>
-    </Provider>
+    </Provider>,
   );
   return store;
 };
@@ -45,7 +43,6 @@ describe("Signup Component", () => {
     const passwordInput = screen.getByTestId("password-input");
     const toggleButton = screen.getByTestId("toggle-password-visibility");
 
-    // Initially password is hidden
     expect(passwordInput).toHaveAttribute("type", "password");
 
     fireEvent.click(toggleButton);
@@ -81,13 +78,11 @@ describe("Signup Component", () => {
   });
 
   it("shows snackbar if user already exists", async () => {
-    jest
-      .spyOn(apiCalls, "getAllUsers")
-      .mockResolvedValueOnce({
-        data: {
-          users: [{ email: "existing@example.com" }],
-        },
-      });
+    jest.spyOn(apiCalls, "getAllUsers").mockResolvedValueOnce({
+      data: {
+        users: [{ email: "existing@example.com" }],
+      },
+    });
 
     renderSignup();
 
@@ -133,7 +128,7 @@ describe("Signup Component", () => {
 
     await waitFor(() => {
       const actions = store.getActions();
-      expect(actions[0].type).toBe("SET_USER"); // action type from setUser
+      expect(actions[0].type).toBe("SET_USER");
     });
   });
 });

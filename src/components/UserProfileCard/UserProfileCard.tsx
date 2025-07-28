@@ -25,7 +25,11 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({
   const theme = useTheme();
 
   return (
-    <Paper elevation={3} sx={{ p: 3, borderRadius: 3 }} data-testid="user-profile-card">
+    <Paper
+      elevation={3}
+      sx={{ p: 3, borderRadius: 3 }}
+      data-testid="user-profile-card"
+    >
       <Box textAlign="center">
         <Box
           sx={{
@@ -42,22 +46,38 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({
           }}
           data-testid="user-avatar-border"
         >
-          <Avatar src={image} sx={{ width: 100, height: 100 }} data-testid="user-avatar" />
+          <Avatar
+            src={image}
+            sx={{ width: 100, height: 100 }}
+            data-testid="user-avatar"
+          />
         </Box>
 
         <Typography variant="h6" fontWeight={600} data-testid="user-fullname">
           {fullName}
         </Typography>
-        <Typography variant="body2" color="text.secondary" data-testid="user-email">
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          data-testid="user-email"
+        >
           {email}
         </Typography>
-        <Typography variant="body2" color="text.secondary" data-testid="user-contact">
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          data-testid="user-contact"
+        >
           {phone} | {gender}
         </Typography>
       </Box>
 
       <Box mt={3} data-testid="user-company-section">
-        <Typography variant="subtitle2" color="text.secondary" data-testid="company-label">
+        <Typography
+          variant="subtitle2"
+          color="text.secondary"
+          data-testid="company-label"
+        >
           Company
         </Typography>
         <Typography variant="body2" data-testid="company-name">

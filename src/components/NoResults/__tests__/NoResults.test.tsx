@@ -1,5 +1,3 @@
-//cleared tests
-
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import NoResults from "../NoResults";
@@ -12,9 +10,7 @@ jest.mock("../../../assets/no-results.png", () => "mocked-image-path");
 const mockStore = configureStore([]);
 
 describe("NoResults Component", () => {
-  const store = mockStore({
-    // You can add necessary mock state here if needed
-  });
+  const store = mockStore({});
 
   const message = "No posts found.";
 
@@ -24,7 +20,7 @@ describe("NoResults Component", () => {
         <BrowserRouter>
           <NoResults message={message} />
         </BrowserRouter>
-      </Provider>
+      </Provider>,
     );
   });
 

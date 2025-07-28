@@ -1,6 +1,3 @@
-// cleared tests
-
-import React from "react";
 import { render, screen } from "@testing-library/react";
 import PostCardSmallSkeleton from "../PostCardSmallSkeleton";
 
@@ -14,12 +11,16 @@ describe("PostCardSmallSkeleton Component", () => {
   });
 
   it("renders the image skeleton box and image", () => {
-    expect(screen.getByTestId("post-card-skeleton-image-box")).toBeInTheDocument();
+    expect(
+      screen.getByTestId("post-card-skeleton-image-box"),
+    ).toBeInTheDocument();
     expect(screen.getByTestId("post-card-skeleton-image")).toBeInTheDocument();
   });
 
   it("renders the content skeleton section", () => {
-    expect(screen.getByTestId("post-card-skeleton-content")).toBeInTheDocument();
+    expect(
+      screen.getByTestId("post-card-skeleton-content"),
+    ).toBeInTheDocument();
     expect(screen.getByTestId("post-card-skeleton-title")).toBeInTheDocument();
     expect(screen.getByTestId("post-card-skeleton-line1")).toBeInTheDocument();
     expect(screen.getByTestId("post-card-skeleton-line2")).toBeInTheDocument();

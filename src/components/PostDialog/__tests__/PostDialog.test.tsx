@@ -1,39 +1,43 @@
-//clear tests
-import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { Provider } from 'react-redux';
-import { createStore, combineReducers } from 'redux';
-import PostDialog from '../PostDialog';
-import { commentPost } from '../../../redux/Actions/userActions';
-import { getPostComments } from '../../../services/apiCalls';
-import type { Post } from '../../../redux/Actions/postsActions';
-import type { CommentType } from '../../../types/types';
+import React from "react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { Provider } from "react-redux";
+import { createStore, combineReducers } from "redux";
+import PostDialog from "../PostDialog";
+import { commentPost } from "../../../redux/Actions/userActions";
+import { getPostComments } from "../../../services/apiCalls";
+import type { Post } from "../../../redux/Actions/postsActions";
+import type { CommentType } from "../../../types/types";
 
-// Mock the external dependencies
-jest.mock('../../../redux/Actions/userActions', () => ({
-  commentPost: jest.fn(() => ({ type: 'COMMENT_POST', payload: {} })),
+jest.mock("../../../redux/Actions/userActions", () => ({
+  commentPost: jest.fn(() => ({ type: "COMMENT_POST", payload: {} })),
 }));
 
-jest.mock('../../../services/apiCalls', () => ({
+jest.mock("../../../services/apiCalls", () => ({
   getPostComments: jest.fn(),
 }));
 
-// Mock Material-UI components if needed
-jest.mock('@mui/material', () => ({
-  ...jest.requireActual('@mui/material'),
-  Dialog: ({ children, open, ...props }: any) => 
-    open ? <div data-testid="dialog" {...props}>{children}</div> : null,
-  DialogContent: ({ children, ...props }: any) => 
-    <div data-testid="dialog-content" {...props}>{children}</div>,
+jest.mock("@mui/material", () => ({
+  ...jest.requireActual("@mui/material"),
+  Dialog: ({ children, open, ...props }: any) =>
+    open ? (
+      <div data-testid="dialog" {...props}>
+        {children}
+      </div>
+    ) : null,
+  DialogContent: ({ children, ...props }: any) => (
+    <div data-testid="dialog-content" {...props}>
+      {children}
+    </div>
+  ),
 }));
 
 const mockPost: Post = {
   id: 1,
-  title: 'Test Post Title',
-  body: 'This is a test post body content.',
-  username: 'testuser',
-  tags: ['test', 'react', 'typescript'],
+  title: "Test Post Title",
+  body: "This is a test post body content.",
+  username: "testuser",
+  tags: ["test", "react", "typescript"],
   reactions: {
     likes: 5,
     dislikes: 2,
@@ -44,36 +48,35 @@ const mockPost: Post = {
 const mockComments: CommentType[] = [
   {
     id: 1,
-    body: 'This is a test comment',
+    body: "This is a test comment",
     postId: 1,
     user: {
       id: 1,
-      fullName: 'John Doe',
+      fullName: "John Doe",
     },
   },
   {
     id: 2,
-    body: 'Another test comment',
+    body: "Another test comment",
     postId: 1,
     user: {
       id: 2,
-      fullName: 'Jane Smith',
+      fullName: "Jane Smith",
     },
   },
 ];
 
 const mockUserState = {
   id: 123,
-  username: 'currentuser',
+  username: "currentuser",
   commentedPosts: [
     {
       postId: 1,
-      comment: 'User added comment',
+      comment: "User added comment",
     },
   ],
 };
 
-// Create a mock reducer
 const userReducer = (state = mockUserState, action: any) => {
   switch (action.type) {
     default:
@@ -81,13 +84,12 @@ const userReducer = (state = mockUserState, action: any) => {
   }
 };
 
-// Create a mock store
 const createMockStore = (userState = mockUserState) => {
   const mockUserReducer = () => userState;
   const rootReducer = combineReducers({
     user: mockUserReducer,
   });
-  
+
   return createStore(rootReducer);
 };
 
@@ -101,102 +103,113 @@ const defaultProps = {
   dislike: false,
 };
 
-const renderWithProvider = (props = defaultProps, userState = mockUserState) => {
+const renderWithProvider = (
+  props = defaultProps,
+  userState = mockUserState,
+) => {
   const store = createMockStore(userState);
   return render(
     <Provider store={store}>
       <PostDialog {...props} />
-    </Provider>
+    </Provider>,
   );
 };
 
-describe('PostDialog', () => {
+describe("PostDialog", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  describe('Component Rendering', () => {
-    it('should not render when post is null', () => {
+  describe("Component Rendering", () => {
+    it("should not render when post is null", () => {
       renderWithProvider({ ...defaultProps, post: null });
-      expect(screen.queryByTestId('dialog')).not.toBeInTheDocument();
+      expect(screen.queryByTestId("dialog")).not.toBeInTheDocument();
     });
 
-    it('should not render when open is false', () => {
+    it("should not render when open is false", () => {
       renderWithProvider({ ...defaultProps, open: false });
-      expect(screen.queryByTestId('dialog')).not.toBeInTheDocument();
+      expect(screen.queryByTestId("dialog")).not.toBeInTheDocument();
     });
 
-    it('should render post information correctly', () => {
+    it("should render post information correctly", () => {
       renderWithProvider();
-      
-      expect(screen.getByText('Post by testuser')).toBeInTheDocument();
-      expect(screen.getByText('Test Post Title')).toBeInTheDocument();
-      expect(screen.getByText('This is a test post body content.')).toBeInTheDocument();
-      expect(screen.getByText('#test')).toBeInTheDocument();
-      expect(screen.getByText('#react')).toBeInTheDocument();
-      expect(screen.getByText('#typescript')).toBeInTheDocument();
+
+      expect(screen.getByText("Post by testuser")).toBeInTheDocument();
+      expect(screen.getByText("Test Post Title")).toBeInTheDocument();
+      expect(
+        screen.getByText("This is a test post body content."),
+      ).toBeInTheDocument();
+      expect(screen.getByText("#test")).toBeInTheDocument();
+      expect(screen.getByText("#react")).toBeInTheDocument();
+      expect(screen.getByText("#typescript")).toBeInTheDocument();
     });
 
-    it('should render reaction counts correctly', () => {
+    it("should render reaction counts correctly", () => {
       renderWithProvider();
-      
-      expect(screen.getByText('5')).toBeInTheDocument(); // likes
-      expect(screen.getByText('2')).toBeInTheDocument(); // dislikes
-      expect(screen.getByText('100')).toBeInTheDocument(); // views
+
+      expect(screen.getByText("5")).toBeInTheDocument();
+      expect(screen.getByText("2")).toBeInTheDocument();
+      expect(screen.getByText("100")).toBeInTheDocument();
     });
 
-    it('should render reaction counts with user interactions', () => {
+    it("should render reaction counts with user interactions", () => {
       renderWithProvider({ ...defaultProps, like: true, dislike: false });
-      
-      expect(screen.getByText('6')).toBeInTheDocument(); // likes + 1
-      expect(screen.getByText('2')).toBeInTheDocument(); // dislikes unchanged
+
+      expect(screen.getByText("6")).toBeInTheDocument();
+      expect(screen.getByText("2")).toBeInTheDocument();
     });
   });
 
-  describe('Close Functionality', () => {
-    it('should call onClose when close button is clicked', () => {
+  describe("Close Functionality", () => {
+    it("should call onClose when close button is clicked", () => {
       const mockOnClose = jest.fn();
       renderWithProvider({ ...defaultProps, onClose: mockOnClose });
-      
-      // Find the close button by its icon or by finding all buttons and selecting the right one
-      const buttons = screen.getAllByRole('button');
-      const closeButton = buttons.find(button => 
-        button.querySelector('[data-testid="CloseIcon"], [class*="MuiSvgIcon"]') ||
-        button.getAttribute('aria-label') === 'close'
+
+      const buttons = screen.getAllByRole("button");
+      const closeButton = buttons.find(
+        (button) =>
+          button.querySelector(
+            '[data-testid="CloseIcon"], [class*="MuiSvgIcon"]',
+          ) || button.getAttribute("aria-label") === "close",
       );
-      
+
       expect(closeButton).toBeTruthy();
       fireEvent.click(closeButton!);
-      
+
       expect(mockOnClose).toHaveBeenCalledTimes(1);
     });
   });
 
-  describe('Like/Dislike Functionality', () => {
-    it('should call onLikeHandler when like button is clicked', () => {
+  describe("Like/Dislike Functionality", () => {
+    it("should call onLikeHandler when like button is clicked", () => {
       const mockOnLikeHandler = jest.fn();
       renderWithProvider({ ...defaultProps, onLikeHandler: mockOnLikeHandler });
-      
-      const likeButtons = screen.getAllByRole('button');
-      const likeButton = likeButtons.find(button => 
-        button.querySelector('[data-testid*="thumb-up"], [class*="ThumbUp"]')
+
+      const likeButtons = screen.getAllByRole("button");
+      const likeButton = likeButtons.find((button) =>
+        button.querySelector('[data-testid*="thumb-up"], [class*="ThumbUp"]'),
       );
-      
+
       if (likeButton) {
         fireEvent.click(likeButton);
         expect(mockOnLikeHandler).toHaveBeenCalledWith(1, false);
       }
     });
 
-    it('should call onDislikeHandler when dislike button is clicked', () => {
+    it("should call onDislikeHandler when dislike button is clicked", () => {
       const mockOnDislikeHandler = jest.fn();
-      renderWithProvider({ ...defaultProps, onDislikeHandler: mockOnDislikeHandler });
-      
-      const dislikeButtons = screen.getAllByRole('button');
-      const dislikeButton = dislikeButtons.find(button => 
-        button.querySelector('[data-testid*="thumb-down"], [class*="ThumbDown"]')
+      renderWithProvider({
+        ...defaultProps,
+        onDislikeHandler: mockOnDislikeHandler,
+      });
+
+      const dislikeButtons = screen.getAllByRole("button");
+      const dislikeButton = dislikeButtons.find((button) =>
+        button.querySelector(
+          '[data-testid*="thumb-down"], [class*="ThumbDown"]',
+        ),
       );
-      
+
       if (dislikeButton) {
         fireEvent.click(dislikeButton);
         expect(mockOnDislikeHandler).toHaveBeenCalledWith(1, false);
@@ -204,16 +217,16 @@ describe('PostDialog', () => {
     });
   });
 
-  describe('Comments Functionality', () => {
+  describe("Comments Functionality", () => {
     beforeEach(() => {
       (getPostComments as jest.Mock).mockResolvedValue({
-        data: { comments: mockComments }
+        data: { comments: mockComments },
       });
     });
 
-    it('should fetch and display comments for posts with id <= 251', async () => {
+    it("should fetch and display comments for posts with id <= 251", async () => {
       renderWithProvider();
-      
+
       await waitFor(() => {
         expect(getPostComments).toHaveBeenCalledWith(1);
       });
@@ -221,169 +234,169 @@ describe('PostDialog', () => {
 
     it('should display "No comments yet" when there are no comments', async () => {
       (getPostComments as jest.Mock).mockResolvedValue({
-        data: { comments: [] }
+        data: { comments: [] },
       });
-      
+
       const userStateWithoutComments = {
         ...mockUserState,
-        commentedPosts: []
+        commentedPosts: [],
       };
-      
+
       renderWithProvider(defaultProps, userStateWithoutComments);
-      
+
       await waitFor(() => {
-        expect(screen.getByText('No comments yet')).toBeInTheDocument();
+        expect(screen.getByText("No comments yet")).toBeInTheDocument();
       });
     });
 
-    it('should display comments when available', async () => {
+    it("should display comments when available", async () => {
       renderWithProvider();
-      
+
       await waitFor(() => {
-        expect(screen.getByText('John Doe')).toBeInTheDocument();
-        expect(screen.getByText('This is a test comment')).toBeInTheDocument();
-        expect(screen.getByText('Jane Smith')).toBeInTheDocument();
-        expect(screen.getByText('Another test comment')).toBeInTheDocument();
+        expect(screen.getByText("John Doe")).toBeInTheDocument();
+        expect(screen.getByText("This is a test comment")).toBeInTheDocument();
+        expect(screen.getByText("Jane Smith")).toBeInTheDocument();
+        expect(screen.getByText("Another test comment")).toBeInTheDocument();
       });
     });
 
-    it('should handle user comments for posts with id > 251', async () => {
+    it("should handle user comments for posts with id > 251", async () => {
       const postWithHighId = { ...mockPost, id: 300 };
       const userStateWithComments = {
         ...mockUserState,
         commentedPosts: [
           {
             postId: 300,
-            comment: 'User added comment for high ID post',
+            comment: "User added comment for high ID post",
           },
         ],
       };
-      
-      renderWithProvider({ ...defaultProps, post: postWithHighId }, userStateWithComments);
-      
+
+      renderWithProvider(
+        { ...defaultProps, post: postWithHighId },
+        userStateWithComments,
+      );
+
       await waitFor(() => {
         expect(getPostComments).not.toHaveBeenCalled();
       });
-      
-      // Wait a bit more for the component to update
+
       await waitFor(() => {
-        expect(screen.getByText('currentuser')).toBeInTheDocument();
-        expect(screen.getByText('User added comment for high ID post')).toBeInTheDocument();
+        expect(screen.getByText("currentuser")).toBeInTheDocument();
+        expect(
+          screen.getByText("User added comment for high ID post"),
+        ).toBeInTheDocument();
       });
     });
   });
 
-  describe('Comment Input Functionality', () => {
-    it('should update comment input value when typing', async () => {
+  describe("Comment Input Functionality", () => {
+    it("should update comment input value when typing", async () => {
       const user = userEvent.setup();
       renderWithProvider();
-      
-      const commentInput = screen.getByPlaceholderText('Write a comment...');
-      await user.type(commentInput, 'New comment text');
-      
-      expect(commentInput).toHaveValue('New comment text');
+
+      const commentInput = screen.getByPlaceholderText("Write a comment...");
+      await user.type(commentInput, "New comment text");
+
+      expect(commentInput).toHaveValue("New comment text");
     });
 
-    it('should dispatch commentPost action when Post button is clicked', async () => {
+    it("should dispatch commentPost action when Post button is clicked", async () => {
       const user = userEvent.setup();
       const store = createMockStore();
       const mockDispatch = jest.fn();
-      
-      // Mock the store dispatch
+
       store.dispatch = mockDispatch;
-      
+
       render(
         <Provider store={store}>
           <PostDialog {...defaultProps} />
-        </Provider>
+        </Provider>,
       );
-      
-      const commentInput = screen.getByPlaceholderText('Write a comment...');
-      const postButton = screen.getByRole('button', { name: /post/i });
-      
-      await user.type(commentInput, 'New comment');
+
+      const commentInput = screen.getByPlaceholderText("Write a comment...");
+      const postButton = screen.getByRole("button", { name: /post/i });
+
+      await user.type(commentInput, "New comment");
       fireEvent.click(postButton);
-      
-      expect(commentPost).toHaveBeenCalledWith(1, 'New comment');
+
+      expect(commentPost).toHaveBeenCalledWith(1, "New comment");
     });
 
-    it('should clear comment input after posting', async () => {
+    it("should clear comment input after posting", async () => {
       const user = userEvent.setup();
       renderWithProvider();
-      
-      const commentInput = screen.getByPlaceholderText('Write a comment...');
-      const postButton = screen.getByRole('button', { name: /post/i });
-      
-      await user.type(commentInput, 'New comment');
-      expect(commentInput).toHaveValue('New comment');
-      
+
+      const commentInput = screen.getByPlaceholderText("Write a comment...");
+      const postButton = screen.getByRole("button", { name: /post/i });
+
+      await user.type(commentInput, "New comment");
+      expect(commentInput).toHaveValue("New comment");
+
       fireEvent.click(postButton);
-      
-      // Wait for the state update
+
       await waitFor(() => {
-        expect(commentInput).toHaveValue('');
+        expect(commentInput).toHaveValue("");
       });
     });
   });
 
-  describe('Error Handling', () => {
-    it('should handle API errors gracefully', async () => {
-      const consoleSpy = jest.spyOn(console, 'log').mockImplementation();
-      (getPostComments as jest.Mock).mockRejectedValue(new Error('API Error'));
-      
+  describe("Error Handling", () => {
+    it("should handle API errors gracefully", async () => {
+      const consoleSpy = jest.spyOn(console, "log").mockImplementation();
+      (getPostComments as jest.Mock).mockRejectedValue(new Error("API Error"));
+
       renderWithProvider();
-      
+
       await waitFor(() => {
         expect(consoleSpy).toHaveBeenCalledWith(expect.any(Error));
       });
-      
+
       consoleSpy.mockRestore();
     });
   });
 
-  describe('Responsive Behavior', () => {
-    it('should render with proper responsive classes', () => {
+  describe("Responsive Behavior", () => {
+    it("should render with proper responsive classes", () => {
       renderWithProvider();
-      const dialogContent = screen.getByTestId('dialog-content');
+      const dialogContent = screen.getByTestId("dialog-content");
       expect(dialogContent).toBeInTheDocument();
     });
   });
 
-  describe('Integration Tests', () => {
-    it('should combine API comments with user comments correctly', async () => {
+  describe("Integration Tests", () => {
+    it("should combine API comments with user comments correctly", async () => {
       (getPostComments as jest.Mock).mockResolvedValue({
-        data: { comments: mockComments }
+        data: { comments: mockComments },
       });
-      
+
       renderWithProvider();
-      
+
       await waitFor(() => {
-        // API comments
-        expect(screen.getByText('John Doe')).toBeInTheDocument();
-        expect(screen.getByText('Jane Smith')).toBeInTheDocument();
-        // User comments
-        expect(screen.getByText('currentuser')).toBeInTheDocument();
-        expect(screen.getByText('User added comment')).toBeInTheDocument();
+        expect(screen.getByText("John Doe")).toBeInTheDocument();
+        expect(screen.getByText("Jane Smith")).toBeInTheDocument();
+        expect(screen.getByText("currentuser")).toBeInTheDocument();
+        expect(screen.getByText("User added comment")).toBeInTheDocument();
       });
     });
 
-    it('should update comments when user adds a new comment', async () => {
+    it("should update comments when user adds a new comment", async () => {
       const userStateWithNewComment = {
         ...mockUserState,
         commentedPosts: [
           ...mockUserState.commentedPosts,
-          { postId: 1, comment: 'Newly added comment' }
-        ]
+          { postId: 1, comment: "Newly added comment" },
+        ],
       };
-      
+
       (getPostComments as jest.Mock).mockResolvedValue({
-        data: { comments: mockComments }
+        data: { comments: mockComments },
       });
-      
+
       renderWithProvider(defaultProps, userStateWithNewComment);
-      
+
       await waitFor(() => {
-        expect(screen.getByText('Newly added comment')).toBeInTheDocument();
+        expect(screen.getByText("Newly added comment")).toBeInTheDocument();
       });
     });
   });

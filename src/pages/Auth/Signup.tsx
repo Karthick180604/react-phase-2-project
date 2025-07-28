@@ -199,7 +199,7 @@ const Signup = () => {
                 error={!!errors.email}
                 helperText={errors.email}
                 sx={{ mb: 2 }}
-                inputProps={{ "data-testid": "email-input" }} // ✅ add this
+                inputProps={{ "data-testid": "email-input" }}
               />
 
               <TextField

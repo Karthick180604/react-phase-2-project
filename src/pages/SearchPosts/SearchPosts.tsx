@@ -127,7 +127,7 @@ const SearchPosts = () => {
 
   const debouncedSearch = useMemo(
     () => debounce(fetchSearchedPosts, 500),
-    [fetchSearchedPosts]
+    [fetchSearchedPosts],
   );
 
   const settedTag = (e: SelectChangeEvent<string>) => {
@@ -136,7 +136,7 @@ const SearchPosts = () => {
       resetPagination();
     } else {
       const filtered = posts.filter((post) =>
-        post.tags.includes(e.target.value)
+        post.tags.includes(e.target.value),
       );
       setPostList(filtered);
       setHasMore(false);
@@ -168,7 +168,7 @@ const SearchPosts = () => {
 
       if (node) observerRef.current.observe(node);
     },
-    [loading, hasMore, searchTerm, selectedTag]
+    [loading, hasMore, searchTerm, selectedTag],
   );
 
   if (hasError) {
@@ -181,7 +181,10 @@ const SearchPosts = () => {
         Search Posts
       </Typography>
 
-      <Box sx={{ display: "flex", gap: 2, mb: 4 }} data-testid="search-bar-section">
+      <Box
+        sx={{ display: "flex", gap: 2, mb: 4 }}
+        data-testid="search-bar-section"
+      >
         <TextField
           color="tertiary"
           label="Search Posts"
@@ -211,9 +214,15 @@ const SearchPosts = () => {
             onChange={settedTag}
             data-testid="tag-select"
           >
-            <MenuItem value="All" data-testid="tag-option-All">All</MenuItem>
+            <MenuItem value="All" data-testid="tag-option-All">
+              All
+            </MenuItem>
             {tags.map((tag) => (
-              <MenuItem key={tag.slug} value={tag.slug} data-testid={`tag-option-${tag.slug}`}>
+              <MenuItem
+                key={tag.slug}
+                value={tag.slug}
+                data-testid={`tag-option-${tag.slug}`}
+              >
                 {tag.name}
               </MenuItem>
             ))}

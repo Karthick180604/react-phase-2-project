@@ -1,4 +1,3 @@
-// cleared tests
 import {
   SET_USER,
   LOGOUT_USER,
@@ -9,7 +8,7 @@ import {
   REMOVE_DISLIKE_POST,
   SET_USER_PROFILE_DETAILS,
   ADD_UPLOADED_POST,
-} from "../userActionTypes"; // Adjust path as needed
+} from "../userActionTypes";
 
 describe("User Action Types", () => {
   it("should define SET_USER correctly", () => {

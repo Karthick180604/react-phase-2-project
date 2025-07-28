@@ -1,11 +1,9 @@
-//clear tests
-
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import PostCardSkeleton from "../PostSkeleton";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
-import { rootReducer } from "../../../redux/Store/store"; // adjust path if needed
+import { rootReducer } from "../../../redux/Store/store";
 
 const renderWithRedux = (component: React.ReactNode) => {
   const store = createStore(rootReducer);

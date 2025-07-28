@@ -1,6 +1,5 @@
-//cleared tests
 import MockAdapter from "axios-mock-adapter";
-import api from "../axiosInterceptor"; // path to your interceptor file
+import api from "../axiosInterceptor";
 import { store } from "../../redux/Store/store";
 import { SET_API_ERROR } from "../../redux/Actions/errorAction";
 
@@ -19,13 +18,11 @@ describe("axios interceptor", () => {
   });
 
   it("should dispatch SET_API_ERROR on API error", async () => {
-    mock.onGet("/error-endpoint").reply(500); // Simulate error
+    mock.onGet("/error-endpoint").reply(500);
 
     try {
       await api.get("/error-endpoint");
-    } catch (error) {
-      // expected
-    }
+    } catch (error) {}
 
     expect(dispatchSpy).toHaveBeenCalledWith({
       type: SET_API_ERROR,

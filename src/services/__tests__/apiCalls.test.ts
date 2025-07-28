@@ -1,4 +1,3 @@
-//cleared tests
 import MockAdapter from "axios-mock-adapter";
 import api from "../axiosInterceptor";
 import {
@@ -25,7 +24,9 @@ describe("API Service", () => {
   });
 
   it("should fetch all users", async () => {
-    mock.onGet("/users?limit=208").reply(200, { users: [{ id: 1, name: "Test" }] });
+    mock
+      .onGet("/users?limit=208")
+      .reply(200, { users: [{ id: 1, name: "Test" }] });
 
     const response = await getAllUsers();
     expect(response.status).toBe(200);

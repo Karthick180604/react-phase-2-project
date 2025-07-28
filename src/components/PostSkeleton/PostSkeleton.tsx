@@ -56,7 +56,11 @@ const PostCardSkeleton: React.FC = () => {
           data-testid="skeleton-actions"
         >
           {[1, 2, 3].map((_, idx) => (
-            <Box key={idx} textAlign="center" data-testid={`skeleton-action-${idx}`}>
+            <Box
+              key={idx}
+              textAlign="center"
+              data-testid={`skeleton-action-${idx}`}
+            >
               <IconButton disabled data-testid={`skeleton-icon-${idx}`}>
                 {idx === 0 && <ThumbUpAltOutlinedIcon />}
                 {idx === 1 && <ThumbDownAltOutlinedIcon />}
@@ -95,7 +99,13 @@ const PostCardSkeleton: React.FC = () => {
 
           <Skeleton variant="text" width={80} height={20} sx={{ mt: 1 }} />
 
-          <Stack direction="row" spacing={1} mt={2} flexWrap="wrap" data-testid="skeleton-tags">
+          <Stack
+            direction="row"
+            spacing={1}
+            mt={2}
+            flexWrap="wrap"
+            data-testid="skeleton-tags"
+          >
             {Array.from({ length: 3 }).map((_, i) => (
               <Skeleton key={i} variant="rounded" width={60} height={24} />
             ))}

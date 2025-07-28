@@ -1,39 +1,35 @@
-//cleared tests
+import React from "react";
+import { render, screen } from "@testing-library/react";
+import { BrowserRouter } from "react-router-dom";
+import { Provider } from "react-redux";
+import { createStore } from "redux";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { useMediaQuery } from "@mui/material";
+import WebLayout from "../WebLayout";
 
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { useMediaQuery } from '@mui/material';
-import WebLayout from '../WebLayout';
-
-// Mock the Navbar component
-jest.mock('../../../components/Navbar/Navbar', () => {
+jest.mock("../../../components/Navbar/Navbar", () => {
   return function MockNavbar() {
     return <div data-testid="navbar">Navbar</div>;
   };
 });
 
-// Mock react-router-dom Outlet
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
   Outlet: () => <div data-testid="outlet">Outlet Content</div>,
 }));
 
-// Mock useMediaQuery
-jest.mock('@mui/material', () => ({
-  ...jest.requireActual('@mui/material'),
+jest.mock("@mui/material", () => ({
+  ...jest.requireActual("@mui/material"),
   useMediaQuery: jest.fn(),
 }));
 
-const mockUseMediaQuery = useMediaQuery as jest.MockedFunction<typeof useMediaQuery>;
+const mockUseMediaQuery = useMediaQuery as jest.MockedFunction<
+  typeof useMediaQuery
+>;
 
-// Create a mock Redux store
 const createMockStore = () => {
   const initialState = {};
-  
+
   const rootReducer = (state = initialState, action: any) => {
     return state;
   };
@@ -41,25 +37,21 @@ const createMockStore = () => {
   return createStore(rootReducer);
 };
 
-// Create MUI theme for testing
 const theme = createTheme();
 
-// Test utilities
 const renderWithProviders = (ui: React.ReactElement) => {
   const store = createMockStore();
-  
+
   return render(
     <Provider store={store}>
       <BrowserRouter>
-        <ThemeProvider theme={theme}>
-          {ui}
-        </ThemeProvider>
+        <ThemeProvider theme={theme}>{ui}</ThemeProvider>
       </BrowserRouter>
-    </Provider>
+    </Provider>,
   );
 };
 
-describe('WebLayout', () => {
+describe("WebLayout", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -68,80 +60,59 @@ describe('WebLayout', () => {
     jest.restoreAllMocks();
   });
 
-  it('renders navbar and outlet', () => {
-    // Mock mobile breakpoint (no drawer)
-    mockUseMediaQuery
-      .mockReturnValueOnce(false) // isTablet
-      .mockReturnValueOnce(false); // isDesktop
+  it("renders navbar and outlet", () => {
+    mockUseMediaQuery.mockReturnValueOnce(false).mockReturnValueOnce(false);
 
     renderWithProviders(<WebLayout />);
 
-    expect(screen.getByTestId('navbar')).toBeInTheDocument();
-    expect(screen.getByTestId('outlet')).toBeInTheDocument();
+    expect(screen.getByTestId("navbar")).toBeInTheDocument();
+    expect(screen.getByTestId("outlet")).toBeInTheDocument();
   });
 
-  it('applies correct styles for mobile viewport', () => {
-    // Mock mobile breakpoint
-    mockUseMediaQuery
-      .mockReturnValueOnce(false) // isTablet
-      .mockReturnValueOnce(false); // isDesktop
+  it("applies correct styles for mobile viewport", () => {
+    mockUseMediaQuery.mockReturnValueOnce(false).mockReturnValueOnce(false);
 
     renderWithProviders(<WebLayout />);
 
-    const mainBox = screen.getByTestId('outlet').parentElement;
+    const mainBox = screen.getByTestId("outlet").parentElement;
     expect(mainBox).toHaveStyle({
-      'flex-grow': '1',
-      padding: '16px',
+      "flex-grow": "1",
+      padding: "16px",
     });
   });
 
-  it('applies correct styles for tablet viewport', () => {
-    // Mock tablet breakpoint
-    mockUseMediaQuery
-      .mockReturnValueOnce(true)  // isTablet
-      .mockReturnValueOnce(false); // isDesktop
+  it("applies correct styles for tablet viewport", () => {
+    mockUseMediaQuery.mockReturnValueOnce(true).mockReturnValueOnce(false);
 
     renderWithProviders(<WebLayout />);
 
-    const mainBox = screen.getByTestId('outlet').parentElement;
-    
-    // Check if the component is rendered (styles are applied internally)
+    const mainBox = screen.getByTestId("outlet").parentElement;
+
     expect(mainBox).toBeInTheDocument();
-    expect(screen.getByTestId('navbar')).toBeInTheDocument();
-    expect(screen.getByTestId('outlet')).toBeInTheDocument();
+    expect(screen.getByTestId("navbar")).toBeInTheDocument();
+    expect(screen.getByTestId("outlet")).toBeInTheDocument();
   });
 
-  it('applies correct styles for desktop viewport', () => {
-    // Mock desktop breakpoint
-    mockUseMediaQuery
-      .mockReturnValueOnce(false) // isTablet
-      .mockReturnValueOnce(true);  // isDesktop
+  it("applies correct styles for desktop viewport", () => {
+    mockUseMediaQuery.mockReturnValueOnce(false).mockReturnValueOnce(true);
 
     renderWithProviders(<WebLayout />);
 
-    const mainBox = screen.getByTestId('outlet').parentElement;
-    
-    // Check if the component is rendered (styles are applied internally)
+    const mainBox = screen.getByTestId("outlet").parentElement;
+
     expect(mainBox).toBeInTheDocument();
-    expect(screen.getByTestId('navbar')).toBeInTheDocument();
-    expect(screen.getByTestId('outlet')).toBeInTheDocument();
+    expect(screen.getByTestId("navbar")).toBeInTheDocument();
+    expect(screen.getByTestId("outlet")).toBeInTheDocument();
   });
 
-  it('has correct drawer width calculations', () => {
-    // Test mobile (drawerWidth = 0)
-    mockUseMediaQuery
-      .mockReturnValueOnce(false) // isTablet
-      .mockReturnValueOnce(false); // isDesktop
+  it("has correct drawer width calculations", () => {
+    mockUseMediaQuery.mockReturnValueOnce(false).mockReturnValueOnce(false);
 
     const { rerender } = renderWithProviders(<WebLayout />);
-    
-    // Verify component renders without errors
-    expect(screen.getByTestId('outlet')).toBeInTheDocument();
 
-    // Test tablet (drawerWidth = 72)
-    mockUseMediaQuery
-      .mockReturnValueOnce(true)  // isTablet
-      .mockReturnValueOnce(false); // isDesktop
+    expect(screen.getByTestId("outlet")).toBeInTheDocument();
+
+    mockUseMediaQuery.mockReturnValueOnce(true).mockReturnValueOnce(false);
 
     rerender(
       <Provider store={createMockStore()}>
@@ -150,15 +121,12 @@ describe('WebLayout', () => {
             <WebLayout />
           </ThemeProvider>
         </BrowserRouter>
-      </Provider>
+      </Provider>,
     );
 
-    expect(screen.getByTestId('outlet')).toBeInTheDocument();
+    expect(screen.getByTestId("outlet")).toBeInTheDocument();
 
-    // Test desktop (drawerWidth = 200)
-    mockUseMediaQuery
-      .mockReturnValueOnce(false) // isTablet
-      .mockReturnValueOnce(true);  // isDesktop
+    mockUseMediaQuery.mockReturnValueOnce(false).mockReturnValueOnce(true);
 
     rerender(
       <Provider store={createMockStore()}>
@@ -167,82 +135,68 @@ describe('WebLayout', () => {
             <WebLayout />
           </ThemeProvider>
         </BrowserRouter>
-      </Provider>
+      </Provider>,
     );
 
-    expect(screen.getByTestId('outlet')).toBeInTheDocument();
+    expect(screen.getByTestId("outlet")).toBeInTheDocument();
   });
 
-  it('renders with correct DOM structure', () => {
-    mockUseMediaQuery
-      .mockReturnValueOnce(false) // isTablet
-      .mockReturnValueOnce(false); // isDesktop
+  it("renders with correct DOM structure", () => {
+    mockUseMediaQuery.mockReturnValueOnce(false).mockReturnValueOnce(false);
 
     renderWithProviders(<WebLayout />);
 
-    // Check that the main container exists
-    const navbar = screen.getByTestId('navbar');
-    const outlet = screen.getByTestId('outlet');
-    
+    const navbar = screen.getByTestId("navbar");
+    const outlet = screen.getByTestId("outlet");
+
     expect(navbar).toBeInTheDocument();
     expect(outlet).toBeInTheDocument();
-    
-    // Check that outlet is inside a main element
+
     const mainElement = outlet.parentElement;
-    expect(mainElement?.tagName.toLowerCase()).toBe('main');
+    expect(mainElement?.tagName.toLowerCase()).toBe("main");
   });
 
-  it('calls useMediaQuery with correct breakpoint queries', () => {
-    mockUseMediaQuery
-      .mockReturnValueOnce(false) // isTablet
-      .mockReturnValueOnce(false); // isDesktop
+  it("calls useMediaQuery with correct breakpoint queries", () => {
+    mockUseMediaQuery.mockReturnValueOnce(false).mockReturnValueOnce(false);
 
     renderWithProviders(<WebLayout />);
 
-    // Verify useMediaQuery was called
     expect(mockUseMediaQuery).toHaveBeenCalledTimes(2);
   });
 
-  it('handles theme provider integration', () => {
-    mockUseMediaQuery
-      .mockReturnValueOnce(false) // isTablet
-      .mockReturnValueOnce(false); // isDesktop
+  it("handles theme provider integration", () => {
+    mockUseMediaQuery.mockReturnValueOnce(false).mockReturnValueOnce(false);
 
-    // Test that component renders without theme-related errors
     expect(() => {
       renderWithProviders(<WebLayout />);
     }).not.toThrow();
 
-    expect(screen.getByTestId('navbar')).toBeInTheDocument();
-    expect(screen.getByTestId('outlet')).toBeInTheDocument();
+    expect(screen.getByTestId("navbar")).toBeInTheDocument();
+    expect(screen.getByTestId("outlet")).toBeInTheDocument();
   });
 
-  it('applies flex display to root container', () => {
-    mockUseMediaQuery
-      .mockReturnValueOnce(false) // isTablet
-      .mockReturnValueOnce(false); // isDesktop
+  it("applies flex display to root container", () => {
+    mockUseMediaQuery.mockReturnValueOnce(false).mockReturnValueOnce(false);
 
     renderWithProviders(<WebLayout />);
 
-    const navbar = screen.getByTestId('navbar');
+    const navbar = screen.getByTestId("navbar");
     const rootContainer = navbar.parentElement;
-    
+
     expect(rootContainer).toHaveStyle({
-      display: 'flex',
+      display: "flex",
     });
   });
 
-  it('renders outlet content within main component', () => {
-    mockUseMediaQuery
-      .mockReturnValueOnce(false) // isTablet
-      .mockReturnValueOnce(false); // isDesktop
+  it("renders outlet content within main component", () => {
+    mockUseMediaQuery.mockReturnValueOnce(false).mockReturnValueOnce(false);
 
     renderWithProviders(<WebLayout />);
 
-    const outlet = screen.getByTestId('outlet');
+    const outlet = screen.getByTestId("outlet");
     const mainElement = outlet.parentElement;
-    
-    expect(mainElement?.tagName.toLowerCase()).toBe('main');
-    expect(outlet).toHaveTextContent('Outlet Content');
+
+    expect(mainElement?.tagName.toLowerCase()).toBe("main");
+    expect(outlet).toHaveTextContent("Outlet Content");
   });
 });

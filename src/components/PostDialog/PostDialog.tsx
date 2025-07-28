@@ -230,6 +230,9 @@ const PostDialog: React.FC<PostDialogProps> = ({
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setWroteComment(e.target.value)
               }
+              onKeyDown={(e) => {
+                if (e.key === "Enter") handleComment();
+              }}
             />
             <Button
               color="tertiary"

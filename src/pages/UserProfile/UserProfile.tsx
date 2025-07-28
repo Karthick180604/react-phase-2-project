@@ -82,7 +82,12 @@ const UserProfile = () => {
 
   return (
     <Container sx={{ py: 5 }} data-testid="user-profile-page">
-      <Box display="flex" alignItems="center" mb={3} data-testid="back-button-box">
+      <Box
+        display="flex"
+        alignItems="center"
+        mb={3}
+        data-testid="back-button-box"
+      >
         <IconButton
           onClick={() => navigate(-1)}
           data-testid="back-button"
@@ -109,7 +114,10 @@ const UserProfile = () => {
             {userPosts.length === 0 ? (
               <NoPosts data-testid="no-posts-message" />
             ) : (
-              <UserPostSection posts={userPosts} data-testid="user-post-section" />
+              <UserPostSection
+                posts={userPosts}
+                data-testid="user-post-section"
+              />
             )}
           </Box>
         </Grid>

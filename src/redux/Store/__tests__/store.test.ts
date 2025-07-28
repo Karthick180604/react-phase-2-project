@@ -1,4 +1,3 @@
-//cleared tests
 import { store } from "../store";
 
 describe("Redux Store", () => {

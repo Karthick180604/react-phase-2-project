@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1753626705347" clover="3.2.0">
-  <project timestamp="1753626705347" name="All files">
-    <metrics statements="795" coveredstatements="746" conditionals="259" coveredconditionals="216" methods="203" coveredmethods="184" elements="1257" coveredelements="1146" complexity="0" loc="795" ncloc="795" packages="32" files="39" classes="39"/>
+<coverage generated="1753666767921" clover="3.2.0">
+  <project timestamp="1753666767922" name="All files">
+    <metrics statements="796" coveredstatements="759" conditionals="261" coveredconditionals="230" methods="204" coveredmethods="193" elements="1261" coveredelements="1182" complexity="0" loc="796" ncloc="796" packages="32" files="39" classes="39"/>
     <package name="src">
       <metrics statements="20" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <file name="main.tsx" path="/home/karthick.v/React Phase 2 Project/vite-project/src/main.tsx">
@@ -72,18 +72,18 @@
       <metrics statements="12" coveredstatements="12" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
       <file name="ApiError.tsx" path="/home/karthick.v/React Phase 2 Project/vite-project/src/components/ApiError/ApiError.tsx">
         <metrics statements="12" coveredstatements="12" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
-        <line num="2" count="2" type="stmt"/>
-        <line num="3" count="2" type="stmt"/>
-        <line num="4" count="2" type="stmt"/>
-        <line num="5" count="2" type="stmt"/>
-        <line num="6" count="2" type="stmt"/>
-        <line num="8" count="2" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="8" count="1" type="stmt"/>
         <line num="9" count="12" type="stmt"/>
         <line num="11" count="12" type="stmt"/>
         <line num="12" count="5" type="stmt"/>
         <line num="13" count="5" type="stmt"/>
         <line num="16" count="12" type="stmt"/>
-        <line num="70" count="2" type="stmt"/>
+        <line num="70" count="1" type="stmt"/>
       </file>
     </package>
     <package name="src.components.AuthImage">
@@ -197,23 +197,23 @@
       <metrics statements="17" coveredstatements="17" conditionals="8" coveredconditionals="8" methods="7" coveredmethods="7"/>
       <file name="PostCard.tsx" path="/home/karthick.v/React Phase 2 Project/vite-project/src/components/PostCard/PostCard.tsx">
         <metrics statements="17" coveredstatements="17" conditionals="8" coveredconditionals="8" methods="7" coveredmethods="7"/>
-        <line num="2" count="2" type="stmt"/>
-        <line num="3" count="2" type="stmt"/>
-        <line num="14" count="2" type="stmt"/>
-        <line num="23" count="2" type="stmt"/>
-        <line num="24" count="2" type="stmt"/>
-        <line num="35" count="2" type="stmt"/>
-        <line num="43" count="78" type="stmt"/>
-        <line num="45" count="78" type="stmt"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="13" count="1" type="stmt"/>
+        <line num="22" count="1" type="stmt"/>
+        <line num="23" count="1" type="stmt"/>
+        <line num="34" count="1" type="stmt"/>
+        <line num="42" count="78" type="stmt"/>
+        <line num="44" count="78" type="stmt"/>
+        <line num="45" count="39" type="stmt"/>
         <line num="46" count="39" type="stmt"/>
-        <line num="47" count="39" type="stmt"/>
-        <line num="50" count="78" type="stmt"/>
-        <line num="92" count="3" type="stmt"/>
-        <line num="104" count="3" type="stmt"/>
-        <line num="116" count="2" type="stmt"/>
-        <line num="180" count="2" type="stmt"/>
-        <line num="194" count="228" type="stmt"/>
-        <line num="208" count="2" type="stmt"/>
+        <line num="49" count="78" type="stmt"/>
+        <line num="91" count="3" type="stmt"/>
+        <line num="103" count="3" type="stmt"/>
+        <line num="115" count="2" type="stmt"/>
+        <line num="179" count="2" type="stmt"/>
+        <line num="193" count="228" type="stmt"/>
+        <line num="207" count="1" type="stmt"/>
       </file>
     </package>
     <package name="src.components.PostCardSmall">
@@ -238,23 +238,23 @@
       </file>
     </package>
     <package name="src.components.PostDialog">
-      <metrics statements="46" coveredstatements="44" conditionals="16" coveredconditionals="13" methods="15" coveredmethods="13"/>
+      <metrics statements="47" coveredstatements="45" conditionals="18" coveredconditionals="14" methods="16" coveredmethods="14"/>
       <file name="PostDialog.tsx" path="/home/karthick.v/React Phase 2 Project/vite-project/src/components/PostDialog/PostDialog.tsx">
-        <metrics statements="46" coveredstatements="44" conditionals="16" coveredconditionals="13" methods="15" coveredmethods="13"/>
-        <line num="1" count="2" type="stmt"/>
-        <line num="2" count="2" type="stmt"/>
-        <line num="13" count="2" type="stmt"/>
-        <line num="15" count="2" type="stmt"/>
-        <line num="17" count="2" type="stmt"/>
-        <line num="18" count="2" type="stmt"/>
-        <line num="20" count="2" type="stmt"/>
-        <line num="21" count="2" type="stmt"/>
-        <line num="22" count="2" type="stmt"/>
-        <line num="23" count="2" type="stmt"/>
-        <line num="24" count="2" type="stmt"/>
-        <line num="25" count="2" type="stmt"/>
-        <line num="37" count="2" type="stmt"/>
-        <line num="46" count="71" type="cond" truecount="2" falsecount="0"/>
+        <metrics statements="47" coveredstatements="45" conditionals="18" coveredconditionals="14" methods="16" coveredmethods="14"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="13" count="1" type="stmt"/>
+        <line num="15" count="1" type="stmt"/>
+        <line num="17" count="1" type="stmt"/>
+        <line num="18" count="1" type="stmt"/>
+        <line num="20" count="1" type="stmt"/>
+        <line num="21" count="1" type="stmt"/>
+        <line num="22" count="1" type="stmt"/>
+        <line num="23" count="1" type="stmt"/>
+        <line num="24" count="1" type="stmt"/>
+        <line num="25" count="1" type="stmt"/>
+        <line num="37" count="1" type="stmt"/>
+        <line num="46" count="67" type="cond" truecount="2" falsecount="0"/>
         <line num="48" count="66" type="stmt"/>
         <line num="49" count="66" type="stmt"/>
         <line num="50" count="66" type="stmt"/>
@@ -286,23 +286,24 @@
         <line num="152" count="0" type="stmt"/>
         <line num="211" count="140" type="stmt"/>
         <line num="231" count="38" type="stmt"/>
-        <line num="248" count="2" type="stmt"/>
+        <line num="234" count="38" type="cond" truecount="1" falsecount="1"/>
+        <line num="251" count="1" type="stmt"/>
       </file>
     </package>
     <package name="src.components.PostSkeleton">
       <metrics statements="10" coveredstatements="10" conditionals="6" coveredconditionals="6" methods="3" coveredmethods="3"/>
       <file name="PostSkeleton.tsx" path="/home/karthick.v/React Phase 2 Project/vite-project/src/components/PostSkeleton/PostSkeleton.tsx">
         <metrics statements="10" coveredstatements="10" conditionals="6" coveredconditionals="6" methods="3" coveredmethods="3"/>
-        <line num="2" count="2" type="stmt"/>
-        <line num="11" count="2" type="stmt"/>
-        <line num="12" count="2" type="stmt"/>
-        <line num="13" count="2" type="stmt"/>
-        <line num="14" count="2" type="stmt"/>
-        <line num="16" count="2" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="11" count="1" type="stmt"/>
+        <line num="12" count="1" type="stmt"/>
+        <line num="13" count="1" type="stmt"/>
+        <line num="14" count="1" type="stmt"/>
+        <line num="16" count="1" type="stmt"/>
         <line num="17" count="7" type="stmt"/>
         <line num="59" count="21" type="stmt"/>
         <line num="100" count="21" type="stmt"/>
-        <line num="109" count="2" type="stmt"/>
+        <line num="109" count="1" type="stmt"/>
       </file>
     </package>
     <package name="src.components.ProtectedRoutes">
@@ -498,9 +499,9 @@
       </file>
     </package>
     <package name="src.pages.Home">
-      <metrics statements="56" coveredstatements="40" conditionals="26" coveredconditionals="5" methods="19" coveredmethods="9"/>
+      <metrics statements="56" coveredstatements="52" conditionals="26" coveredconditionals="18" methods="19" coveredmethods="17"/>
       <file name="Home.tsx" path="/home/karthick.v/React Phase 2 Project/vite-project/src/pages/Home/Home.tsx">
-        <metrics statements="56" coveredstatements="40" conditionals="26" coveredconditionals="5" methods="19" coveredmethods="9"/>
+        <metrics statements="56" coveredstatements="52" conditionals="26" coveredconditionals="18" methods="19" coveredmethods="17"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
@@ -513,49 +514,49 @@
         <line num="18" count="1" type="stmt"/>
         <line num="19" count="1" type="stmt"/>
         <line num="21" count="1" type="stmt"/>
-        <line num="22" count="4" type="stmt"/>
-        <line num="23" count="4" type="stmt"/>
-        <line num="24" count="4" type="stmt"/>
-        <line num="25" count="4" type="stmt"/>
-        <line num="26" count="4" type="stmt"/>
-        <line num="27" count="4" type="stmt"/>
-        <line num="29" count="7" type="stmt"/>
-        <line num="30" count="7" type="stmt"/>
-        <line num="31" count="7" type="stmt"/>
-        <line num="33" count="4" type="stmt"/>
-        <line num="34" count="3" type="stmt"/>
-        <line num="35" count="3" type="cond" truecount="1" falsecount="1"/>
-        <line num="36" count="3" type="stmt"/>
-        <line num="41" count="4" type="stmt"/>
-        <line num="43" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="45" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="47" count="0" type="stmt"/>
+        <line num="22" count="22" type="stmt"/>
+        <line num="23" count="22" type="stmt"/>
+        <line num="24" count="22" type="stmt"/>
+        <line num="25" count="22" type="stmt"/>
+        <line num="26" count="22" type="stmt"/>
+        <line num="27" count="22" type="stmt"/>
+        <line num="29" count="36" type="stmt"/>
+        <line num="30" count="36" type="stmt"/>
+        <line num="31" count="36" type="stmt"/>
+        <line num="33" count="22" type="stmt"/>
+        <line num="34" count="12" type="stmt"/>
+        <line num="35" count="12" type="cond" truecount="1" falsecount="1"/>
+        <line num="36" count="12" type="stmt"/>
+        <line num="41" count="22" type="stmt"/>
+        <line num="43" count="18" type="cond" truecount="1" falsecount="1"/>
+        <line num="45" count="18" type="cond" truecount="2" falsecount="0"/>
+        <line num="47" count="18" type="stmt"/>
         <line num="48" count="0" type="cond" truecount="0" falsecount="4"/>
         <line num="49" count="0" type="stmt"/>
-        <line num="53" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="58" count="4" type="stmt"/>
-        <line num="59" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="53" count="18" type="cond" truecount="2" falsecount="0"/>
+        <line num="58" count="22" type="stmt"/>
+        <line num="59" count="1" type="cond" truecount="1" falsecount="1"/>
         <line num="60" count="0" type="stmt"/>
-        <line num="63" count="4" type="stmt"/>
-        <line num="64" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="63" count="22" type="stmt"/>
+        <line num="64" count="1" type="cond" truecount="1" falsecount="1"/>
         <line num="65" count="0" type="stmt"/>
-        <line num="68" count="4" type="stmt"/>
-        <line num="70" count="4" type="stmt"/>
-        <line num="71" count="3" type="stmt"/>
-        <line num="72" count="0" type="stmt"/>
-        <line num="75" count="3" type="stmt"/>
-        <line num="76" count="3" type="stmt"/>
-        <line num="79" count="4" type="stmt"/>
+        <line num="68" count="22" type="stmt"/>
+        <line num="70" count="22" type="stmt"/>
+        <line num="71" count="12" type="stmt"/>
+        <line num="72" count="1" type="stmt"/>
+        <line num="75" count="12" type="stmt"/>
+        <line num="76" count="12" type="stmt"/>
+        <line num="79" count="22" type="stmt"/>
         <line num="80" count="1" type="stmt"/>
-        <line num="83" count="4" type="stmt"/>
-        <line num="89" count="4" type="stmt"/>
-        <line num="91" count="4" type="cond" truecount="1" falsecount="1"/>
-        <line num="92" count="0" type="stmt"/>
-        <line num="95" count="4" type="stmt"/>
-        <line num="102" count="0" type="stmt"/>
-        <line num="103" count="0" type="stmt"/>
-        <line num="124" count="0" type="stmt"/>
-        <line num="129" count="0" type="stmt"/>
+        <line num="83" count="22" type="stmt"/>
+        <line num="89" count="22" type="stmt"/>
+        <line num="91" count="22" type="cond" truecount="2" falsecount="0"/>
+        <line num="92" count="1" type="stmt"/>
+        <line num="95" count="21" type="stmt"/>
+        <line num="102" count="27" type="stmt"/>
+        <line num="103" count="27" type="stmt"/>
+        <line num="124" count="3" type="stmt"/>
+        <line num="129" count="1" type="stmt"/>
         <line num="160" count="1" type="stmt"/>
       </file>
     </package>
@@ -835,36 +836,36 @@
       <metrics statements="12" coveredstatements="12" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <file name="postsActionTypes.ts" path="/home/karthick.v/React Phase 2 Project/vite-project/src/redux/ActionTypes/postsActionTypes.ts">
         <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="1" count="11" type="stmt"/>
-        <line num="2" count="11" type="stmt"/>
-        <line num="3" count="11" type="stmt"/>
+        <line num="1" count="10" type="stmt"/>
+        <line num="2" count="10" type="stmt"/>
+        <line num="3" count="10" type="stmt"/>
       </file>
       <file name="userActionTypes.ts" path="/home/karthick.v/React Phase 2 Project/vite-project/src/redux/ActionTypes/userActionTypes.ts">
         <metrics statements="9" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="1" count="14" type="stmt"/>
-        <line num="2" count="14" type="stmt"/>
-        <line num="3" count="14" type="stmt"/>
-        <line num="4" count="14" type="stmt"/>
-        <line num="5" count="14" type="stmt"/>
-        <line num="6" count="14" type="stmt"/>
-        <line num="7" count="14" type="stmt"/>
-        <line num="8" count="14" type="stmt"/>
-        <line num="9" count="14" type="stmt"/>
+        <line num="1" count="13" type="stmt"/>
+        <line num="2" count="13" type="stmt"/>
+        <line num="3" count="13" type="stmt"/>
+        <line num="4" count="13" type="stmt"/>
+        <line num="5" count="13" type="stmt"/>
+        <line num="6" count="13" type="stmt"/>
+        <line num="7" count="13" type="stmt"/>
+        <line num="8" count="13" type="stmt"/>
+        <line num="9" count="13" type="stmt"/>
       </file>
     </package>
     <package name="src.redux.Actions">
       <metrics statements="31" coveredstatements="31" conditionals="4" coveredconditionals="1" methods="13" coveredmethods="13"/>
       <file name="errorAction.ts" path="/home/karthick.v/React Phase 2 Project/vite-project/src/redux/Actions/errorAction.ts">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="1" count="11" type="stmt"/>
-        <line num="3" count="11" type="stmt"/>
+        <line num="1" count="10" type="stmt"/>
+        <line num="3" count="10" type="stmt"/>
       </file>
       <file name="postsActions.ts" path="/home/karthick.v/React Phase 2 Project/vite-project/src/redux/Actions/postsActions.ts">
         <metrics statements="16" coveredstatements="16" conditionals="4" coveredconditionals="1" methods="3" coveredmethods="3"/>
-        <line num="2" count="3" type="stmt"/>
-        <line num="7" count="3" type="stmt"/>
-        <line num="46" count="3" type="stmt"/>
-        <line num="47" count="3" type="cond" truecount="0" falsecount="2"/>
+        <line num="2" count="2" type="stmt"/>
+        <line num="7" count="2" type="stmt"/>
+        <line num="46" count="2" type="stmt"/>
+        <line num="47" count="2" type="cond" truecount="0" falsecount="2"/>
         <line num="48" count="2" type="stmt"/>
         <line num="49" count="2" type="stmt"/>
         <line num="51" count="2" type="stmt"/>
@@ -880,18 +881,18 @@
       </file>
       <file name="userActions.ts" path="/home/karthick.v/React Phase 2 Project/vite-project/src/redux/Actions/userActions.ts">
         <metrics statements="13" coveredstatements="13" conditionals="0" coveredconditionals="0" methods="9" coveredmethods="9"/>
-        <line num="1" count="7" type="stmt"/>
-        <line num="73" count="7" type="stmt"/>
+        <line num="1" count="6" type="stmt"/>
+        <line num="73" count="6" type="stmt"/>
         <line num="78" count="3" type="stmt"/>
-        <line num="83" count="7" type="stmt"/>
-        <line num="87" count="7" type="stmt"/>
-        <line num="92" count="7" type="stmt"/>
-        <line num="97" count="7" type="stmt"/>
-        <line num="102" count="7" type="stmt"/>
-        <line num="107" count="7" type="stmt"/>
-        <line num="112" count="7" type="stmt"/>
+        <line num="83" count="6" type="stmt"/>
+        <line num="87" count="6" type="stmt"/>
+        <line num="92" count="6" type="stmt"/>
+        <line num="97" count="6" type="stmt"/>
+        <line num="102" count="6" type="stmt"/>
+        <line num="107" count="6" type="stmt"/>
+        <line num="112" count="6" type="stmt"/>
         <line num="119" count="7" type="stmt"/>
-        <line num="124" count="7" type="stmt"/>
+        <line num="124" count="6" type="stmt"/>
         <line num="125" count="5" type="stmt"/>
       </file>
     </package>
@@ -899,30 +900,30 @@
       <metrics statements="46" coveredstatements="44" conditionals="31" coveredconditionals="28" methods="7" coveredmethods="7"/>
       <file name="errorReducer.ts" path="/home/karthick.v/React Phase 2 Project/vite-project/src/redux/Reducers/errorReducer.ts">
         <metrics statements="6" coveredstatements="6" conditionals="3" coveredconditionals="3" methods="1" coveredmethods="1"/>
-        <line num="1" count="8" type="stmt"/>
-        <line num="3" count="8" type="stmt"/>
-        <line num="7" count="8" type="cond" truecount="1" falsecount="0"/>
-        <line num="8" count="47" type="cond" truecount="2" falsecount="0"/>
+        <line num="1" count="7" type="stmt"/>
+        <line num="3" count="7" type="stmt"/>
+        <line num="7" count="7" type="cond" truecount="1" falsecount="0"/>
+        <line num="8" count="41" type="cond" truecount="2" falsecount="0"/>
         <line num="10" count="3" type="stmt"/>
-        <line num="12" count="44" type="stmt"/>
+        <line num="12" count="38" type="stmt"/>
       </file>
       <file name="postsReducers.ts" path="/home/karthick.v/React Phase 2 Project/vite-project/src/redux/Reducers/postsReducers.ts">
         <metrics statements="8" coveredstatements="8" conditionals="9" coveredconditionals="8" methods="1" coveredmethods="1"/>
-        <line num="2" count="8" type="stmt"/>
-        <line num="14" count="8" type="stmt"/>
-        <line num="20" count="8" type="stmt"/>
-        <line num="24" count="48" type="cond" truecount="4" falsecount="0"/>
+        <line num="2" count="7" type="stmt"/>
+        <line num="14" count="7" type="stmt"/>
+        <line num="20" count="7" type="stmt"/>
+        <line num="24" count="42" type="cond" truecount="4" falsecount="0"/>
         <line num="26" count="1" type="stmt"/>
         <line num="29" count="1" type="stmt"/>
         <line num="40" count="1" type="stmt"/>
-        <line num="43" count="45" type="stmt"/>
+        <line num="43" count="39" type="stmt"/>
       </file>
       <file name="userReducer.ts" path="/home/karthick.v/React Phase 2 Project/vite-project/src/redux/Reducers/userReducer.ts">
         <metrics statements="32" coveredstatements="30" conditionals="19" coveredconditionals="17" methods="5" coveredmethods="5"/>
-        <line num="2" count="8" type="stmt"/>
-        <line num="54" count="8" type="stmt"/>
-        <line num="74" count="8" type="stmt"/>
-        <line num="78" count="56" type="cond" truecount="10" falsecount="0"/>
+        <line num="2" count="7" type="stmt"/>
+        <line num="54" count="7" type="stmt"/>
+        <line num="74" count="7" type="stmt"/>
+        <line num="78" count="50" type="cond" truecount="10" falsecount="0"/>
         <line num="80" count="1" type="stmt"/>
         <line num="89" count="1" type="stmt"/>
         <line num="92" count="2" type="cond" truecount="1" falsecount="1"/>
@@ -950,64 +951,64 @@
         <line num="152" count="1" type="stmt"/>
         <line num="158" count="1" type="stmt"/>
         <line num="171" count="1" type="stmt"/>
-        <line num="177" count="45" type="stmt"/>
+        <line num="177" count="39" type="stmt"/>
       </file>
     </package>
     <package name="src.redux.Store">
       <metrics statements="14" coveredstatements="14" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <file name="store.ts" path="/home/karthick.v/React Phase 2 Project/vite-project/src/redux/Store/store.ts">
         <metrics statements="14" coveredstatements="14" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="1" count="7" type="stmt"/>
-        <line num="2" count="7" type="stmt"/>
-        <line num="3" count="7" type="stmt"/>
-        <line num="4" count="7" type="stmt"/>
-        <line num="5" count="7" type="stmt"/>
-        <line num="6" count="7" type="stmt"/>
-        <line num="7" count="7" type="stmt"/>
-        <line num="9" count="7" type="stmt"/>
-        <line num="10" count="7" type="stmt"/>
-        <line num="12" count="7" type="stmt"/>
-        <line num="18" count="7" type="stmt"/>
-        <line num="24" count="7" type="stmt"/>
-        <line num="26" count="7" type="stmt"/>
-        <line num="28" count="7" type="stmt"/>
+        <line num="1" count="6" type="stmt"/>
+        <line num="2" count="6" type="stmt"/>
+        <line num="3" count="6" type="stmt"/>
+        <line num="4" count="6" type="stmt"/>
+        <line num="5" count="6" type="stmt"/>
+        <line num="6" count="6" type="stmt"/>
+        <line num="7" count="6" type="stmt"/>
+        <line num="9" count="6" type="stmt"/>
+        <line num="10" count="6" type="stmt"/>
+        <line num="12" count="6" type="stmt"/>
+        <line num="18" count="6" type="stmt"/>
+        <line num="24" count="6" type="stmt"/>
+        <line num="26" count="6" type="stmt"/>
+        <line num="28" count="6" type="stmt"/>
       </file>
     </package>
     <package name="src.services">
       <metrics statements="28" coveredstatements="28" conditionals="2" coveredconditionals="2" methods="11" coveredmethods="11"/>
       <file name="apiCalls.ts" path="/home/karthick.v/React Phase 2 Project/vite-project/src/services/apiCalls.ts">
         <metrics statements="19" coveredstatements="19" conditionals="2" coveredconditionals="2" methods="9" coveredmethods="9"/>
-        <line num="1" count="6" type="stmt"/>
-        <line num="3" count="6" type="stmt"/>
+        <line num="1" count="5" type="stmt"/>
+        <line num="3" count="5" type="stmt"/>
         <line num="4" count="1" type="stmt"/>
-        <line num="7" count="6" type="stmt"/>
+        <line num="7" count="5" type="stmt"/>
         <line num="8" count="1" type="stmt"/>
-        <line num="11" count="6" type="stmt"/>
+        <line num="11" count="5" type="stmt"/>
         <line num="12" count="1" type="stmt"/>
-        <line num="15" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="15" count="5" type="cond" truecount="2" falsecount="0"/>
         <line num="16" count="1" type="stmt"/>
-        <line num="19" count="6" type="stmt"/>
+        <line num="19" count="5" type="stmt"/>
         <line num="20" count="1" type="stmt"/>
-        <line num="23" count="6" type="stmt"/>
+        <line num="23" count="5" type="stmt"/>
         <line num="24" count="1" type="stmt"/>
-        <line num="27" count="6" type="stmt"/>
+        <line num="27" count="5" type="stmt"/>
         <line num="28" count="1" type="stmt"/>
-        <line num="31" count="6" type="stmt"/>
+        <line num="31" count="5" type="stmt"/>
         <line num="32" count="1" type="stmt"/>
-        <line num="35" count="6" type="stmt"/>
+        <line num="35" count="5" type="stmt"/>
         <line num="36" count="1" type="stmt"/>
       </file>
       <file name="axiosInterceptor.ts" path="/home/karthick.v/React Phase 2 Project/vite-project/src/services/axiosInterceptor.ts">
         <metrics statements="9" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
-        <line num="1" count="7" type="stmt"/>
-        <line num="2" count="7" type="stmt"/>
-        <line num="3" count="7" type="stmt"/>
-        <line num="5" count="7" type="stmt"/>
-        <line num="9" count="7" type="stmt"/>
+        <line num="1" count="6" type="stmt"/>
+        <line num="2" count="6" type="stmt"/>
+        <line num="3" count="6" type="stmt"/>
+        <line num="5" count="6" type="stmt"/>
+        <line num="9" count="6" type="stmt"/>
         <line num="10" count="10" type="stmt"/>
         <line num="12" count="1" type="stmt"/>
         <line num="13" count="1" type="stmt"/>
-        <line num="17" count="7" type="stmt"/>
+        <line num="17" count="6" type="stmt"/>
       </file>
     </package>
   </project>

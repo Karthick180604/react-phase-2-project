@@ -1,4 +1,3 @@
-//cleared test
 import {
   setUser,
   logoutUser,
@@ -64,7 +63,10 @@ describe("User Actions", () => {
   });
 
   it("should create removeDislikePost action", () => {
-    expect(removeDislikePost(8)).toEqual({ type: REMOVE_DISLIKE_POST, payload: 8 });
+    expect(removeDislikePost(8)).toEqual({
+      type: REMOVE_DISLIKE_POST,
+      payload: 8,
+    });
   });
 
   it("should create setUserProfileDetails action", () => {

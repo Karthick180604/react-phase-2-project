@@ -121,7 +121,10 @@ const Home = () => {
 
       {postsState.loading &&
         Array.from({ length: 3 }).map((_, i) => (
-          <PostCardSkeleton key={`skeleton-${i}`} data-testid={`skeleton-${i}`} />
+          <PostCardSkeleton
+            key={`skeleton-${i}`}
+            data-testid={`skeleton-${i}`}
+          />
         ))}
 
       <PostDialog
