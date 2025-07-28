@@ -75,7 +75,7 @@ const UserProfile = () => {
           justifyContent: "center",
         }}
       >
-        <CircularProgress size={50} />
+        <CircularProgress size={50} color="secondary" />
       </Box>
     );
   }

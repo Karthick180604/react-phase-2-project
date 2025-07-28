@@ -147,7 +147,7 @@ describe("ApiError", () => {
 
     expect(refreshButton).toHaveAttribute("type", "button");
     expect(refreshButton).toHaveClass("MuiButton-contained");
-    expect(refreshButton).toHaveClass("MuiButton-containedSecondary");
+    expect(refreshButton).toHaveClass("MuiButton-containedTertiary");
   });
 
   it("has correct layout structure", () => {

@@ -8,6 +8,7 @@ import {
   TextField,
   InputAdornment,
   Box,
+  CircularProgress,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import debounce from "lodash.debounce";
@@ -27,6 +28,7 @@ const SearchUsers = () => {
   const [userList, setUserList] = useState<User[]>([]);
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const hasError = useSelector((state: RootState) => state.error.hasApiError);
 
@@ -36,10 +38,13 @@ const SearchUsers = () => {
 
   const fetchUsers = async () => {
     try {
+      setLoading(true);
       const response = await getAllUsers();
       setUserList(response.data.users);
       setFilteredUsers(response.data.users);
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
@@ -68,6 +73,20 @@ const SearchUsers = () => {
 
   if (hasError) {
     return <ApiError data-testid="api-error" />;
+  }
+  if(loading){
+    return (
+       <Box
+       data-testid="page-loader"
+      minHeight="100vh" 
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      width="100%"
+    >
+      <CircularProgress color="secondary" size={48} />
+    </Box>
+    )
   }
 
   return (

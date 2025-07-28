@@ -84,6 +84,7 @@ const Home = () => {
     ...uploadPost,
     image: userDetails.image,
     username: userDetails.username,
+    currentUser: true,
   }));
 
   const postToRender = [...userUploadedPost, ...postsState.posts];

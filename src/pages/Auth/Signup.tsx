@@ -12,11 +12,12 @@ import {
   useMediaQuery,
   TextField,
   Alert,
+  Link,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { getAllUsers } from "../../services/apiCalls";
 import type { UserType } from "../../types/types";
-import { useNavigate } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../redux/Actions/userActions";
 import AuthImage from "../../components/AuthImage/AuthImage";
@@ -250,14 +251,15 @@ const Signup = () => {
               <Box mt={2} textAlign="center">
                 <Typography variant="body2">
                   Already have an account?{" "}
-                  <Button
-                    color="tertiary"
-                    onClick={() => navigate("/")}
-                    sx={{ textTransform: "none", fontWeight: "bold" }}
-                    data-testid="login-redirect"
-                  >
-                    Login
-                  </Button>
+                  <Link
+                  component={RouterLink}
+                  to="/"
+                  underline="hover"
+                  color="tertiary"
+                  data-testid="login-redirect"
+                >
+                  Login
+                </Link>
                 </Typography>
               </Box>
             </Box>

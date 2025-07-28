@@ -21,6 +21,7 @@ export type Post = {
   userId: number;
   username?: string;
   image?: string;
+  currentUser?: boolean
 };
 
 type FetchPostsRequest = {

@@ -133,7 +133,7 @@ const PostCard: React.FC<PostCardProps> = ({
         <CardContent>
           <Stack direction="row" alignItems="center" spacing={2} mb={1}>
             <Link
-              to={`/home/search/profile/${post.userId}`}
+              to={post.currentUser ? `/home/profile/me` :`/home/search/profile/${post.userId}`}
               className="link-tag"
               data-testid="user-link"
             >
