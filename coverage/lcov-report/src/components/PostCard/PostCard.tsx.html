@@ -30,9 +30,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">90% </span>
+                <span class="strong">78.57% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>9/10</span>
+                <span class='fraction'>11/14</span>
             </div>
         
             
@@ -270,7 +270,14 @@
 <a name='L205'></a><a href='#L205'>205</a>
 <a name='L206'></a><a href='#L206'>206</a>
 <a name='L207'></a><a href='#L207'>207</a>
-<a name='L208'></a><a href='#L208'>208</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L208'></a><a href='#L208'>208</a>
+<a name='L209'></a><a href='#L209'>209</a>
+<a name='L210'></a><a href='#L210'>210</a>
+<a name='L211'></a><a href='#L211'>211</a>
+<a name='L212'></a><a href='#L212'>212</a>
+<a name='L213'></a><a href='#L213'>213</a>
+<a name='L214'></a><a href='#L214'>214</a>
+<a name='L215'></a><a href='#L215'>215</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -303,7 +310,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -360,19 +369,23 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -385,6 +398,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -508,6 +522,7 @@ type PostCardProps = {
   setSelectedPost: React.Dispatch&lt;React.SetStateAction&lt;Post | null&gt;&gt;;
   like: boolean;
   dislike: boolean;
+  validData: boolean
 };
 &nbsp;
 const PostCard: React.FC&lt;PostCardProps&gt; = ({
@@ -517,6 +532,7 @@ const PostCard: React.FC&lt;PostCardProps&gt; = ({
   setSelectedPost,
   like,
   dislike,
+  validData
 }) =&gt; {
   const [imageUrl, setImageUrl] = useState&lt;string&gt;("");
 &nbsp;
@@ -535,6 +551,8 @@ const PostCard: React.FC&lt;PostCardProps&gt; = ({
         boxShadow: 4,
         borderRadius: 3,
         overflow: "hidden",
+        opacity: validData ? <span class="branch-0 cbranch-no" title="branch not covered" >0.5 </span>: 1,
+        pointerEvents:validData ? <span class="branch-0 cbranch-no" title="branch not covered" >"none" </span>: "auto"
       }}
     &gt;
       &lt;Box
@@ -569,6 +587,7 @@ const PostCard: React.FC&lt;PostCardProps&gt; = ({
             &lt;IconButton
               onClick={() =&gt; onLikeHandler(post.id, like)}
               data-testid="like-button"
+              disabled={validData}
             &gt;
               {like ? &lt;ThumbUpAlt /&gt; : &lt;ThumbUpAltOutlined /&gt;}
             &lt;/IconButton&gt;
@@ -581,6 +600,7 @@ const PostCard: React.FC&lt;PostCardProps&gt; = ({
             &lt;IconButton
               onClick={() =&gt; onDislikeHandler(post.id, dislike)}
               data-testid="dislike-button"
+              disabled={validData}
             &gt;
               {dislike ? &lt;ThumbDownAlt /&gt; : &lt;ThumbDownAltOutlined /&gt;}
             &lt;/IconButton&gt;
@@ -593,6 +613,7 @@ const PostCard: React.FC&lt;PostCardProps&gt; = ({
             &lt;IconButton
               onClick={() =&gt; setSelectedPost(post)}
               data-testid="comment-button"
+              disabled={validData}
             &gt;
               &lt;CommentOutlined /&gt;
             &lt;/IconButton&gt;
@@ -691,7 +712,7 @@ export default PostCard;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-07-28T08:53:55.356Z
+                at 2025-07-30T11:59:21.333Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

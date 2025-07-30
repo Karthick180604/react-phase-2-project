@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">98.11% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>47/47</span>
+                <span class='fraction'>52/53</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">95.83% </span>
+                <span class="strong">92.3% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>23/24</span>
+                <span class='fraction'>24/26</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">97.91% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>43/43</span>
+                <span class='fraction'>47/48</span>
             </div>
         
             
@@ -217,7 +217,17 @@
 <a name='L152'></a><a href='#L152'>152</a>
 <a name='L153'></a><a href='#L153'>153</a>
 <a name='L154'></a><a href='#L154'>154</a>
-<a name='L155'></a><a href='#L155'>155</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L155'></a><a href='#L155'>155</a>
+<a name='L156'></a><a href='#L156'>156</a>
+<a name='L157'></a><a href='#L157'>157</a>
+<a name='L158'></a><a href='#L158'>158</a>
+<a name='L159'></a><a href='#L159'>159</a>
+<a name='L160'></a><a href='#L160'>160</a>
+<a name='L161'></a><a href='#L161'>161</a>
+<a name='L162'></a><a href='#L162'>162</a>
+<a name='L163'></a><a href='#L163'>163</a>
+<a name='L164'></a><a href='#L164'>164</a>
+<a name='L165'></a><a href='#L165'>165</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -227,6 +237,8 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -248,7 +260,9 @@
 <span class="cline-any cline-yes">51x</span>
 <span class="cline-any cline-yes">51x</span>
 <span class="cline-any cline-yes">51x</span>
+<span class="cline-any cline-yes">51x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">66x</span>
 <span class="cline-any cline-yes">66x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">51x</span>
@@ -288,8 +302,14 @@
 <span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">51x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">51x</span>
@@ -360,10 +380,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -373,7 +393,7 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useEffect, useState } from "react";
 import { Container, Typography, Grid, Button, Box, Stack } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../redux/Store/store";
 import { getSingleUserPosts } from "../../services/apiCalls";
 import UserProfileCard from "../../components/UserProfileCard/UserProfileCard";
@@ -382,6 +402,8 @@ import EditProfileDialog from "../../components/EditProfileDialog/EditProfileDia
 import AddPostDialog from "../../components/AddPostDialog/AddPostDialog";
 import type { Post } from "../../redux/Actions/postsActions";
 import NoPosts from "../../components/NoPosts/NoPosts";
+import { setApiError } from "../../redux/Actions/errorAction";
+import ApiError from "../../components/ApiError/ApiError";
 &nbsp;
 interface User {
   id: number;
@@ -402,15 +424,17 @@ const MyProfile = () =&gt; {
   const [userPosts, setUserPosts] = useState&lt;Post[]&gt;([]);
   const [editOpen, setEditOpen] = useState(false);
   const [addOpen, setAddOpen] = useState(false);
+  const dispatch=useDispatch()
 &nbsp;
   const userDetails = useSelector((state: RootState) =&gt; state.user);
+  const hasApiError=useSelector((state:RootState)=&gt;state.error.hasApiError)
 &nbsp;
   const updateUser = () =&gt; {
     const userData: User = {
       id: userDetails.id,
       firstName: userDetails.firstName || userDetails.username,
       lastName: userDetails.lastName || "",
-      image: userDetails.image || "data:image/png;base64,...", // shortened for brevity
+      image: userDetails.image || "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&amp;w=0&amp;k=20&amp;c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=",
       email: userDetails.email,
       phone: userDetails.phone || "ph:no data",
       gender: userDetails.gender || "gender:no data",
@@ -441,10 +465,16 @@ const MyProfile = () =&gt; {
         const uploadedPosts = [...userDetails.uploadedPosts];
         setUserPosts([...apiPosts, ...uploadedPosts]);
       } catch (error) {
+        dispatch(setApiError(true))
         console.error("Error fetching user posts:", error);
       }
     }
   };
+&nbsp;
+  <span class="missing-if-branch" title="if path not taken" >I</span>if(hasApiError)
+  {
+<span class="cstat-no" title="statement not covered" >    return &lt;ApiError /&gt;</span>
+  }
 &nbsp;
   if (!user)
     return &lt;Typography data-testid="loading-text"&gt;Loading...&lt;/Typography&gt;;
@@ -515,10 +545,10 @@ const MyProfile = () =&gt; {
       &lt;AddPostDialog
         open={addOpen}
         onClose={() =&gt; setAddOpen(false)}
-        onSave={(data) =&gt; {
-          console.log("New Post:", data);
-          setAddOpen(false);
-        }}
+        // onSave={(data) =&gt; {
+        //   console.log("New Post:", data);
+        //   setAddOpen(false);
+        // }}
       /&gt;
     &lt;/Container&gt;
   );
@@ -532,7 +562,7 @@ export default MyProfile;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-07-28T08:53:55.356Z
+                at 2025-07-30T11:59:21.333Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

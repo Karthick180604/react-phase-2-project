@@ -5,8 +5,8 @@ import { useTheme } from "@mui/material/styles";
 
 const WebLayout = () => {
   const theme = useTheme();
-  const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md"));
-  const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
+  const isTablet = useMediaQuery("(min-width: 601px) and (max-width: 960px)");
+  const isDesktop = useMediaQuery("(min-width: 960px)");
 
   const drawerWidth = isTablet ? 72 : isDesktop ? 200 : 0;
   const topPadding = { xs: 2, sm: 3 };

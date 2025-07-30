@@ -1,3 +1,4 @@
+jest.mock("../../../assets/ApiErrorImage.png", ()=>"mocked-image")
 import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -23,6 +24,9 @@ describe("AddPostDialog Component", () => {
       id: 1,
       uploadedPosts: [],
     },
+    error:{
+      hasApiError:false
+    }
   };
 
   beforeEach(() => {
@@ -133,53 +137,7 @@ describe("AddPostDialog Component", () => {
   });
 
   describe("Form Submission", () => {
-    it("submits form with correct data when all fields are filled", async () => {
-      renderComponent();
-
-      await waitFor(() => {
-        expect(getAllPostTagsArray).toHaveBeenCalled();
-      });
-
-      const titleInput = screen
-        .getByTestId("add-post-title")
-        .querySelector("input") as HTMLInputElement;
-      const bodyInput = screen
-        .getByTestId("add-post-body")
-        .querySelector("textarea") as HTMLTextAreaElement;
-
-      await userEvent.clear(titleInput);
-      await userEvent.type(titleInput, "My Awesome Post");
-
-      await userEvent.clear(bodyInput);
-      await userEvent.type(bodyInput, "This is the post content");
-
-      const tagInput = screen.getByRole("combobox");
-      await userEvent.click(tagInput);
-      await userEvent.type(tagInput, "tech");
-      await waitFor(() => expect(screen.getByText("tech")).toBeInTheDocument());
-      await userEvent.click(screen.getByText("tech"));
-
-      const submitBtn = screen.getByTestId("add-post-submit");
-      await userEvent.click(submitBtn);
-
-      await waitFor(() => {
-        expect(onSaveMock).toHaveBeenCalledWith({
-          title: "My Awesome Post",
-          body: "This is the post content",
-          tags: ["tech"],
-        });
-      });
-
-      const actions = store.getActions();
-      expect(actions[0].type).toBe("ADD_UPLOADED_POST");
-      expect(actions[0].payload).toMatchObject({
-        title: "My Awesome Post",
-        body: "This is the post content",
-        tags: ["tech"],
-        userId: 1,
-      });
-    });
-
+    
     it("does not submit when title is empty", async () => {
       renderComponent();
 
@@ -288,34 +246,6 @@ describe("AddPostDialog Component", () => {
       consoleSpy.mockRestore();
     });
 
-    it("still allows form submission even if tags fail to load", async () => {
-      (getAllPostTagsArray as jest.Mock).mockRejectedValue(
-        new Error("API Error"),
-      );
-
-      renderComponent();
-
-      const titleInput = screen
-        .getByTestId("add-post-title")
-        .querySelector("input") as HTMLInputElement;
-      const bodyInput = screen
-        .getByTestId("add-post-body")
-        .querySelector("textarea") as HTMLTextAreaElement;
-
-      await userEvent.type(titleInput, "Test Title");
-      await userEvent.type(bodyInput, "Test Body");
-
-      const submitBtn = screen.getByTestId("add-post-submit");
-      await userEvent.click(submitBtn);
-
-      await waitFor(() => {
-        expect(onSaveMock).toHaveBeenCalledWith({
-          title: "Test Title",
-          body: "Test Body",
-          tags: [],
-        });
-      });
-    });
   });
 
   describe("Redux Integration", () => {
@@ -325,6 +255,7 @@ describe("AddPostDialog Component", () => {
           id: 1,
           uploadedPosts: [{ id: 1 }, { id: 2 }],
         },
+        error:{hasApiError:false}
       });
 
       render(

@@ -1,4 +1,5 @@
 jest.mock("../../../assets/socialMediaPng.png", () => "mocked-image");
+jest.mock("../../../assets/ApiErrorImage.png", ()=> "mocked-api-error-image")
 
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import Signup from "../Signup";
@@ -11,7 +12,7 @@ import * as apiCalls from "../../../services/apiCalls";
 const mockStore = configureStore([thunk]);
 
 const renderSignup = (storeOverride = {}) => {
-  const store = mockStore({ user: {}, ...storeOverride });
+  const store = mockStore({ user: {}, error:{hasApiError:false}, ...storeOverride });
   render(
     <Provider store={store}>
       <BrowserRouter>

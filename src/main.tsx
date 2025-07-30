@@ -48,17 +48,17 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      <AuthProtectedRoutes>
+      <ProtectedRoutes>
         <Login />
-      </AuthProtectedRoutes>
+      </ProtectedRoutes>
     ),
   },
   {
     path: "/signup",
     element: (
-      <AuthProtectedRoutes>
+      <ProtectedRoutes>
         <Signup />
-      </AuthProtectedRoutes>
+      </ProtectedRoutes>
     ),
   },
   {

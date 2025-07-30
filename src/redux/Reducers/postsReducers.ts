@@ -30,7 +30,7 @@ export const postReducer = (
         ...state,
         loading: false,
         posts:
-          "meta" in action && action.meta.page === 1
+          action.meta?.page === 1
             ? action.payload
             : [...state.posts, ...action.payload],
         error: null,

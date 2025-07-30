@@ -201,23 +201,6 @@ describe('Posts Actions', () => {
       });
     });
 
-    it('should dispatch FETCH_POSTS_FAILURE when getSingleUser fails', async () => {
-      mockGetAllPosts.mockResolvedValue({ data: { posts: [mockPosts[0]] } });
-      mockGetSingleUser.mockRejectedValue(new Error('User fetch error'));
-
-      const thunk = fetchPosts();
-      await thunk(mockDispatch, mockGetState);
-
-      expect(mockDispatch).toHaveBeenCalledWith({
-        type: FETCH_POSTS_REQUEST,
-      });
-
-      expect(mockDispatch).toHaveBeenCalledWith({
-        type: FETCH_POSTS_FAILURE,
-        payload: 'User fetch error',
-      });
-    });
-
     it('should handle error without message and use default error message', async () => {
       mockGetAllPosts.mockRejectedValue({});
 

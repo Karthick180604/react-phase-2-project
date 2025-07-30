@@ -13,9 +13,10 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import debounce from "lodash.debounce";
 import NoResults from "../../components/NoResults/NoResults";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../redux/Store/store";
 import ApiError from "../../components/ApiError/ApiError";
+import { setApiError } from "../../redux/Actions/errorAction";
 
 interface User {
   id: number;
@@ -25,12 +26,13 @@ interface User {
 }
 
 const SearchUsers = () => {
+  const dispatch=useDispatch()
   const [userList, setUserList] = useState<User[]>([]);
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const hasError = useSelector((state: RootState) => state.error.hasApiError);
+  const hasApiError = useSelector((state: RootState) => state.error.hasApiError);
 
   useEffect(() => {
     fetchUsers();
@@ -45,6 +47,7 @@ const SearchUsers = () => {
       setLoading(false);
     } catch (error) {
       setLoading(false);
+      dispatch(setApiError(true))
       console.log(error);
     }
   };
@@ -60,6 +63,7 @@ const SearchUsers = () => {
           setFilteredUsers(response.data.users);
         }
       } catch (error) {
+        dispatch(setApiError(true))
         console.log(error);
       }
     },
@@ -71,7 +75,7 @@ const SearchUsers = () => {
     [fetchSearchedUsers],
   );
 
-  if (hasError) {
+  if (hasApiError) {
     return <ApiError data-testid="api-error" />;
   }
   if(loading){

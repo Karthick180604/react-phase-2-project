@@ -13,17 +13,17 @@ import { getAllPostTagsArray } from "../../services/apiCalls";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../redux/Store/store";
 import { addUploadedPostAction } from "../../redux/Actions/userActions";
+import ApiError from "../ApiError/ApiError";
+import { setApiError } from "../../redux/Actions/errorAction";
 
 interface AddPostDialogProps {
   open: boolean;
   onClose: () => void;
-  onSave: (data: { title: string; body: string; tags: string[] }) => void;
 }
 
 const AddPostDialog: React.FC<AddPostDialogProps> = ({
   open,
   onClose,
-  onSave,
 }) => {
   const dispatch = useDispatch();
 
@@ -34,11 +34,16 @@ const AddPostDialog: React.FC<AddPostDialogProps> = ({
 
   const userDetails = useSelector((state: RootState) => state.user);
 
+  const hasApiError=useSelector((state:RootState)=>state.error.hasApiError)
+
   useEffect(() => {
     if (open) {
       getAllPostTagsArray()
         .then((res) => setAvailableTags(res.data))
-        .catch((error) => console.error("Failed to fetch tags", error));
+        .catch((error) => {
+          console.error("Failed to fetch tags", error)
+          dispatch(setApiError(true))
+        });
     }
   }, [open]);
 
@@ -54,7 +59,6 @@ const AddPostDialog: React.FC<AddPostDialogProps> = ({
         userId: userDetails.id,
       };
       dispatch(addUploadedPostAction(postObj));
-      onSave({ title, body, tags: selectedTags });
       handleClose();
     }
   };
@@ -65,6 +69,11 @@ const AddPostDialog: React.FC<AddPostDialogProps> = ({
     setSelectedTags([]);
     onClose();
   };
+
+  if(hasApiError)
+  {
+    return <ApiError />
+  }
 
   return (
     <Dialog

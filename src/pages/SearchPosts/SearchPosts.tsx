@@ -19,7 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../redux/Store/store";
 import type { ThunkDispatch } from "redux-thunk";
 import type { AnyAction } from "redux";
-import { fetchPosts } from "../../redux/Actions/postsActions";
+import { fetchPosts, Post } from "../../redux/Actions/postsActions";
 import { getAllPostTags, getSearchedPosts } from "../../services/apiCalls";
 import PostDialog from "../../components/PostDialog/PostDialog";
 import {
@@ -32,11 +32,11 @@ import debounce from "lodash.debounce";
 import NoResults from "../../components/NoResults/NoResults";
 import PostCardSmallSkeleton from "../../components/PostCardSmallSkeleton/PostCardSmallSkeleton";
 import ApiError from "../../components/ApiError/ApiError";
+import { setApiError } from "../../redux/Actions/errorAction";
 
 const SearchPosts = () => {
   const dispatch: ThunkDispatch<RootState, unknown, AnyAction> = useDispatch();
-  const { posts, loading } = useSelector((state: RootState) => state.posts);
-  const theme = useTheme();
+  const { posts, loading, error } = useSelector((state: RootState) => state.posts);
 
   const [selectedPost, setSelectedPost] = useState<any | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -55,9 +55,9 @@ const SearchPosts = () => {
   const userDetails = useSelector((state: RootState) => state.user);
   const uploadedPost = userDetails.uploadedPosts;
 
-  const hasError = useSelector((state: RootState) => state.error.hasApiError);
+  const hasApiError = useSelector((state: RootState) => state.error.hasApiError);
 
-  const handleOpenDialog = (post: any) => {
+  const handleOpenDialog = (post: Post) => {
     setSelectedPost(post);
     setDialogOpen(true);
   };
@@ -84,9 +84,7 @@ const SearchPosts = () => {
   };
 
   useEffect(() => {
-    dispatch(fetchPosts(page, limit)).then((res: any) => {
-      if (res?.payload?.length < limit) setHasMore(false);
-    });
+    dispatch(fetchPosts(page, limit))
   }, [dispatch, page]);
 
   useEffect(() => {
@@ -106,6 +104,7 @@ const SearchPosts = () => {
       const response = await getAllPostTags();
       setTags(response.data);
     } catch (error) {
+      dispatch(setApiError(true))
       console.error(error);
     }
   };
@@ -121,12 +120,13 @@ const SearchPosts = () => {
       setPostList(response.data.posts);
       setHasMore(false);
     } catch (error) {
+      dispatch(setApiError(true))
       console.log(error);
     }
   }, []);
 
   const debouncedSearch = useMemo(
-    () => debounce(fetchSearchedPosts, 500),
+    () => debounce((value:string)=>fetchSearchedPosts(value), 500),
     [fetchSearchedPosts],
   );
 
@@ -171,7 +171,7 @@ const SearchPosts = () => {
     [loading, hasMore, searchTerm, selectedTag],
   );
 
-  if (hasError) {
+  if (hasApiError || error!==null) {
     return <ApiError data-testid="api-error" />;
   }
 

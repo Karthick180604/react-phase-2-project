@@ -25,6 +25,9 @@ import {
 } from "../../redux/Actions/userActions";
 import AuthImage from "../../components/AuthImage/AuthImage";
 import type { RootState } from "../../redux/Store/store";
+import { setApiError } from "../../redux/Actions/errorAction";
+import ApiError from "../../components/ApiError/ApiError";
+
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -36,6 +39,8 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [open, setOpen] = useState(false);
+
+  const hasApiError=useSelector((state:RootState)=>state.error.hasApiError)
 
   const userDetails = useSelector((state: RootState) => state.user);
 
@@ -50,6 +55,7 @@ const Login = () => {
       });
       return findUser;
     } catch (error) {
+      dispatch(setApiError(true))
       return error;
     }
   };
@@ -88,6 +94,11 @@ const Login = () => {
   const handleClose = () => {
     setOpen(false);
   };
+
+  if(hasApiError)
+  {
+    return <ApiError />
+  }
 
   return (
     <Grid container sx={{ minHeight: "100vh" }} data-testid="login-container">

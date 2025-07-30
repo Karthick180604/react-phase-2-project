@@ -26,16 +26,11 @@ const Home = () => {
   const [hasMore, setHasMore] = useState(true);
   const limit = 10;
 
-  const hasError = useSelector((state: RootState) => state.error.hasApiError);
   const postsState = useSelector((state: RootState) => state.posts);
   const userDetails = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
-    dispatch(fetchPosts(page, limit)).then((res: any) => {
-      if (res?.payload?.length < limit) {
-        setHasMore(false);
-      }
-    });
+    dispatch(fetchPosts(page, limit))
   }, [dispatch, page]);
 
   const lastPostRef = useCallback(
@@ -71,9 +66,9 @@ const Home = () => {
     const handleScroll = () => {
       setShowScrollTop(window.scrollY > 300);
     };
-
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      return window.removeEventListener("scroll", handleScroll)};
   }, []);
 
   const handleScrollToTop = () => {
@@ -89,7 +84,7 @@ const Home = () => {
 
   const postToRender = [...userUploadedPost, ...postsState.posts];
 
-  if (hasError) {
+  if (postsState.error!==null) {
     return <ApiError />;
   }
 
@@ -115,6 +110,7 @@ const Home = () => {
               onDislikeHandler={onDislikeHandler}
               like={userDetails.likedPostId.includes(post.id)}
               dislike={userDetails.dislikePostId.includes(post.id)}
+              validData={post.username==="Failed to fetch user"}
             />
           </div>
         );
@@ -150,7 +146,7 @@ const Home = () => {
         <Fab
           color="secondary"
           onClick={handleScrollToTop}
-          sx={{ position: "fixed", bottom: 32, right: 32, zIndex: 1000 }}
+          sx={{ position: "fixed", bottom: 70, right: 32, zIndex: 1000 }}
           aria-label="scroll back to top"
           data-testid="scroll-top-fab"
         >

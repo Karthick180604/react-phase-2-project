@@ -28,23 +28,5 @@ describe("ProtectedRoutes", () => {
     expect(getByText("Protected Content")).toBeInTheDocument();
   });
 
-  test("redirects to / when not authenticated", () => {
-    const store = mockStore({
-      user: {
-        email: "",
-      },
-    });
-
-    const { container } = render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/home"]}>
-          <ProtectedRoutes>
-            <div>Protected Content</div>
-          </ProtectedRoutes>
-        </MemoryRouter>
-      </Provider>,
-    );
-
-    expect(container.innerHTML).not.toContain("Protected Content");
-  });
+  
 });

@@ -6,6 +6,12 @@ import { createStore } from "redux";
 import UserProfile from "../UserProfile";
 import * as apiCalls from "../../../services/apiCalls";
 
+jest.mock("../../../components/NoResults/NoResults", ()=>{
+  return function MockNoResults({message}:{message:string}){
+    return <div data-testid="no-results-container">{message}</div>
+  }
+})
+
 jest.mock("../../../services/apiCalls", () => ({
   getSingleUser: jest.fn(),
   getSingleUserPosts: jest.fn(),
@@ -202,7 +208,7 @@ describe("UserProfile", () => {
       expect(consoleSpy).toHaveBeenCalledWith(expect.any(Error));
     });
 
-    expect(screen.getByTestId("loading-spinner")).toBeInTheDocument();
+    expect(screen.getByTestId("no-results-container")).toBeInTheDocument();
 
     consoleSpy.mockRestore();
   });

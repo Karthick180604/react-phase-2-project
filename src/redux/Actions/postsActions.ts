@@ -46,7 +46,7 @@ export type PostActionType =
 
 export const fetchPosts =
   (page = 1, limit = 10) =>
-  async (dispatch: Dispatch<PostActionType>, getState: () => RootState) => {
+  async (dispatch: Dispatch<PostActionType>) => {
     dispatch({ type: FETCH_POSTS_REQUEST });
 
     try {
@@ -54,17 +54,27 @@ export const fetchPosts =
       const response = await getAllPosts(limit, skip);
       const posts = response.data.posts;
 
-      const postData: Post[] = await Promise.all(
-        posts.map(async (post: Post) => {
-          const userRes = await getSingleUser(post.userId);
-          const user: UserType = userRes.data;
-          return {
+      const postData:Post[]=[]
+      for(const post of posts)
+      {
+        try {
+          const userRes=await getSingleUser(post.userId)
+          const user:UserType=userRes.data
+
+          postData.push({
             ...post,
-            username: user.firstName,
-            image: user.image,
-          };
-        }),
-      );
+            username:user.firstName,
+            image:user.image
+          })
+        } catch (error) {
+          postData.push({
+            ...post,
+            username:"Failed to fetch user",
+            image:"https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI="
+          })
+        }
+
+      }
 
       dispatch({
         type: FETCH_POSTS_SUCCESS,
@@ -76,5 +86,6 @@ export const fetchPosts =
         type: FETCH_POSTS_FAILURE,
         payload: error.message || "Something went wrong",
       });
+      
     }
   };

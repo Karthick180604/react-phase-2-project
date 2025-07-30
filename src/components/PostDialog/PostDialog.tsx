@@ -24,6 +24,8 @@ import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import ThumbUpAltOutlinedIcon from "@mui/icons-material/ThumbUpAltOutlined";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
+import { setApiError } from "../../redux/Actions/errorAction";
+import ApiError from "../ApiError/ApiError";
 
 type PostDialogProps = {
   open: boolean;
@@ -50,18 +52,34 @@ const PostDialog: React.FC<PostDialogProps> = ({
   const [wroteComment, setWroteComment] = useState("");
   const [comments, setComments] = useState<CommentType[]>([]);
   const [loading, setLoading] = useState(false);
-  const handleComment = () => {
-    dispatch(commentPost(post.id, wroteComment));
-    setWroteComment("");
-  };
   const userDetails = useSelector((state: RootState) => state.user);
+
+  const hasApiError=useSelector((state:RootState)=>state.error.hasApiError)
+  const handleComment = () => {
+    if(wroteComment.trim()!=="")
+    {
+      dispatch(commentPost(post.id, wroteComment));
+      const commentObj={
+        id: comments.length + 1,
+              body: wroteComment,
+              postId: post.id,
+              user: {
+                id: userDetails.id,
+                fullName: userDetails.username,
+      }
+    }
+    if(post.id===commentObj.postId)
+        setComments((prev)=>[...prev, commentObj])
+      setWroteComment("");
+  };
+}
   useEffect(() => {
     fetchComments();
-  }, [post?.id, userDetails.commentedPosts]);
+  }, [post.id]);
   const fetchComments = async () => {
     try {
-      setLoading(true);
-      if (post.id <= 251) {
+      if (post.id <= 251 && comments.length===0) {
+        setLoading(true);
         const response = await getPostComments(post.id);
         const apiComments = response.data.comments.map(
           (comment: CommentType) => comment,
@@ -80,7 +98,9 @@ const PostDialog: React.FC<PostDialogProps> = ({
 
         const combinedComments = [...apiComments, ...userComments];
         setComments(combinedComments);
-      } else {
+        setLoading(false);
+      } 
+      else {
         const userComments = userDetails.commentedPosts
           .filter((userComment) => userComment.postId === post.id)
           .map((userComment, index) => ({
@@ -92,14 +112,19 @@ const PostDialog: React.FC<PostDialogProps> = ({
               fullName: userDetails.username,
             },
           }));
-        setComments(userComments);
+          setComments(userComments)
       }
-      setLoading(false);
     } catch (error) {
       setLoading(false);
+      dispatch(setApiError(true))
       console.log(error);
     }
   };
+
+  if(hasApiError)
+  {
+    return <ApiError />
+  }
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>

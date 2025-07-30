@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Container, Typography, Grid, Button, Box, Stack } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../redux/Store/store";
 import { getSingleUserPosts } from "../../services/apiCalls";
 import UserProfileCard from "../../components/UserProfileCard/UserProfileCard";
@@ -9,6 +9,8 @@ import EditProfileDialog from "../../components/EditProfileDialog/EditProfileDia
 import AddPostDialog from "../../components/AddPostDialog/AddPostDialog";
 import type { Post } from "../../redux/Actions/postsActions";
 import NoPosts from "../../components/NoPosts/NoPosts";
+import { setApiError } from "../../redux/Actions/errorAction";
+import ApiError from "../../components/ApiError/ApiError";
 
 interface User {
   id: number;
@@ -29,15 +31,17 @@ const MyProfile = () => {
   const [userPosts, setUserPosts] = useState<Post[]>([]);
   const [editOpen, setEditOpen] = useState(false);
   const [addOpen, setAddOpen] = useState(false);
+  const dispatch=useDispatch()
 
   const userDetails = useSelector((state: RootState) => state.user);
+  const hasApiError=useSelector((state:RootState)=>state.error.hasApiError)
 
   const updateUser = () => {
     const userData: User = {
       id: userDetails.id,
       firstName: userDetails.firstName || userDetails.username,
       lastName: userDetails.lastName || "",
-      image: userDetails.image || "data:image/png;base64,...", // shortened for brevity
+      image: userDetails.image || "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=",
       email: userDetails.email,
       phone: userDetails.phone || "ph:no data",
       gender: userDetails.gender || "gender:no data",
@@ -68,10 +72,16 @@ const MyProfile = () => {
         const uploadedPosts = [...userDetails.uploadedPosts];
         setUserPosts([...apiPosts, ...uploadedPosts]);
       } catch (error) {
+        dispatch(setApiError(true))
         console.error("Error fetching user posts:", error);
       }
     }
   };
+
+  if(hasApiError)
+  {
+    return <ApiError />
+  }
 
   if (!user)
     return <Typography data-testid="loading-text">Loading...</Typography>;
@@ -142,10 +152,6 @@ const MyProfile = () => {
       <AddPostDialog
         open={addOpen}
         onClose={() => setAddOpen(false)}
-        onSave={(data) => {
-          console.log("New Post:", data);
-          setAddOpen(false);
-        }}
       />
     </Container>
   );

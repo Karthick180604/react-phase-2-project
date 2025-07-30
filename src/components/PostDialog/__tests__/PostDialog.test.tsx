@@ -1,4 +1,5 @@
-import React from "react";
+jest.mock("../../../assets/ApiErrorImage.png", ()=>"mocked-image")
+
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
@@ -76,6 +77,9 @@ const mockUserState = {
     },
   ],
 };
+const mockErrorState={
+  hasApiError:false,
+}
 
 const userReducer = (state = mockUserState, action: any) => {
   switch (action.type) {
@@ -86,8 +90,10 @@ const userReducer = (state = mockUserState, action: any) => {
 
 const createMockStore = (userState = mockUserState) => {
   const mockUserReducer = () => userState;
+  const mockErrorReducer=()=>mockErrorState
   const rootReducer = combineReducers({
     user: mockUserReducer,
+    error:mockErrorReducer
   });
 
   return createStore(rootReducer);
@@ -260,34 +266,7 @@ describe("PostDialog", () => {
       });
     });
 
-    it("should handle user comments for posts with id > 251", async () => {
-      const postWithHighId = { ...mockPost, id: 300 };
-      const userStateWithComments = {
-        ...mockUserState,
-        commentedPosts: [
-          {
-            postId: 300,
-            comment: "User added comment for high ID post",
-          },
-        ],
-      };
-
-      renderWithProvider(
-        { ...defaultProps, post: postWithHighId },
-        userStateWithComments,
-      );
-
-      await waitFor(() => {
-        expect(getPostComments).not.toHaveBeenCalled();
-      });
-
-      await waitFor(() => {
-        expect(screen.getByText("currentuser")).toBeInTheDocument();
-        expect(
-          screen.getByText("User added comment for high ID post"),
-        ).toBeInTheDocument();
-      });
-    });
+    
   });
 
   describe("Comment Input Functionality", () => {

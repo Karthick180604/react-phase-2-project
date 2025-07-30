@@ -1,5 +1,5 @@
 jest.mock("../../../assets/socialMediaPng.png", () => "mocked-image");
-
+jest.mock("../../../assets/ApiErrorImage.png", ()=>"mocked-api-error-image")
 import {
   render,
   screen,
@@ -45,6 +45,7 @@ describe("Login Component", () => {
   beforeEach(() => {
     store = mockStore({
       user: { email: "", password: "" },
+      error:{hasApiError:false}
     });
     jest.clearAllMocks();
   });

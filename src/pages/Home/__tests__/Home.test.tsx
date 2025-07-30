@@ -345,7 +345,7 @@ describe("Home Component", () => {
 
   it("renders error component when apiError is true", () => {
     const initialState = {
-      posts: initialPostsState,
+      posts: {...initialPostsState, error:"Went wrong"},
       user: initialUserState,
       error: { hasApiError: true },
     };

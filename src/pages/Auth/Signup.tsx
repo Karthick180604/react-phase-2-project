@@ -18,15 +18,20 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { getAllUsers } from "../../services/apiCalls";
 import type { UserType } from "../../types/types";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../../redux/Actions/userActions";
 import AuthImage from "../../components/AuthImage/AuthImage";
+import { setApiError } from "../../redux/Actions/errorAction";
+import { RootState } from "../../redux/Store/store";
+import ApiError from "../../components/ApiError/ApiError";
 
 const Signup = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
+
+  const hasApiError=useSelector((state:RootState)=>state.error.hasApiError)
 
   const [formData, setFormData] = useState({
     id: 208,
@@ -88,6 +93,7 @@ const Signup = () => {
       return !!findUser;
     } catch (error) {
       console.log(error);
+      dispatch(setApiError(true))
       return false;
     }
   };
@@ -122,8 +128,13 @@ const Signup = () => {
     validateEmail(formData.email) &&
     validatePassword(formData.password);
 
+    if(hasApiError)
+    {
+      return <ApiError />
+    }
+
   return (
-    <Grid container sx={{ minHeight: "100vh" }}>
+    <Grid container sx={{ minHeight: "100vh" }} data-testid="signup-container">
       {!isSmallScreen && (
         <Grid item md={6}>
           <Box

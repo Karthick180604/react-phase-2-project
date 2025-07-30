@@ -29,6 +29,7 @@ type PostCardProps = {
   setSelectedPost: React.Dispatch<React.SetStateAction<Post | null>>;
   like: boolean;
   dislike: boolean;
+  validData: boolean
 };
 
 const PostCard: React.FC<PostCardProps> = ({
@@ -38,6 +39,7 @@ const PostCard: React.FC<PostCardProps> = ({
   setSelectedPost,
   like,
   dislike,
+  validData
 }) => {
   const [imageUrl, setImageUrl] = useState<string>("");
 
@@ -56,6 +58,8 @@ const PostCard: React.FC<PostCardProps> = ({
         boxShadow: 4,
         borderRadius: 3,
         overflow: "hidden",
+        opacity: validData ? 0.5 : 1,
+        pointerEvents:validData ? "none" : "auto"
       }}
     >
       <Box
@@ -90,6 +94,7 @@ const PostCard: React.FC<PostCardProps> = ({
             <IconButton
               onClick={() => onLikeHandler(post.id, like)}
               data-testid="like-button"
+              disabled={validData}
             >
               {like ? <ThumbUpAlt /> : <ThumbUpAltOutlined />}
             </IconButton>
@@ -102,6 +107,7 @@ const PostCard: React.FC<PostCardProps> = ({
             <IconButton
               onClick={() => onDislikeHandler(post.id, dislike)}
               data-testid="dislike-button"
+              disabled={validData}
             >
               {dislike ? <ThumbDownAlt /> : <ThumbDownAltOutlined />}
             </IconButton>
@@ -114,6 +120,7 @@ const PostCard: React.FC<PostCardProps> = ({
             <IconButton
               onClick={() => setSelectedPost(post)}
               data-testid="comment-button"
+              disabled={validData}
             >
               <CommentOutlined />
             </IconButton>

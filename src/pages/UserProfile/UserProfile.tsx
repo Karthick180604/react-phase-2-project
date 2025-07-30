@@ -15,6 +15,8 @@ import NoPosts from "../../components/NoPosts/NoPosts";
 import type { Post } from "../../redux/Actions/postsActions";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../redux/Store/store";
+import ApiError from "../../components/ApiError/ApiError";
+import NoResults from "../../components/NoResults/NoResults";
 
 interface User {
   id: number;
@@ -34,14 +36,17 @@ const UserProfile = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const userIdNumber = Number(id);
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User>();
   const [userPosts, setUserPosts] = useState<Post[]>([]);
+  const [loading, setLoading]=useState(false)
+  const [userNotExist, setUserNotExist]=useState(false)
 
   const userDetails = useSelector((state: RootState) => state.user);
 
   const fetchUser = async () => {
     if (id) {
       try {
+        setLoading(true)
         const response = await getSingleUser(userIdNumber);
         const userPostData = await getSingleUserPosts(userIdNumber);
 
@@ -54,7 +59,10 @@ const UserProfile = () => {
         } else {
           setUserPosts(userPostData.data.posts);
         }
+        setLoading(false)
       } catch (error) {
+        setLoading(false)
+        setUserNotExist(true)
         console.error(error);
       }
     }
@@ -64,12 +72,17 @@ const UserProfile = () => {
     fetchUser();
   }, [id]);
 
-  if (!user) {
+  if(userNotExist)
+  {
+    return <NoResults message="User does not exist" />
+  }
+
+  if (loading) {
     return (
       <Box
         data-testid="loading-spinner"
         sx={{
-          height: "60vh",
+          height: "100vh",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -78,6 +91,10 @@ const UserProfile = () => {
         <CircularProgress size={50} color="secondary" />
       </Box>
     );
+  }
+  if(!user)
+  {
+    return;
   }
 
   return (

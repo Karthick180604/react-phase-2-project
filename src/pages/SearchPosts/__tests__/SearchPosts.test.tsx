@@ -210,6 +210,7 @@ const createMockStore = (initialState = {}): Store<any, AnyAction> => {
     posts: {
       posts: mockPosts,
       loading: false,
+      error:null
     },
     user: {
       uploadedPosts: [],
@@ -324,7 +325,7 @@ describe("SearchPosts Component", () => {
   describe("Loading States", () => {
     it("should show skeleton loaders when loading and no posts", () => {
       const store = createMockStore({
-        posts: { posts: [], loading: true },
+        posts: { posts: [], loading: true, error:null },
       });
 
       renderWithProviders(<SearchPosts />, store);
@@ -335,7 +336,7 @@ describe("SearchPosts Component", () => {
 
     it("should show no results when no posts and not loading", () => {
       const store = createMockStore({
-        posts: { posts: [], loading: false },
+        posts: { posts: [], loading: false, error:null },
       });
 
       renderWithProviders(<SearchPosts />, store);

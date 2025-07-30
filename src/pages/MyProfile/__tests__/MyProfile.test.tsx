@@ -1,3 +1,5 @@
+jest.mock("../../../assets/ApiErrorImage.png",()=>"mocked-image")
+
 import React from "react";
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
@@ -67,7 +69,7 @@ jest.mock("../../../components/AddPostDialog/AddPostDialog", () => {
           Close
         </button>
         <button
-          onClick={() => onSave({ title: "New Post", body: "Content" })}
+          onClick={() => onClose(true)}
           data-testid="save-add-dialog"
         >
           Save
@@ -126,6 +128,9 @@ const theme = createTheme();
 const createMockStore = (userState = mockUserDetails) => {
   const initialState = {
     user: userState,
+    error:{
+      hasApiError:false
+    }
   };
 
   const rootReducer = (state = initialState, action: any) => {
@@ -351,10 +356,7 @@ describe("MyProfile", () => {
     const saveButton = screen.getByTestId("save-add-dialog");
     fireEvent.click(saveButton);
 
-    expect(consoleSpy).toHaveBeenCalledWith("New Post:", {
-      title: "New Post",
-      body: "Content",
-    });
+    
 
     expect(screen.queryByTestId("add-post-dialog")).not.toBeInTheDocument();
 

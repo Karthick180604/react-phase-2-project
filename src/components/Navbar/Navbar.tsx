@@ -32,7 +32,7 @@ const navItems = [
     testid: "navlink-explore",
   },
   {
-    label: "Search Users",
+    label: "Search",
     path: "/home/search",
     icon: <SearchIcon />,
     testid: "navlink-search",
@@ -91,9 +91,9 @@ const Navbar = () => {
               sx={{
                 "&.Mui-selected": {
                   color: theme.palette.tertiary.main,
-                  bgcolor: `${theme.palette.tertiary.main}22`,
+                  bgcolor: `${theme.palette.tertiary.main}20`,
                   borderRadius: 2,
-                  mx: 0.5,
+                  mx: 0.2,
                 },
                 color: theme.palette.secondary.main,
               }}

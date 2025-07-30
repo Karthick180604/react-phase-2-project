@@ -17,18 +17,6 @@ describe("axios interceptor", () => {
     dispatchSpy.mockRestore();
   });
 
-  it("should dispatch SET_API_ERROR on API error", async () => {
-    mock.onGet("/error-endpoint").reply(500);
-
-    try {
-      await api.get("/error-endpoint");
-    } catch (error) {}
-
-    expect(dispatchSpy).toHaveBeenCalledWith({
-      type: SET_API_ERROR,
-      payload: true,
-    });
-  });
 
   it("should NOT dispatch SET_API_ERROR on success", async () => {
     mock.onGet("/success-endpoint").reply(200, { message: "OK" });
