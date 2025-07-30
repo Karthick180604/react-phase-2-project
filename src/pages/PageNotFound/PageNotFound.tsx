@@ -6,11 +6,7 @@ import { Link } from "react-router-dom";
 const PageNotFound: React.FC = () => {
   return (
     <div className="not-found-container">
-      <img
-        src={PageNotFoundImage}
-        alt="Not Found"
-        className="not-found-logo"
-      />
+      <img src={PageNotFoundImage} alt="Not Found" className="not-found-logo" />
       <h1>Page Not Found</h1>
       <p>We're sorry, the page you requested could not be found.</p>
       <p>

@@ -16,8 +16,7 @@ import {
 } from "../../redux/Actions/userActions";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { Fab, Zoom } from "@mui/material";
-import ApiError from "../../components/ApiError.tsx/ApiError";
-
+import ApiError from "../../components/ApiError/ApiError";
 
 const Home = () => {
   const dispatch: ThunkDispatch<RootState, unknown, AnyAction> = useDispatch();
@@ -27,90 +26,71 @@ const Home = () => {
   const [hasMore, setHasMore] = useState(true);
   const limit = 10;
 
-  const hasError = useSelector((state: RootState) => state.error.hasApiError);
-
   const postsState = useSelector((state: RootState) => state.posts);
   const userDetails = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
-    dispatch(fetchPosts(page, limit)).then((res: any) => {
-      if (res?.payload?.length < limit) {
-        setHasMore(false);
-      }
-    });
+    dispatch(fetchPosts(page, limit))
   }, [dispatch, page]);
 
- const lastPostRef = useCallback(
-  (node: HTMLDivElement | null) => {
-    if (postsState.loading) return;
+  const lastPostRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (postsState.loading) return;
 
-    if (observerRef.current) observerRef.current.disconnect();
+      if (observerRef.current) observerRef.current.disconnect();
 
-    observerRef.current = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting && hasMore) {
-        setPage((prev) => prev + 1);
-      }
-    });
+      observerRef.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          setPage((prev) => prev + 1);
+        }
+      });
 
-    if (node) observerRef.current.observe(node);
-  },
-  [postsState.loading, hasMore]
-);
+      if (node) observerRef.current.observe(node);
+    },
+    [postsState.loading, hasMore],
+  );
 
   const onLikeHandler = (postId: number, like: boolean) => {
-    if (!like) {
-      dispatch(likePost(postId));
-    } else {
-      dispatch(removeLikePost(postId));
-    }
+    if (!like) dispatch(likePost(postId));
+    else dispatch(removeLikePost(postId));
   };
 
   const onDislikeHandler = (postId: number, dislike: boolean) => {
-    if (!dislike) {
-      dispatch(dislikePost(postId));
-    } else {
-      dispatch(removeDislikePost(postId));
-    }
+    if (!dislike) dispatch(dislikePost(postId));
+    else dispatch(removeDislikePost(postId));
   };
-
 
   const [showScrollTop, setShowScrollTop] = useState(false);
 
-useEffect(() => {
-  const handleScroll = () => {
-    setShowScrollTop(window.scrollY > 300);
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 300);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      return window.removeEventListener("scroll", handleScroll)};
+  }, []);
+
+  const handleScrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  window.addEventListener("scroll", handleScroll);
-  return () => window.removeEventListener("scroll", handleScroll);
-}, []);
-
-const handleScrollToTop = () => {
-  window.scrollTo({ top: 0, behavior: "smooth" });
-};
-
-const userUploadedPost=userDetails.uploadedPosts.map((uploadPost)=>{
-  return {
+  const userUploadedPost = userDetails.uploadedPosts.map((uploadPost) => ({
     ...uploadPost,
-    image:userDetails.image,
-    username:userDetails.username
-  }
-})
+    image: userDetails.image,
+    username: userDetails.username,
+    currentUser: true,
+  }));
 
-  const postToRender=[
-    ...userUploadedPost
-    ,
-    ...postsState.posts
-  ]
+  const postToRender = [...userUploadedPost, ...postsState.posts];
 
-  if(hasError)
-  {
-    return <ApiError />
+  if (postsState.error!==null) {
+    return <ApiError />;
   }
 
   return (
-    <Container maxWidth="md" sx={{ mt: 4 }}>
-      <Typography variant="h4" gutterBottom>
+    <Container maxWidth="md" sx={{ mt: 4 }} data-testid="home-container">
+      <Typography variant="h4" gutterBottom data-testid="page-title">
         Latest Posts
       </Typography>
 
@@ -121,6 +101,7 @@ const userUploadedPost=userDetails.uploadedPosts.map((uploadPost)=>{
             key={post.id}
             ref={isLast ? lastPostRef : null}
             style={{ cursor: "pointer" }}
+            data-testid={`post-${post.id}`}
           >
             <PostCard
               post={post}
@@ -129,6 +110,7 @@ const userUploadedPost=userDetails.uploadedPosts.map((uploadPost)=>{
               onDislikeHandler={onDislikeHandler}
               like={userDetails.likedPostId.includes(post.id)}
               dislike={userDetails.dislikePostId.includes(post.id)}
+              validData={post.username==="Failed to fetch user"}
             />
           </div>
         );
@@ -136,7 +118,10 @@ const userUploadedPost=userDetails.uploadedPosts.map((uploadPost)=>{
 
       {postsState.loading &&
         Array.from({ length: 3 }).map((_, i) => (
-          <PostCardSkeleton key={`skeleton-${i}`} />
+          <PostCardSkeleton
+            key={`skeleton-${i}`}
+            data-testid={`skeleton-${i}`}
+          />
         ))}
 
       <PostDialog
@@ -145,25 +130,29 @@ const userUploadedPost=userDetails.uploadedPosts.map((uploadPost)=>{
         post={selectedPost}
         onLikeHandler={onLikeHandler}
         onDislikeHandler={onDislikeHandler}
-        like={selectedPost ? userDetails.likedPostId.includes(selectedPost.id) : false}
-        dislike={selectedPost ? userDetails.dislikePostId.includes(selectedPost.id) : false}
+        like={
+          selectedPost
+            ? userDetails.likedPostId.includes(selectedPost.id)
+            : false
+        }
+        dislike={
+          selectedPost
+            ? userDetails.dislikePostId.includes(selectedPost.id)
+            : false
+        }
       />
+
       <Zoom in={showScrollTop}>
         <Fab
           color="secondary"
           onClick={handleScrollToTop}
-          sx={{
-            position: "fixed",
-            bottom: 32,
-            right: 32,
-            zIndex: 1000,
-          }}
+          sx={{ position: "fixed", bottom: 70, right: 32, zIndex: 1000 }}
           aria-label="scroll back to top"
+          data-testid="scroll-top-fab"
         >
           <KeyboardArrowUpIcon />
         </Fab>
       </Zoom>
-
     </Container>
   );
 };

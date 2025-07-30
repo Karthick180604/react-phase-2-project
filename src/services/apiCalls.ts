@@ -1,7 +1,7 @@
 import api from "./axiosInterceptor";
 
 export const getAllUsers = () => {
-  return api.get('/users?limit=208');
+  return api.get("/users?limit=208");
 };
 
 export const getSingleUser = (id: number) => {
@@ -29,9 +29,9 @@ export const getSearchedPosts = (searchText: string) => {
 };
 
 export const getAllPostTags = () => {
-  return api.get('/posts/tags');
+  return api.get("/posts/tags");
 };
 
 export const getAllPostTagsArray = () => {
-  return api.get('/posts/tag-list');
+  return api.get("/posts/tag-list");
 };

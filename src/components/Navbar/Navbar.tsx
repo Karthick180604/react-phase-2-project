@@ -10,22 +10,39 @@ import {
   useMediaQuery,
   Paper,
 } from "@mui/material";
-import HomeIcon from "@mui/icons-material/Home";
-import ExploreIcon from "@mui/icons-material/Explore";
-import SearchIcon from "@mui/icons-material/Search";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import LogoutIcon from "@mui/icons-material/Logout";
+import {
+  Home as HomeIcon,
+  Explore as ExploreIcon,
+  Search as SearchIcon,
+  AccountCircle as AccountCircleIcon,
+  Logout as LogoutIcon,
+  ElectricalServices as ElectricalServicesIcon,
+} from "@mui/icons-material";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../../redux/Actions/userActions";
-import ElectricalServicesIcon from '@mui/icons-material/ElectricalServices';
 
 const navItems = [
-  { label: "Home", path: "/home", icon: <HomeIcon /> },
-  { label: "Explore", path: "/home/explore", icon: <ExploreIcon /> },
-  { label: "Search Users", path: "/home/search", icon: <SearchIcon /> },
-  { label: "My Profile", path: "/home/profile/me", icon: <AccountCircleIcon /> },
+  { label: "Home", path: "/home", icon: <HomeIcon />, testid: "navlink-home" },
+  {
+    label: "Explore",
+    path: "/home/explore",
+    icon: <ExploreIcon />,
+    testid: "navlink-explore",
+  },
+  {
+    label: "Search",
+    path: "/home/search",
+    icon: <SearchIcon />,
+    testid: "navlink-search",
+  },
+  {
+    label: "My Profile",
+    path: "/home/profile/me",
+    icon: <AccountCircleIcon />,
+    testid: "navlink-profile",
+  },
 ];
 
 const Navbar = () => {
@@ -33,9 +50,8 @@ const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md"));
-
+  const isMobile = useMediaQuery("(max-width: 600px)");
+  const isTablet = useMediaQuery("(min-width: 601px) and (max-width: 960px)");
 
   const handleLogout = () => {
     dispatch(logoutUser());
@@ -47,60 +63,58 @@ const Navbar = () => {
   if (isMobile) {
     return (
       <Paper
-  sx={{
-    position: "fixed",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    zIndex: 1100,
-    bgcolor: theme.palette.primary.main,
-  }}
-  elevation={3}
->
-  <BottomNavigation
-    value={location.pathname}
-    showLabels
-    sx={{
-      bgcolor: theme.palette.primary.main,
-    }}
-  >
-    {navItems.map((item) => {
-      const isActive = isExactPath(item.path);
-      return (
-        <BottomNavigationAction
-          key={item.label}
-          label={item.label}
-          icon={item.icon}
-          component={NavLink}
-          to={item.path}
-          value={item.path}
-          sx={{
-            "&.Mui-selected": {
-              color: theme.palette.tertiary.main,
-              bgcolor: `${theme.palette.tertiary.main}22`,
-              borderRadius: 2,
-              mx: 0.5,
-            },
-            color: theme.palette.secondary.main,
-          }}
-        />
-      );
-    })}
-    <BottomNavigationAction
-      label="Logout"
-      icon={<LogoutIcon />}
-      onClick={handleLogout}
-      sx={{ color: theme.palette.secondary.main }}
-    />
-  </BottomNavigation>
-</Paper>
-
+        data-testid="navbar-mobile"
+        sx={{
+          position: "fixed",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          zIndex: 1100,
+          bgcolor: theme.palette.primary.main,
+        }}
+        elevation={3}
+      >
+        <BottomNavigation
+          value={location.pathname}
+          showLabels
+          sx={{ bgcolor: theme.palette.primary.main }}
+        >
+          {navItems.map((item) => (
+            <BottomNavigationAction
+              key={item.label}
+              label={item.label}
+              icon={item.icon}
+              component={NavLink}
+              to={item.path}
+              value={item.path}
+              data-testid={item.testid}
+              sx={{
+                "&.Mui-selected": {
+                  color: theme.palette.tertiary.main,
+                  bgcolor: `${theme.palette.tertiary.main}20`,
+                  borderRadius: 2,
+                  mx: 0.2,
+                },
+                color: theme.palette.secondary.main,
+              }}
+            />
+          ))}
+          <BottomNavigationAction
+            label="Logout"
+            icon={<LogoutIcon />}
+            onClick={handleLogout}
+            data-testid="nav-logout"
+            sx={{ color: theme.palette.secondary.main }}
+          />
+        </BottomNavigation>
+      </Paper>
     );
   }
 
   if (isTablet) {
     return (
       <Box
+        data-testid="navbar-tablet"
         sx={{
           width: 72,
           height: "100vh",
@@ -118,6 +132,7 @@ const Navbar = () => {
             key={item.label}
             component={NavLink}
             to={item.path}
+            data-testid={item.testid}
             sx={{
               color: isExactPath(item.path)
                 ? theme.palette.tertiary.main
@@ -137,13 +152,8 @@ const Navbar = () => {
         ))}
         <IconButton
           onClick={handleLogout}
-          sx={{
-            mt: 2,
-            color: theme.palette.secondary.main,
-            "&:hover": {
-              backgroundColor: "transparent !important",
-            },
-          }}
+          data-testid="nav-logout"
+          sx={{ mt: 2, color: theme.palette.secondary.main }}
         >
           <LogoutIcon />
         </IconButton>
@@ -153,6 +163,7 @@ const Navbar = () => {
 
   return (
     <Box
+      data-testid="navbar-desktop"
       sx={{
         width: 220,
         height: "100vh",
@@ -166,20 +177,16 @@ const Navbar = () => {
       }}
     >
       <Box display="flex" alignItems="center" justifyContent="center" mb={3}>
-  <ElectricalServicesIcon
-    sx={{ mr: 1, color: theme.palette.secondary.main }}
-  />
-  <Typography
-    variant="h6"
-    sx={{
-      fontWeight: "bold",
-      color: theme.palette.secondary.main,
-    }}
-  >
-    Connectify
-  </Typography>
-</Box>
-
+        <ElectricalServicesIcon
+          sx={{ mr: 1, color: theme.palette.secondary.main }}
+        />
+        <Typography
+          variant="h6"
+          sx={{ fontWeight: "bold", color: theme.palette.secondary.main }}
+        >
+          Connectify
+        </Typography>
+      </Box>
       <Box sx={{ flexGrow: 1 }}>
         <List disablePadding>
           {navItems.map((item) => {
@@ -191,17 +198,18 @@ const Navbar = () => {
                 style={{ textDecoration: "none" }}
               >
                 <ListItemButton
+                  data-testid={item.testid}
                   sx={{
                     color: active
                       ? theme.palette.primary.contrastText
                       : theme.palette.secondary.main,
-                    bgcolor: active ? theme.palette.tertiary.main : "transparent",
+                    bgcolor: active
+                      ? theme.palette.tertiary.main
+                      : "transparent",
                     borderRadius: "12px",
                     mx: 2,
                     mb: 1,
-                    "&:hover": {
-                      backgroundColor: "transparent !important",
-                    },
+                    "&:hover": { backgroundColor: "transparent !important" },
                   }}
                 >
                   {item.icon}
@@ -211,7 +219,6 @@ const Navbar = () => {
             );
           })}
         </List>
-
         <Box
           sx={{
             mt: 2,
@@ -221,12 +228,11 @@ const Navbar = () => {
         >
           <ListItemButton
             onClick={handleLogout}
+            data-testid="nav-logout"
             sx={{
               color: theme.palette.secondary.main,
               pl: 3,
-              "&:hover": {
-                backgroundColor: "transparent !important",
-              },
+              "&:hover": { backgroundColor: "transparent !important" },
             }}
           >
             <LogoutIcon />

@@ -1,10 +1,20 @@
-import { ADD_UPLOADED_POST, COMMENT_POST, DISLIKE_POST, LIKE_POST, LOGOUT_USER, REMOVE_DISLIKE_POST, REMOVE_LIKE_POST, SET_USER, SET_USER_PROFILE_DETAILS } from "../ActionTypes/userActionTypes";
+import {
+  ADD_UPLOADED_POST,
+  COMMENT_POST,
+  DISLIKE_POST,
+  LIKE_POST,
+  LOGOUT_USER,
+  REMOVE_DISLIKE_POST,
+  REMOVE_LIKE_POST,
+  SET_USER,
+  SET_USER_PROFILE_DETAILS,
+} from "../ActionTypes/userActionTypes";
 import type { CompanyType, UploadPostType } from "../Reducers/userReducer";
 
 interface SetUserAction {
   type: typeof SET_USER;
   payload: {
-    userId:number;
+    userId: number;
     userName: string;
     userEmail: string;
     userPassword: string;
@@ -24,7 +34,6 @@ interface RemoveLikePostAction {
   type: typeof REMOVE_LIKE_POST;
   payload: number;
 }
-
 
 interface CommentPostAction {
   type: typeof COMMENT_POST;
@@ -61,12 +70,14 @@ interface AddUploadedPostAction {
   payload: UploadPostType;
 }
 
-
-
-
-export const setUser = (userId:number, userName: string, userEmail: string, userPassword: string) => ({
+export const setUser = (
+  userId: number,
+  userName: string,
+  userEmail: string,
+  userPassword: string,
+) => ({
   type: SET_USER,
-  payload: {userId, userName, userEmail, userPassword },
+  payload: { userId, userName, userEmail, userPassword },
 });
 
 export const logoutUser = () => ({
@@ -78,25 +89,25 @@ export const likePost = (postId: number) => ({
   payload: postId,
 });
 
-export const removeLikePost=(postId: number)=>({
-  type:REMOVE_LIKE_POST,
-  payload:postId
-})
+export const removeLikePost = (postId: number) => ({
+  type: REMOVE_LIKE_POST,
+  payload: postId,
+});
 
 export const commentPost = (postId: number, comment: string) => ({
   type: COMMENT_POST,
   payload: { postId, comment },
 });
 
-export const dislikePost=(postId: number)=>({
-  type:DISLIKE_POST,
-  payload:postId
-})
+export const dislikePost = (postId: number) => ({
+  type: DISLIKE_POST,
+  payload: postId,
+});
 
-export const removeDislikePost=(postId: number)=>({
-  type:REMOVE_DISLIKE_POST,
-  payload:postId
-})
+export const removeDislikePost = (postId: number) => ({
+  type: REMOVE_DISLIKE_POST,
+  payload: postId,
+});
 
 export const setUserProfileDetails = (payload: {
   firstName: string;
@@ -110,14 +121,12 @@ export const setUserProfileDetails = (payload: {
   payload,
 });
 
-
 export const addUploadedPostAction = (post: UploadPostType) => {
   return {
     type: ADD_UPLOADED_POST,
     payload: post,
   };
 };
-
 
 export type UserActionType =
   | SetUserAction
@@ -128,4 +137,4 @@ export type UserActionType =
   | DislikePostAction
   | RemoveDislikePostAction
   | SetUserProfileDetailsAction
-  | AddUploadedPostAction
+  | AddUploadedPostAction;

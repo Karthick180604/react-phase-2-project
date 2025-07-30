@@ -1,40 +1,42 @@
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Login from "./pages/Auth/Login.tsx";
-import Signup from "./pages/Auth/Signup.tsx";
-import Home from "./pages/Home/Home.tsx";
-import WebLayout from "./pages/WebLayout/WebLayout.tsx";
 import { Provider } from "react-redux";
 import { store } from "./redux/Store/store.ts";
-import SearchPosts from "./pages/SearchPosts/SearchPosts.tsx";
-import SearchUsers from "./pages/SearchUsers/SearchUsers.tsx";
-import UserProfile from "./pages/UserProfile/UserProfile.tsx";
-import MyProfile from "./pages/MyProfile/MyProfile.tsx";
 import { createTheme, ThemeProvider } from "@mui/material";
+import { Suspense, lazy } from "react";
+
 import ProtectedRoutes from "./components/ProtectedRoutes/ProtectedRoutes.tsx";
 import AuthProtectedRoutes from "./components/AuthProtectedRoutes/AuthProtectedRoutes.tsx";
-import PageNotFound from "./pages/PageNotFound/PageNotFound.tsx";
 
+const Login = lazy(() => import("./pages/Auth/Login.tsx"));
+const Signup = lazy(() => import("./pages/Auth/Signup.tsx"));
+const Home = lazy(() => import("./pages/Home/Home.tsx"));
+const WebLayout = lazy(() => import("./pages/WebLayout/WebLayout.tsx"));
+const SearchPosts = lazy(() => import("./pages/SearchPosts/SearchPosts.tsx"));
+const SearchUsers = lazy(() => import("./pages/SearchUsers/SearchUsers.tsx"));
+const UserProfile = lazy(() => import("./pages/UserProfile/UserProfile.tsx"));
+const MyProfile = lazy(() => import("./pages/MyProfile/MyProfile.tsx"));
+const PageNotFound = lazy(() => import("./pages/PageNotFound/PageNotFound.tsx"));
 
-const theme = createTheme({
+export const theme = createTheme({
   palette: {
-    mode: 'light',
+    mode: "light",
     primary: {
-      main: '#F5F5F5',
-      contrastText: '#2C3E50',
+      main: "#F5F5F5",
+      contrastText: "#2C3E50",
     },
     secondary: {
-      main: '#2C3E50',
-      contrastText: '#FFFFFF',
+      main: "#2C3E50",
+      contrastText: "#FFFFFF",
     },
     tertiary: {
-      main: '#1ABC9C',
-      contrastText: '#FFFFFF',
+      main: "#1ABC9C",
+      contrastText: "#FFFFFF",
     },
     background: {
-      default: '#FFFFFF',
-      paper: '#FAFAFA',
+      default: "#FFFFFF",
+      paper: "#FAFAFA",
     },
   },
   typography: {
@@ -43,40 +45,53 @@ const theme = createTheme({
 });
 
 const router = createBrowserRouter([
-    {
-        path:"/",
-        element:<AuthProtectedRoutes><Login /></AuthProtectedRoutes>
-    },
-    {
-        path:"/signup",
-        element:<AuthProtectedRoutes><Signup /></AuthProtectedRoutes>
-    },
-    {
-        path:"/home",
-        element:<ProtectedRoutes><WebLayout /></ProtectedRoutes>,
-        children:[
-            {index:true, element:<Home />},
-            {
-                path:"explore", 
-                element:<SearchPosts />,
-            },
-            {path:"search", element:<SearchUsers />},
-            {path:"search/profile/:id", element:<UserProfile />},
-            {path:"profile/me", element:<MyProfile />},
-            { path: "*", element: <PageNotFound /> }
-        ]
-    },
-    {
-      path:"*",
-      element:<PageNotFound />
-    }
-    
-])
+  {
+    path: "/",
+    element: (
+      <ProtectedRoutes>
+        <Login />
+      </ProtectedRoutes>
+    ),
+  },
+  {
+    path: "/signup",
+    element: (
+      <ProtectedRoutes>
+        <Signup />
+      </ProtectedRoutes>
+    ),
+  },
+  {
+    path: "/home",
+    element: (
+      <ProtectedRoutes>
+        <WebLayout />
+      </ProtectedRoutes>
+    ),
+    children: [
+      { index: true, element: <Home /> },
+      {
+        path: "explore",
+        element: <SearchPosts />,
+      },
+      { path: "search", element: <SearchUsers /> },
+      { path: "search/profile/:id", element: <UserProfile /> },
+      { path: "profile/me", element: <MyProfile /> },
+      { path: "*", element: <PageNotFound /> },
+    ],
+  },
+  {
+    path: "*",
+    element: <PageNotFound />,
+  },
+]);
 
 createRoot(document.getElementById("root")!).render(
-    <Provider store={store}>
-        <ThemeProvider theme={theme}>
-            <RouterProvider router={router} />
-        </ThemeProvider>
-    </Provider>
+  <Provider store={store}>
+    <ThemeProvider theme={theme}>
+      <Suspense fallback={<div style={{ textAlign: "center", marginTop: "20vh" }}>Loading...</div>}>
+        <RouterProvider router={router} />
+      </Suspense>
+    </ThemeProvider>
+  </Provider>
 );

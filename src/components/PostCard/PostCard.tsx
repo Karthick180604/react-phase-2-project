@@ -10,15 +10,17 @@ import {
   Avatar,
   CardMedia,
 } from "@mui/material";
-import ThumbUpAltOutlinedIcon from "@mui/icons-material/ThumbUpAltOutlined";
-import ThumbDownAltOutlinedIcon from "@mui/icons-material/ThumbDownAltOutlined";
-import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
-import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
-import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
+import {
+  ThumbUpAltOutlined,
+  ThumbDownAltOutlined,
+  ThumbDownAlt,
+  CommentOutlined,
+  VisibilityOutlined,
+  ThumbUpAlt,
+} from "@mui/icons-material";
 import type { Post } from "../../redux/Actions/postsActions";
 import { Link } from "react-router-dom";
-import "./PostCard.css"
+import "./PostCard.css";
 
 type PostCardProps = {
   post: Post;
@@ -27,6 +29,7 @@ type PostCardProps = {
   setSelectedPost: React.Dispatch<React.SetStateAction<Post | null>>;
   like: boolean;
   dislike: boolean;
+  validData: boolean
 };
 
 const PostCard: React.FC<PostCardProps> = ({
@@ -36,6 +39,7 @@ const PostCard: React.FC<PostCardProps> = ({
   setSelectedPost,
   like,
   dislike,
+  validData
 }) => {
   const [imageUrl, setImageUrl] = useState<string>("");
 
@@ -46,6 +50,7 @@ const PostCard: React.FC<PostCardProps> = ({
 
   return (
     <Card
+      data-testid="post-card"
       sx={{
         mb: 3,
         display: "flex",
@@ -53,6 +58,8 @@ const PostCard: React.FC<PostCardProps> = ({
         boxShadow: 4,
         borderRadius: 3,
         overflow: "hidden",
+        opacity: validData ? 0.5 : 1,
+        pointerEvents:validData ? "none" : "auto"
       }}
     >
       <Box
@@ -70,8 +77,8 @@ const PostCard: React.FC<PostCardProps> = ({
           image={imageUrl}
           alt="Post Image"
           sx={{ height: 210, objectFit: "cover" }}
+          data-testid="post-image"
         />
-
         <Stack
           direction="row"
           justifyContent="space-around"
@@ -84,33 +91,47 @@ const PostCard: React.FC<PostCardProps> = ({
           }}
         >
           <Box textAlign="center">
-            <IconButton onClick={() => onLikeHandler(post.id, like)}>
-              {like ? <ThumbUpAltIcon /> : <ThumbUpAltOutlinedIcon />}
+            <IconButton
+              onClick={() => onLikeHandler(post.id, like)}
+              data-testid="like-button"
+              disabled={validData}
+            >
+              {like ? <ThumbUpAlt /> : <ThumbUpAltOutlined />}
             </IconButton>
-            <Typography variant="caption">
+            <Typography variant="caption" data-testid="like-count">
               {post.reactions.likes + (like ? 1 : 0)}
             </Typography>
           </Box>
 
           <Box textAlign="center">
-            <IconButton onClick={() => onDislikeHandler(post.id, dislike)}>
-              {dislike ? <ThumbDownAltIcon /> : <ThumbDownAltOutlinedIcon />}
+            <IconButton
+              onClick={() => onDislikeHandler(post.id, dislike)}
+              data-testid="dislike-button"
+              disabled={validData}
+            >
+              {dislike ? <ThumbDownAlt /> : <ThumbDownAltOutlined />}
             </IconButton>
-            <Typography variant="caption">
+            <Typography variant="caption" data-testid="dislike-count">
               {post.reactions.dislikes + (dislike ? 1 : 0)}
             </Typography>
           </Box>
 
           <Box textAlign="center">
-            <IconButton onClick={() => setSelectedPost(post)}>
-              <CommentOutlinedIcon />
+            <IconButton
+              onClick={() => setSelectedPost(post)}
+              data-testid="comment-button"
+              disabled={validData}
+            >
+              <CommentOutlined />
             </IconButton>
             <Typography variant="caption">Comments</Typography>
           </Box>
 
           <Box textAlign="center" display="flex" alignItems="center" gap={0.5}>
-            <VisibilityOutlinedIcon fontSize="small" />
-            <Typography variant="caption">{post.views}</Typography>
+            <VisibilityOutlined fontSize="small" />
+            <Typography variant="caption" data-testid="view-count">
+              {post.views}
+            </Typography>
           </Box>
         </Stack>
       </Box>
@@ -118,7 +139,11 @@ const PostCard: React.FC<PostCardProps> = ({
       <Box flex={1}>
         <CardContent>
           <Stack direction="row" alignItems="center" spacing={2} mb={1}>
-            <Link to={`/home/search/profile/${post.userId}`} className="link-tag">
+            <Link
+              to={post.currentUser ? `/home/profile/me` :`/home/search/profile/${post.userId}`}
+              className="link-tag"
+              data-testid="user-link"
+            >
               <Avatar
                 src={post.image}
                 alt={post.username}
@@ -128,41 +153,49 @@ const PostCard: React.FC<PostCardProps> = ({
                 {post.username}
               </Typography>
             </Link>
-
           </Stack>
 
-          <Typography variant="h6" gutterBottom>
+          <Typography variant="h6" gutterBottom data-testid="post-title">
             {post.title}
           </Typography>
+
           <Box
-              sx={{
-                display: '-webkit-box',
-                WebkitLineClamp: 4,
-                WebkitBoxOrient: 'vertical',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                color: 'text.secondary',
-                typography: 'body2',
-                mb: 1,
-              }}
-            >
-              {post.body}
-            </Box>
+            sx={{
+              display: "-webkit-box",
+              WebkitLineClamp: 4,
+              WebkitBoxOrient: "vertical",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              color: "text.secondary",
+              typography: "body2",
+              mb: 1,
+            }}
+            data-testid="post-body"
+          >
+            {post.body}
+          </Box>
 
-            <Typography
-              variant="body2"
-              sx={{
-                color: 'primary.main',
-                cursor: 'pointer',
-                fontWeight: 500,
-                display: 'inline-block',
-              }}
-              onClick={() => setSelectedPost(post)}
-            >
-              Read more
-            </Typography>
+          <Typography
+            variant="body2"
+            sx={{
+              color: "primary.main",
+              cursor: "pointer",
+              fontWeight: 500,
+              display: "inline-block",
+            }}
+            onClick={() => setSelectedPost(post)}
+            data-testid="read-more"
+          >
+            Read more
+          </Typography>
 
-          <Stack direction="row" spacing={1} mt={2} flexWrap="wrap">
+          <Stack
+            direction="row"
+            spacing={1}
+            mt={2}
+            flexWrap="wrap"
+            data-testid="post-tags"
+          >
             {post.tags.map((tag, index) => (
               <Chip
                 key={index}

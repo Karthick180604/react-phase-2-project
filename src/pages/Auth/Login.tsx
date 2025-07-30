@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate, Link as RouterLink } from "react-router-dom";
-import { getAllUsers} from "../../services/apiCalls";
+import { getAllUsers } from "../../services/apiCalls";
 import type { UserType } from "../../types/types";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -25,6 +25,9 @@ import {
 } from "../../redux/Actions/userActions";
 import AuthImage from "../../components/AuthImage/AuthImage";
 import type { RootState } from "../../redux/Store/store";
+import { setApiError } from "../../redux/Actions/errorAction";
+import ApiError from "../../components/ApiError/ApiError";
+
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -36,6 +39,8 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [open, setOpen] = useState(false);
+
+  const hasApiError=useSelector((state:RootState)=>state.error.hasApiError)
 
   const userDetails = useSelector((state: RootState) => state.user);
 
@@ -50,6 +55,7 @@ const Login = () => {
       });
       return findUser;
     } catch (error) {
+      dispatch(setApiError(true))
       return error;
     }
   };
@@ -57,17 +63,16 @@ const Login = () => {
   const handleLogin = async () => {
     const userExist = await findUser();
     const isExist = !!userExist;
-    if(userDetails.email===email && userDetails.password===password) {
-      navigate('/home');
-    }
-    else if (isExist) {
+    if (userDetails.email === email && userDetails.password === password) {
+      navigate("/home");
+    } else if (isExist) {
       dispatch(
         setUser(
           userExist.id,
           userExist.username,
           userExist.email,
-          userExist.password
-        )
+          userExist.password,
+        ),
       );
 
       const userData = {
@@ -90,10 +95,15 @@ const Login = () => {
     setOpen(false);
   };
 
+  if(hasApiError)
+  {
+    return <ApiError />
+  }
+
   return (
-    <Grid container sx={{ minHeight: "100vh" }}>
+    <Grid container sx={{ minHeight: "100vh" }} data-testid="login-container">
       {!isSmallScreen && (
-        <Grid item md={6}>
+        <Grid item md={6} data-testid="auth-image-section">
           <Box
             height="100%"
             display="flex"
@@ -124,12 +134,14 @@ const Login = () => {
               borderRadius: 3,
               boxShadow: "0px 4px 20px rgba(0,0,0,0.1)",
             }}
+            data-testid="login-paper"
           >
             <Typography
               variant="h4"
               gutterBottom
               textAlign="center"
               fontWeight={600}
+              data-testid="login-title"
             >
               Connectify
             </Typography>
@@ -139,6 +151,7 @@ const Login = () => {
               gutterBottom
               textAlign="center"
               color="text.secondary"
+              data-testid="login-subtitle"
             >
               Welcome back! Please login to your account.
             </Typography>
@@ -152,12 +165,12 @@ const Login = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 sx={{ mb: 2 }}
+                data-testid="email-input"
               />
 
               <TextField
-              color="tertiary"
+                color="tertiary"
                 fullWidth
-                
                 label="Password"
                 variant="outlined"
                 type={showPassword ? "text" : "password"}
@@ -169,17 +182,20 @@ const Login = () => {
                       <IconButton
                         onClick={() => setShowPassword((prev) => !prev)}
                         edge="end"
+                        aria-label="toggle password visibility"
+                        data-testid="toggle-password"
                       >
                         {showPassword ? <VisibilityOff /> : <Visibility />}
                       </IconButton>
                     </InputAdornment>
                   ),
                 }}
+                data-testid="password-input"
               />
 
               <Box mt={3}>
                 <Button
-                color="tertiary"
+                  color="tertiary"
                   variant="contained"
                   fullWidth
                   onClick={handleLogin}
@@ -190,19 +206,21 @@ const Login = () => {
                     textTransform: "none",
                     fontWeight: "bold",
                   }}
+                  data-testid="login-button"
                 >
                   Login
                 </Button>
               </Box>
 
-              <Typography
-                variant="body2"
-                textAlign="center"
-                mt={2}
-                
-              >
+              <Typography variant="body2" textAlign="center" mt={2}>
                 Don’t have an account?{" "}
-                <Link component={RouterLink} to="/signup" underline="hover" color="tertiary">
+                <Link
+                  component={RouterLink}
+                  to="/signup"
+                  underline="hover"
+                  color="tertiary"
+                  data-testid="signup-link"
+                >
                   Sign up
                 </Link>
               </Typography>
@@ -210,8 +228,19 @@ const Login = () => {
           </Paper>
         </Box>
 
-        <Snackbar open={open} autoHideDuration={5000} onClose={handleClose} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
-          <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
+        <Snackbar
+          open={open}
+          autoHideDuration={5000}
+          onClose={handleClose}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          data-testid="error-snackbar"
+        >
+          <Alert
+            onClose={handleClose}
+            severity="error"
+            sx={{ width: "100%" }}
+            data-testid="error-alert"
+          >
             Invalid email or password. Please try again.
           </Alert>
         </Snackbar>

@@ -12,20 +12,26 @@ import {
   useMediaQuery,
   TextField,
   Alert,
+  Link,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { getAllUsers } from "../../services/apiCalls";
 import type { UserType } from "../../types/types";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../../redux/Actions/userActions";
 import AuthImage from "../../components/AuthImage/AuthImage";
+import { setApiError } from "../../redux/Actions/errorAction";
+import { RootState } from "../../redux/Store/store";
+import ApiError from "../../components/ApiError/ApiError";
 
 const Signup = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
+
+  const hasApiError=useSelector((state:RootState)=>state.error.hasApiError)
 
   const [formData, setFormData] = useState({
     id: 208,
@@ -82,11 +88,12 @@ const Signup = () => {
     try {
       const response = await getAllUsers();
       const findUser = response.data.users.find(
-        (user: UserType) => user.email === formData.email
+        (user: UserType) => user.email === formData.email,
       );
       return !!findUser;
     } catch (error) {
       console.log(error);
+      dispatch(setApiError(true))
       return false;
     }
   };
@@ -101,8 +108,8 @@ const Signup = () => {
           formData.id + 1,
           formData.name,
           formData.email,
-          formData.password
-        )
+          formData.password,
+        ),
       );
       setFormData((prevState) => ({
         ...prevState,
@@ -121,8 +128,13 @@ const Signup = () => {
     validateEmail(formData.email) &&
     validatePassword(formData.password);
 
+    if(hasApiError)
+    {
+      return <ApiError />
+    }
+
   return (
-    <Grid container sx={{ minHeight: "100vh" }}>
+    <Grid container sx={{ minHeight: "100vh" }} data-testid="signup-container">
       {!isSmallScreen && (
         <Grid item md={6}>
           <Box
@@ -176,7 +188,7 @@ const Signup = () => {
 
             <Box mt={3}>
               <TextField
-              color="tertiary"
+                color="tertiary"
                 fullWidth
                 label="Name"
                 name="name"
@@ -184,6 +196,7 @@ const Signup = () => {
                 value={formData.name}
                 onChange={handleChange}
                 sx={{ mb: 2 }}
+                inputProps={{ "data-testid": "name-input" }}
               />
 
               <TextField
@@ -198,10 +211,11 @@ const Signup = () => {
                 error={!!errors.email}
                 helperText={errors.email}
                 sx={{ mb: 2 }}
+                inputProps={{ "data-testid": "email-input" }}
               />
 
               <TextField
-              color="tertiary"
+                color="tertiary"
                 fullWidth
                 label="Password"
                 name="password"
@@ -216,17 +230,19 @@ const Signup = () => {
                     <InputAdornment position="end">
                       <IconButton
                         onClick={() => setShowPassword((prev) => !prev)}
+                        data-testid="toggle-password-visibility"
                       >
                         {showPassword ? <VisibilityOff /> : <Visibility />}
                       </IconButton>
                     </InputAdornment>
                   ),
                 }}
+                inputProps={{ "data-testid": "password-input" }}
               />
 
               <Box mt={3}>
                 <Button
-                color="tertiary"
+                  color="tertiary"
                   variant="contained"
                   fullWidth
                   size="large"
@@ -237,6 +253,7 @@ const Signup = () => {
                     textTransform: "none",
                     fontWeight: "bold",
                   }}
+                  data-testid="signup-button"
                 >
                   Sign Up
                 </Button>
@@ -245,23 +262,31 @@ const Signup = () => {
               <Box mt={2} textAlign="center">
                 <Typography variant="body2">
                   Already have an account?{" "}
-                  <Button
+                  <Link
+                  component={RouterLink}
+                  to="/"
+                  underline="hover"
                   color="tertiary"
-                    onClick={() => navigate("/")}
-                    sx={{ textTransform: "none", fontWeight: "bold" }}
-                  >
-                    Login
-                  </Button>
+                  data-testid="login-redirect"
+                >
+                  Login
+                </Link>
                 </Typography>
               </Box>
             </Box>
           </Paper>
         </Box>
-        <Snackbar open={open} autoHideDuration={5000} onClose={handleClose} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
-                  <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
-                    User Already exist
-                  </Alert>
-                </Snackbar>
+        <Snackbar
+          open={open}
+          autoHideDuration={5000}
+          onClose={handleClose}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          data-testid="user-exists-snackbar"
+        >
+          <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
+            User Already exist
+          </Alert>
+        </Snackbar>
       </Grid>
     </Grid>
   );
